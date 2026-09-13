@@ -4,9 +4,10 @@ import { ViewingExperienceNotice } from "@/components/viewing-experience-notice"
 import { WeeklySellerBriefing } from "@/components/weekly-seller-briefing"
 
 export const metadata: Metadata = {
-  title: "GCC Market Entry | Malaysian Brands to the Middle East",
+  title: "GCC Market Entry Malaysia | Saudi Arabia & UAE | eRomman",
   description: "A practical GCC market-entry guide for Malaysian brands exploring Saudi Arabia, UAE and the wider Middle East with eRomman.",
-  alternates: { canonical: "https://gccmarketentry.me/en/" },
+  alternates: { canonical: "https://gccmarketentry.me/" },
+  robots: { index: false, follow: true },
 }
 
 export default function Page() {
