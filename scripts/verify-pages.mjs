@@ -28,6 +28,7 @@ const headlines = new Map([
 ])
 const sections = ["fit-check", "opportunities", "how-it-works", "marketplaces", "company-profile-video", "seller-success-stories", "pricing", "cost-estimator", "faq", "contact"]
 const requiredVideoIds = ["SNpyhzCsYHs", "a-ak5h5d3jo", "I7GU3g0i7Bg"]
+const socialPreviewPath = "images/social/gcc-market-entry-whatsapp-hq-20260913.png"
 
 export async function stamp(directory, commit, basePath) {
   assert.match(commit, /^[0-9a-f]{40}$/, "A full source commit SHA is required")
@@ -65,10 +66,11 @@ export async function stamp(directory, commit, basePath) {
       await record(path, asset.slice(1))
     }
   }
+  await record(socialPreviewPath, socialPreviewPath)
   const manifest = { commit, basePath, files: [...files.values()] }
   await writeFile(resolve(root, "deployment.json"), JSON.stringify(manifest, null, 2) + "\n")
   await writeFile(resolve(root, ".nojekyll"), "")
-  console.log("Validated all public GCC Market Entry routes, seller-guide sections, videos and " + files.size + " exported pages/assets for " + commit)
+  console.log("Validated all public GCC Market Entry routes, seller-guide sections, videos, social preview and " + files.size + " exported pages/assets for " + commit)
   return manifest
 }
 
@@ -91,6 +93,7 @@ export async function verify(siteUrl, commit) {
   assert.equal(base.pathname, "/", "Custom domain must serve from the root path")
   assert.equal(manifest.basePath, "", "Published release has an unexpected base path")
   for (const route of routes) assert.ok(manifest.files.some((file) => file.path === route), "Missing route " + (route || "/"))
+  assert.ok(manifest.files.some((file) => file.path === socialPreviewPath), "Missing high-resolution social preview image")
   for (let offset = 0; offset < manifest.files.length; offset += 6) {
     await Promise.all(manifest.files.slice(offset, offset + 6).map(async (file) => {
       const url = new URL(file.path, base)
