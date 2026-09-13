@@ -28,7 +28,9 @@ const headlines = new Map([
 ])
 const sections = ["fit-check", "opportunities", "how-it-works", "marketplaces", "company-profile-video", "seller-success-stories", "pricing", "cost-estimator", "faq", "contact"]
 const requiredVideoIds = ["SNpyhzCsYHs", "a-ak5h5d3jo", "I7GU3g0i7Bg"]
-const socialPreviewPath = "images/social/gcc-market-entry-whatsapp-hq-20260913.png"
+const socialPreviewPath = "images/social/gcc-market-entry-whatsapp-1200x630-v2.jpg"
+const socialPreviewUrl = "https://gccmarketentry.me/" + socialPreviewPath
+const maxWhatsAppPreviewBytes = 600000
 
 export async function stamp(directory, commit, basePath) {
   assert.match(commit, /^[0-9a-f]{40}$/, "A full source commit SHA is required")
@@ -45,6 +47,13 @@ export async function stamp(directory, commit, basePath) {
   for (const route of routes) {
     const html = await record(route + "index.html", route)
     assert.ok(html.includes("/_next/static/"), "Compiled assets missing from " + (route || "/"))
+
+    if (route === "") {
+      assert.ok(html.includes(socialPreviewUrl), "Homepage Open Graph image does not use the WhatsApp-optimized preview")
+      assert.ok(html.includes('property="og:image:width" content="1200"'), "Homepage Open Graph width is not 1200")
+      assert.ok(html.includes('property="og:image:height" content="630"'), "Homepage Open Graph height is not 630")
+      assert.ok(html.includes('property="og:image:type" content="image/jpeg"'), "Homepage Open Graph image type is not JPEG")
+    }
 
     if (guideRoutes.includes(route)) {
       assert.ok(html.includes(headlines.get(route)), "GCC Market Entry guide missing from " + (route || "/"))
@@ -66,11 +75,13 @@ export async function stamp(directory, commit, basePath) {
       await record(path, asset.slice(1))
     }
   }
+  const socialPreviewBytes = await readFile(resolve(root, socialPreviewPath))
+  assert.ok(socialPreviewBytes.length < maxWhatsAppPreviewBytes, "WhatsApp social preview is too large: " + socialPreviewBytes.length + " bytes")
   await record(socialPreviewPath, socialPreviewPath)
   const manifest = { commit, basePath, files: [...files.values()] }
   await writeFile(resolve(root, "deployment.json"), JSON.stringify(manifest, null, 2) + "\n")
   await writeFile(resolve(root, ".nojekyll"), "")
-  console.log("Validated all public GCC Market Entry routes, seller-guide sections, videos, social preview and " + files.size + " exported pages/assets for " + commit)
+  console.log("Validated all public GCC Market Entry routes, seller-guide sections, videos, WhatsApp-optimized social preview and " + files.size + " exported pages/assets for " + commit)
   return manifest
 }
 
@@ -93,7 +104,9 @@ export async function verify(siteUrl, commit) {
   assert.equal(base.pathname, "/", "Custom domain must serve from the root path")
   assert.equal(manifest.basePath, "", "Published release has an unexpected base path")
   for (const route of routes) assert.ok(manifest.files.some((file) => file.path === route), "Missing route " + (route || "/"))
-  assert.ok(manifest.files.some((file) => file.path === socialPreviewPath), "Missing high-resolution social preview image")
+  assert.ok(manifest.files.some((file) => file.path === socialPreviewPath), "Missing WhatsApp-optimized social preview image")
+  const liveSocialPreview = await get(new URL(socialPreviewPath, base))
+  assert.ok(liveSocialPreview.length < maxWhatsAppPreviewBytes, "Live WhatsApp social preview is too large: " + liveSocialPreview.length + " bytes")
   for (let offset = 0; offset < manifest.files.length; offset += 6) {
     await Promise.all(manifest.files.slice(offset, offset + 6).map(async (file) => {
       const url = new URL(file.path, base)
@@ -101,7 +114,7 @@ export async function verify(siteUrl, commit) {
       assert.equal(digest(await get(url)), file.sha256, "Stale or incorrect published file: " + url.href)
     }))
   }
-  console.log("LIVE VERIFIED: " + commit + " at " + base.href + " — all public routes and " + manifest.files.length + " pages/assets match the build.")
+  console.log("LIVE VERIFIED: " + commit + " at " + base.href + " — all public routes and " + manifest.files.length + " pages/assets match the build, including the WhatsApp preview under 600 KB.")
 }
 
 if (process.argv[2] === "stamp") {
