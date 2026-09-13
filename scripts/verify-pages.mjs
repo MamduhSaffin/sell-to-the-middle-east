@@ -5,8 +5,27 @@ import { resolve, sep } from "node:path"
 import { setTimeout as delay } from "node:timers/promises"
 
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex")
-const routes = ["", "en/", "bm/", "ar/"]
-const headlines = ["Expand Your Brand", "Expand Your Brand", "Kembangkan Jenama Anda", "وسّع علامتك التجارية"]
+const routes = [
+  "",
+  "en/",
+  "bm/",
+  "ar/",
+  "saudi-arabia/",
+  "uae/",
+  "beauty-wellness/",
+  "electronics/",
+  "guides/",
+  "guides/gcc-market-entry-checklist-malaysian-brands/",
+  "guides/arabic-localisation-for-gcc-ecommerce/",
+  "guides/how-to-test-gcc-demand-before-scaling/",
+]
+const guideRoutes = ["", "en/", "bm/", "ar/"]
+const headlines = new Map([
+  ["", "Expand Your Brand"],
+  ["en/", "Expand Your Brand"],
+  ["bm/", "Kembangkan Jenama Anda"],
+  ["ar/", "وسّع علامتك التجارية"],
+])
 const sections = ["fit-check", "opportunities", "how-it-works", "marketplaces", "company-profile-video", "seller-success-stories", "pricing", "cost-estimator", "faq", "contact"]
 const requiredVideoIds = ["SNpyhzCsYHs", "a-ak5h5d3jo", "I7GU3g0i7Bg"]
 
@@ -22,16 +41,20 @@ export async function stamp(directory, commit, basePath) {
     files.set(url, { path: url, sha256: digest(bytes) })
     return bytes.toString("utf8")
   }
-  for (const [index, route] of routes.entries()) {
+  for (const route of routes) {
     const html = await record(route + "index.html", route)
-    assert.ok(html.includes(headlines[index]), "GCC Market Entry redesign missing from " + (route || "/"))
-    for (const id of sections) assert.ok(html.includes('id="' + id + '"'), "Missing seller section: " + id)
-    for (const videoId of requiredVideoIds) assert.ok(html.includes(videoId), "Missing required video: " + videoId)
-    for (const language of routes.slice(1)) {
-      assert.ok(html.includes("/" + language), "Missing language route: " + language)
+    assert.ok(html.includes("/_next/static/"), "Compiled assets missing from " + (route || "/"))
+
+    if (guideRoutes.includes(route)) {
+      assert.ok(html.includes(headlines.get(route)), "GCC Market Entry guide missing from " + (route || "/"))
+      for (const id of sections) assert.ok(html.includes('id="' + id + '"'), "Missing seller section " + id + " from " + (route || "/"))
+      for (const videoId of requiredVideoIds) assert.ok(html.includes(videoId), "Missing required video " + videoId + " from " + (route || "/"))
+      for (const language of guideRoutes.slice(1)) {
+        assert.ok(html.includes("/" + language), "Missing language route " + language + " from " + (route || "/"))
+      }
+      if (route === "ar/") assert.ok(html.includes('dir="rtl"'), "Arabic RTL missing")
     }
-    if (route === "ar/") assert.ok(html.includes('dir="rtl"'), "Arabic RTL missing")
-    assert.ok(html.includes("/_next/static/"), "Compiled assets missing")
+
     for (const tag of html.match(/<(?:script|link|img)\b[^>]*>/g) || []) {
       const match = tag.match(/(?:src|href)="([^"]+)"/)
       if (!match) continue
@@ -45,7 +68,7 @@ export async function stamp(directory, commit, basePath) {
   const manifest = { commit, basePath, files: [...files.values()] }
   await writeFile(resolve(root, "deployment.json"), JSON.stringify(manifest, null, 2) + "\n")
   await writeFile(resolve(root, ".nojekyll"), "")
-  console.log("Validated custom-domain GCC Market Entry routes, video sections and " + files.size + " exported pages/assets for " + commit)
+  console.log("Validated all public GCC Market Entry routes, seller-guide sections, videos and " + files.size + " exported pages/assets for " + commit)
   return manifest
 }
 
@@ -67,7 +90,7 @@ export async function verify(siteUrl, commit) {
   assert.equal(manifest.commit, commit, "Pages is serving another release")
   assert.equal(base.pathname, "/", "Custom domain must serve from the root path")
   assert.equal(manifest.basePath, "", "Published release has an unexpected base path")
-  for (const route of routes) assert.ok(manifest.files.some((file) => file.path === route), "Missing route " + route)
+  for (const route of routes) assert.ok(manifest.files.some((file) => file.path === route), "Missing route " + (route || "/"))
   for (let offset = 0; offset < manifest.files.length; offset += 6) {
     await Promise.all(manifest.files.slice(offset, offset + 6).map(async (file) => {
       const url = new URL(file.path, base)
@@ -75,7 +98,7 @@ export async function verify(siteUrl, commit) {
       assert.equal(digest(await get(url)), file.sha256, "Stale or incorrect published file: " + url.href)
     }))
   }
-  console.log("LIVE VERIFIED: " + commit + " at " + base.href + " — all custom-domain routes, video sections and " + manifest.files.length + " pages/assets match the build.")
+  console.log("LIVE VERIFIED: " + commit + " at " + base.href + " — all public routes and " + manifest.files.length + " pages/assets match the build.")
 }
 
 if (process.argv[2] === "stamp") {
