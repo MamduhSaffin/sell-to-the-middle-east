@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { GccMarketEntryGuide } from "@/components/gcc-market-entry-guide"
 import { ViewingExperienceNotice } from "@/components/viewing-experience-notice"
+import { WeeklySellerBriefing } from "@/components/weekly-seller-briefing"
 
 export const metadata: Metadata = {
   title: "GCC Market Entry | Jenama Malaysia ke Timur Tengah",
@@ -13,6 +14,7 @@ export default function Page() {
     <>
       <GccMarketEntryGuide lang="bm" />
       <ViewingExperienceNotice lang="bm" />
+      <WeeklySellerBriefing lang="bm" />
     </>
   )
 }
