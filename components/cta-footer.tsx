@@ -1,4 +1,4 @@
-import { ExternalLink, Linkedin, Mail, MessageCircle, Phone } from "lucide-react"
+import { ExternalLink, Mail, MessageCircle, Phone } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { EROMMAN_LINKS, SELLER_SUPPORT } from "@/lib/links"
 import { SITE_BASE_PATH } from "@/lib/site"
@@ -52,7 +52,7 @@ export function CtaFooter() {
                     variant="outline"
                     className="rounded-full border-primary-foreground/30 bg-transparent px-6 text-primary-foreground hover:bg-primary-foreground/10"
                   >
-                    <Linkedin className="mr-2 h-4 w-4" />
+                    <ExternalLink className="mr-2 h-4 w-4" />
                     LinkedIn
                   </Button>
                 </div>
@@ -91,7 +91,7 @@ export function CtaFooter() {
                     rel="noopener noreferrer"
                     className="flex items-center gap-3 hover:text-primary"
                   >
-                    <Linkedin className="h-4 w-4 shrink-0 text-primary" />
+                    <ExternalLink className="h-4 w-4 shrink-0 text-primary" />
                     <span>View professional LinkedIn</span>
                   </a>
 
@@ -121,7 +121,7 @@ export function CtaFooter() {
               rel="noopener noreferrer"
               className="mt-2 inline-flex items-center gap-1.5 font-medium text-primary hover:underline"
             >
-              <Linkedin className="h-4 w-4" />
+              <ExternalLink className="h-4 w-4" />
               Connect with Mamduh on LinkedIn
             </a>
           </div>
