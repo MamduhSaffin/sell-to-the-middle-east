@@ -138,6 +138,23 @@ export function ApprovedDriveVisuals() {
         <div className="mt-12 space-y-7">
           <WideVisual image={approved.officialHero} priority href={EROMMAN_WEBSITE} />
           <WideVisual image={approved.discoveryInfographic} href={DIGITAL_MARKETING_FOLDER} />
+
+          <div className="rounded-[2rem] border border-red-100 bg-white px-6 py-7 shadow-[0_20px_55px_rgba(93,13,18,0.08)] sm:px-8 sm:py-8">
+            <h3 className="text-2xl font-black tracking-tight text-[#211916] sm:text-3xl">Seller Resources &amp; Digital Marketing</h3>
+            <p className="mt-3 max-w-4xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Looking for more information? View our eRomman seller resources, including the corporate profile, English &amp; Malay presentations, digital marketing materials, KOL examples and GCC market-entry references.
+            </p>
+            <a
+              href={DIGITAL_MARKETING_FOLDER}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-5 inline-flex items-center rounded-full bg-primary px-6 py-3 text-sm font-black text-white shadow-sm transition hover:opacity-90"
+              aria-label="View eRomman seller resources and digital marketing materials"
+            >
+              View Seller Resources →
+            </a>
+          </div>
+
           <WideVisual image={approved.brochure} />
         </div>
 
