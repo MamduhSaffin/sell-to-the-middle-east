@@ -7,7 +7,7 @@ import { EROMMAN_LINKS, SELLER_SUPPORT } from "@/lib/links"
 import { SITE_URL } from "@/lib/site"
 
 const siteUrl = `${SITE_URL}/`
-const socialImage = siteUrl + "images/social/gcc-market-entry-whatsapp-hq-20260913.png"
+const socialImage = siteUrl + "images/social/gcc-market-entry-whatsapp-1200x630-v2.jpg"
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -65,9 +65,9 @@ export const metadata: Metadata = {
     images: [
       {
         url: socialImage,
-        width: 1672,
-        height: 941,
-        type: "image/png",
+        width: 1200,
+        height: 630,
+        type: "image/jpeg",
         alt: "GCC Market Entry Malaysia with eRomman — Saudi Arabia, UAE and Middle East expansion",
       },
     ],
