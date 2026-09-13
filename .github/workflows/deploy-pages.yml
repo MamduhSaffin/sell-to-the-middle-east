@@ -39,6 +39,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: TypeScript check
+        run: pnpm check
+
       - name: Add company profile and seller success videos to the seller guide
         run: node scripts/inject-video-sections.mjs
 
@@ -49,13 +52,25 @@ jobs:
         run: |
           mkdir -p public/images/approved
           curl -fL --retry 3 --retry-delay 2 \
-            "https://drive.google.com/uc?export=download&id=1Ae2FhKHrRMS2z37iNa2xLB15GiiihfXs" \
-            -o public/images/approved/06-eRomman-GCC-Official-Market-Entry-Hero.png
+            "https://drive.google.com/uc?export=download&id=19fFneYa9XuEMYwIf_lE5ewyPc9ZSMmpi" \
+            -o public/images/approved/01-eRomman-GCC-Roll-Up-Banner.png
           curl -fL --retry 3 --retry-delay 2 \
             "https://drive.google.com/uc?export=download&id=1oMVCO_eK9yA0ITfxPsYhMttnz9cm34QI" \
             -o public/images/approved/03-eRomman-GCC-Landing-Page-Hero.png
-          test -s public/images/approved/06-eRomman-GCC-Official-Market-Entry-Hero.png
+          curl -fL --retry 3 --retry-delay 2 \
+            "https://drive.google.com/uc?export=download&id=18VeQbB_dpM7vJS_4WxhclxIfunxO4p6M" \
+            -o public/images/approved/04-eRomman-GCC-Consumer-Discovery-Infographic.png
+          curl -fL --retry 3 --retry-delay 2 \
+            "https://drive.google.com/uc?export=download&id=1zeA__K9ym1J9X6QdDhvXbj0kHv6xOas9" \
+            -o public/images/approved/05-eRomman-GCC-Website-Brochure.png
+          curl -fL --retry 3 --retry-delay 2 \
+            "https://drive.google.com/uc?export=download&id=1Ae2FhKHrRMS2z37iNa2xLB15GiiihfXs" \
+            -o public/images/approved/06-eRomman-GCC-Official-Market-Entry-Hero.png
+          test -s public/images/approved/01-eRomman-GCC-Roll-Up-Banner.png
           test -s public/images/approved/03-eRomman-GCC-Landing-Page-Hero.png
+          test -s public/images/approved/04-eRomman-GCC-Consumer-Discovery-Infographic.png
+          test -s public/images/approved/05-eRomman-GCC-Website-Brochure.png
+          test -s public/images/approved/06-eRomman-GCC-Official-Market-Entry-Hero.png
 
       - name: Build static export
         run: pnpm build
