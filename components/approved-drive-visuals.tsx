@@ -12,6 +12,7 @@ const EROMMAN_WEBSITE = "https://www.eromman.com/"
 const approved = {
   rollup: {
     id: "19fFneYa9XuEMYwIf_lE5ewyPc9ZSMmpi",
+    localSrc: "/images/approved/01-eRomman-GCC-Roll-Up-Banner.png",
     name: "eRomman GCC Roll-Up Banner",
     alt: "eRomman GCC roll-up banner — Your Gateway to the Middle East",
     width: 793,
@@ -19,6 +20,7 @@ const approved = {
   },
   discoveryInfographic: {
     id: "18VeQbB_dpM7vJS_4WxhclxIfunxO4p6M",
+    localSrc: "/images/approved/04-eRomman-GCC-Consumer-Discovery-Infographic.png",
     name: "GCC Consumer Discovery Infographic",
     alt: "GCC consumer discovery infographic for Malaysian brands",
     width: 1672,
@@ -26,6 +28,7 @@ const approved = {
   },
   brochure: {
     id: "1zeA__K9ym1J9X6QdDhvXbj0kHv6xOas9",
+    localSrc: "/images/approved/05-eRomman-GCC-Website-Brochure.png",
     name: "GCC Website Brochure",
     alt: "eRomman sell to the Middle East website brochure",
     width: 1672,
