@@ -48,6 +48,11 @@ jobs:
       - name: Apply approved eRomman Google Drive visuals
         run: node scripts/apply-approved-drive-visuals.mjs
 
+      - name: Install social preview image tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y imagemagick
+
       - name: Download approved eRomman website images
         run: |
           mkdir -p public/images/approved public/images/social
@@ -66,14 +71,19 @@ jobs:
           curl -fL --retry 3 --retry-delay 2 \
             "https://drive.google.com/uc?export=download&id=1Ae2FhKHrRMS2z37iNa2xLB15GiiihfXs" \
             -o public/images/approved/06-eRomman-GCC-Official-Market-Entry-Hero.png
-          cp public/images/approved/06-eRomman-GCC-Official-Market-Entry-Hero.png \
-            public/images/social/gcc-market-entry-whatsapp-hq-20260913.png
+          convert public/images/approved/06-eRomman-GCC-Official-Market-Entry-Hero.png \
+            -resize '1200x630^' -gravity center -extent 1200x630 \
+            -sampling-factor 4:2:0 -strip -quality 85 \
+            public/images/social/gcc-market-entry-whatsapp-1200x630-v2.jpg
           test -s public/images/approved/01-eRomman-GCC-Roll-Up-Banner.png
           test -s public/images/approved/03-eRomman-GCC-Landing-Page-Hero.png
           test -s public/images/approved/04-eRomman-GCC-Consumer-Discovery-Infographic.png
           test -s public/images/approved/05-eRomman-GCC-Website-Brochure.png
           test -s public/images/approved/06-eRomman-GCC-Official-Market-Entry-Hero.png
-          test -s public/images/social/gcc-market-entry-whatsapp-hq-20260913.png
+          test -s public/images/social/gcc-market-entry-whatsapp-1200x630-v2.jpg
+          SOCIAL_PREVIEW_BYTES=$(stat -c%s public/images/social/gcc-market-entry-whatsapp-1200x630-v2.jpg)
+          echo "WhatsApp social preview size: ${SOCIAL_PREVIEW_BYTES} bytes"
+          test "$SOCIAL_PREVIEW_BYTES" -lt 600000
 
       - name: Build static export
         run: pnpm build
