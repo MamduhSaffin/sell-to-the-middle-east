@@ -1,6 +1,7 @@
 import { Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { EROMMAN_LINKS } from "@/lib/links"
+import { SITE_BASE_PATH } from "@/lib/site"
 
 type Plan = {
   name: string
@@ -62,20 +63,22 @@ const plans: Plan[] = [
   {
     name: "Pro Platinum",
     tier: "Corporate / Enterprise",
-    blurb: "Best for larger operations requiring a tailored regional package.",
+    blurb: "Best for established brands ready for a more tailored GCC marketplace expansion programme.",
     price: "Custom package",
     normalPrice: "Contact us",
     features: [
       "Everything in Platinum",
-      "Priority marketing opportunities",
-      "Arab brand manager",
-      "AI+ content guidance",
-      "Multi-platform support",
+      "Exclusive Arab Brand Manager support",
+      "Amazon & Noon brand services",
+      "Arabic localisation & SEO",
+      "Arab KOL and campaign support",
     ],
   },
 ]
 
 export function PricingSection() {
+  const proPlatinumHref = (SITE_BASE_PATH || "") + "/pro-platinum/"
+
   return (
     <section id="pricing" className="border-t border-border bg-card/40 py-20 lg:py-28">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -101,54 +104,69 @@ export function PricingSection() {
         </div>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-4">
-          {plans.map((plan) => (
-            <article
-              key={plan.name}
-              className={
-                "relative flex flex-col rounded-2xl border p-6 " +
-                (plan.featured
-                  ? "border-primary bg-card shadow-lg shadow-primary/10 ring-1 ring-primary"
-                  : "border-border bg-card")
-              }
-            >
-              {plan.featured && (
-                <span className="absolute -top-3 left-6 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
-                  Most popular
-                </span>
-              )}
-              <p className="text-xs font-semibold uppercase tracking-wider text-primary">{plan.tier}</p>
-              <h3 className="mt-1 font-serif text-2xl font-semibold">{plan.name}</h3>
-              <p className="mt-3 min-h-[4.5rem] text-sm leading-relaxed text-muted-foreground">{plan.blurb}</p>
+          {plans.map((plan) => {
+            const isProPlatinum = plan.name === "Pro Platinum"
 
-              <div className="mt-5">
-                <p className="font-serif text-3xl font-semibold">{plan.price}</p>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Normal: <span className={plan.normalPrice.startsWith("RM") ? "line-through" : ""}>{plan.normalPrice}</span>
-                </p>
-                {plan.monthly && (
-                  <p className="mt-2 text-sm font-semibold text-primary">{plan.monthly}</p>
-                )}
-              </div>
-
-              <ul className="mt-6 flex-1 space-y-3">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-2 text-sm leading-relaxed text-muted-foreground">
-                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-                    <span>{feature}</span>
-                  </li>
-                ))}
-              </ul>
-
-              <Button
-                nativeButton={false}
-                render={<a href={EROMMAN_LINKS.sellerSupportWhatsapp} target="_blank" rel="noopener noreferrer" />}
-                variant={plan.featured ? "default" : "outline"}
-                className="mt-7 w-full rounded-full"
+            return (
+              <article
+                key={plan.name}
+                className={
+                  "relative flex flex-col rounded-2xl border p-6 " +
+                  (plan.featured
+                    ? "border-primary bg-card shadow-lg shadow-primary/10 ring-1 ring-primary"
+                    : "border-border bg-card")
+                }
               >
-                Ask About This Plan
-              </Button>
-            </article>
-          ))}
+                {plan.featured && (
+                  <span className="absolute -top-3 left-6 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground">
+                    Most popular
+                  </span>
+                )}
+                <p className="text-xs font-semibold uppercase tracking-wider text-primary">{plan.tier}</p>
+                <h3 className="mt-1 font-serif text-2xl font-semibold">{plan.name}</h3>
+                <p className="mt-3 min-h-[4.5rem] text-sm leading-relaxed text-muted-foreground">{plan.blurb}</p>
+
+                <div className="mt-5">
+                  <p className="font-serif text-3xl font-semibold">{plan.price}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Normal: <span className={plan.normalPrice.startsWith("RM") ? "line-through" : ""}>{plan.normalPrice}</span>
+                  </p>
+                  {plan.monthly && (
+                    <p className="mt-2 text-sm font-semibold text-primary">{plan.monthly}</p>
+                  )}
+                </div>
+
+                <ul className="mt-6 flex-1 space-y-3">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-2 text-sm leading-relaxed text-muted-foreground">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {isProPlatinum ? (
+                  <Button
+                    nativeButton={false}
+                    render={<a href={proPlatinumHref} />}
+                    variant="outline"
+                    className="mt-7 w-full rounded-full"
+                  >
+                    View Pro Platinum
+                  </Button>
+                ) : (
+                  <Button
+                    nativeButton={false}
+                    render={<a href={EROMMAN_LINKS.sellerSupportWhatsapp} target="_blank" rel="noopener noreferrer" />}
+                    variant={plan.featured ? "default" : "outline"}
+                    className="mt-7 w-full rounded-full"
+                  >
+                    Ask About This Plan
+                  </Button>
+                )}
+              </article>
+            )
+          })}
         </div>
 
         <div className="mt-6 rounded-2xl border border-border bg-card p-5 text-sm leading-relaxed text-muted-foreground">
