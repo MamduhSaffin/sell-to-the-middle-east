@@ -54,7 +54,9 @@ jobs:
           test -f out/saudi-arabia/index.html
           test -f out/uae/index.html
           test -f out/malaysia-sourcing/index.html
+          test -f out/ar/malaysia-sourcing/index.html
           test -f out/beauty-wellness/index.html
           test -f out/electronics/index.html
           grep -q "TGPU Gulf Advisory" out/index.html
           grep -q "+60 12-868 1339" out/index.html
+          grep -q "موردين" out/ar/malaysia-sourcing/index.html
