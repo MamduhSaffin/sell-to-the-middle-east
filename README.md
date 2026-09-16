@@ -1,41 +1,13 @@
-# Sell to the Middle East with eRomman
+# GCC Market Entry Resource
 
-A trilingual seller-facing microsite prepared by **Muhammad Mamduh Bin Saffin** to make eRomman's Middle East selling model easier for Malaysian brands to understand.
+Independent reference microsite for Malaysian businesses exploring Saudi Arabia, UAE and wider GCC market-entry pathways.
 
-## Languages
+Live site: https://gccmarketentry.me
 
-- English: /en/
-- Bahasa Melayu: /bm/
-- العربية: /ar/
+This repository is intentionally kept separate from the official **TGPU Gulf Advisory** corporate website.
 
-Arabic uses RTL presentation.
+Related projects:
+- TGPU Gulf Advisory corporate site: https://tgpugulf.com — repository `MamduhSaffin/MamduhSaffin.github.io`
+- TGPU Legacy: https://tgpu.my — repository `MamduhSaffin/tgpu-legacy`
 
-## What the site explains
-
-- What eRomman is
-- How the seller process works
-- Seller control and brand ownership
-- Arabic localisation, marketing, marketplace and logistics support
-- Marketplace opportunities across the eRomman ecosystem
-- Start → Test → Learn → Validate → Scale framework
-- September 2026 subscription plans
-- Seller commission, pickup fees and settlement timing
-- Seller FAQ and return-policy overview
-- Direct seller-support contact
-
-## Social preview
-
-The site now uses a custom eRomman crowned-O social preview image and favicon instead of the old default preview graphic.
-
-## Live site
-
-https://mamduhsaffin.github.io/sell-to-the-middle-east/
-
-## Contact
-
-**Muhammad Mamduh Bin Saffin**  
-E-commerce Seller Support & Marketing Executive  
-mamduh.sellers@eromman.com  
-+60 12 641 3812
-
-Official eRomman website: https://www.eromman.com/
+The site contains practical market-entry material, including marketplace, localisation, readiness and GCC selling references. Some earlier material was originally developed around eRomman seller-support work and should be treated as reference content rather than as the official TGPU Gulf Advisory corporate website.
