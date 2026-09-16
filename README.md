@@ -1,41 +1,43 @@
-# Sell to the Middle East with eRomman
+# TGPU Gulf Advisory
 
-A trilingual seller-facing microsite prepared by **Muhammad Mamduh Bin Saffin** to make eRomman's Middle East selling model easier for Malaysian brands to understand.
+Official web project for **TGPU Gulf Advisory**, a Malaysia-based advisory business focused on commercial opportunities between Malaysia, Saudi Arabia and GCC markets.
+
+## Focus
+
+- Saudi Arabia & GCC market-entry advisory
+- Malaysia–GCC trade facilitation
+- Supplier, manufacturer, buyer, importer and distributor sourcing
+- Regulatory-pathway and documentation coordination
+- Commercial introductions and RFQ support
+- Cross-border project coordination
+
+TGPU Gulf Advisory coordinates commercial pathways and works with appropriate licensed parties, authorities and specialists where formal approvals are required. The business does not guarantee regulatory approval, customs clearance or commercial outcomes.
 
 ## Languages
 
-- English: /en/
-- Bahasa Melayu: /bm/
-- العربية: /ar/
+- English: `/`
+- Bahasa Melayu: `/bm/`
+- العربية: `/ar/`
 
-Arabic uses RTL presentation.
+## Key market pages
 
-## What the site explains
+- Saudi Arabia market entry: `/saudi-arabia/`
+- UAE & GCC market entry: `/uae/`
+- Malaysia sourcing for Saudi/GCC buyers: `/malaysia-sourcing/`
+- Beauty, wellness & supplements: `/beauty-wellness/`
+- Electronics & technical products: `/electronics/`
 
-- What eRomman is
-- How the seller process works
-- Seller control and brand ownership
-- Arabic localisation, marketing, marketplace and logistics support
-- Marketplace opportunities across the eRomman ecosystem
-- Start → Test → Learn → Validate → Scale framework
-- September 2026 subscription plans
-- Seller commission, pickup fees and settlement timing
-- Seller FAQ and return-policy overview
-- Direct seller-support contact
-
-## Social preview
-
-The site now uses a custom eRomman crowned-O social preview image and favicon instead of the old default preview graphic.
-
-## Live site
-
-https://mamduhsaffin.github.io/sell-to-the-middle-east/
-
-## Contact
+## Business contact
 
 **Muhammad Mamduh Bin Saffin**  
-E-commerce Seller Support & Marketing Executive  
-mamduh.sellers@eromman.com  
-+60 12 641 3812
+Founder | GCC Market Entry Consultant  
+TGPU Gulf Advisory  
+Kuala Lumpur, Malaysia  
+WhatsApp / Phone: +60 12-868 1339  
+Email: mamduh@tgpugulf.com  
+Website: https://www.tgpugulf.com  
+SSM Registration: CA0427558-D
 
-Official eRomman website: https://www.eromman.com/
+## Deployment
+
+The site is built with Next.js as a static export. The repository validates TypeScript and the production build on every push; production deployment is handled by the connected hosting project.
