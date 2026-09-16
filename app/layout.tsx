@@ -1,39 +1,45 @@
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
 import { Analytics } from "@/components/analytics"
-import { ApprovedDriveVisuals } from "@/components/approved-drive-visuals"
-import { OfficialErommanIdentity } from "@/components/official-eromman-identity"
-import { EROMMAN_LINKS, SELLER_SUPPORT } from "@/lib/links"
-import { SITE_URL } from "@/lib/site"
+import {
+  COMPANY_EMAIL,
+  COMPANY_LOCATION,
+  COMPANY_NAME,
+  COMPANY_PHONE_E164,
+  COMPANY_REGISTRATION,
+  SITE_URL,
+} from "@/lib/site"
 
 const siteUrl = `${SITE_URL}/`
-const socialImage = siteUrl + "images/social/gcc-market-entry-whatsapp-1200x630-v2.jpg"
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "GCC Market Entry Malaysia | Saudi Arabia & UAE | eRomman",
-    template: "%s | GCC Market Entry Malaysia",
+    default: "TGPU Gulf Advisory | Malaysia–Saudi & GCC Trade",
+    template: "%s | TGPU Gulf Advisory",
   },
   description:
-    "GCC market entry support for Malaysian brands exploring Saudi Arabia, UAE and the Middle East with eRomman, including product fit, Arabic localisation, marketplace readiness, digital marketing and seller support.",
+    "TGPU Gulf Advisory supports Malaysia–Saudi Arabia and GCC market entry, trade facilitation, supplier and buyer sourcing, documentation readiness and cross-border commercial coordination.",
   keywords: [
-    "GCC market entry Malaysia",
-    "GCC market entry",
-    "sell to Saudi Arabia from Malaysia",
-    "sell to UAE from Malaysia",
-    "Malaysia Middle East ecommerce",
-    "Saudi Arabia marketplace Malaysia",
-    "UAE marketplace Malaysia",
-    "Arabic ecommerce localisation",
-    "cross-border ecommerce Malaysia",
-    "Malaysian brands GCC",
-    "eRomman GCC",
+    "Malaysia Saudi business",
+    "Saudi market entry Malaysia",
+    "GCC market entry consultant Malaysia",
+    "Malaysia Saudi trade advisory",
+    "Saudi importer distributor Malaysia",
+    "GCC trade facilitation",
+    "Malaysia supplier sourcing Saudi Arabia",
+    "Malaysia supplier sourcing GCC",
+    "Saudi business consultant Malaysia",
+    "Malaysia GCC sourcing",
+    "تجارة ماليزيا السعودية",
+    "دخول السوق السعودي ماليزيا",
+    "موردين من ماليزيا",
+    "استيراد من ماليزيا للسعودية",
   ],
-  authors: [{ name: SELLER_SUPPORT.name }],
-  creator: SELLER_SUPPORT.name,
-  publisher: "eRomman Technologies Sdn Bhd",
-  category: "E-commerce market entry",
+  authors: [{ name: "Muhammad Mamduh Bin Saffin" }],
+  creator: "Muhammad Mamduh Bin Saffin",
+  publisher: COMPANY_NAME,
+  category: "Business consulting and trade facilitation",
   robots: {
     index: true,
     follow: true,
@@ -50,90 +56,91 @@ export const metadata: Metadata = {
     languages: {
       "en-MY": siteUrl,
       "ms-MY": siteUrl + "bm/",
-      ar: siteUrl + "ar/",
+      "ar-SA": siteUrl + "ar/",
       "x-default": siteUrl,
     },
   },
   openGraph: {
     type: "website",
     url: siteUrl,
-    title: "GCC Market Entry Malaysia — Saudi Arabia, UAE & Middle East | eRomman",
+    title: "TGPU Gulf Advisory — Malaysia ↔ Saudi Arabia & GCC",
     description:
-      "A practical GCC market-entry pathway for Malaysian sellers: product fit, Arabic localisation, marketplace readiness, market validation and seller support with eRomman.",
-    siteName: "GCC Market Entry by eRomman",
+      "Market entry, trade facilitation, sourcing and commercial coordination between Malaysia, Saudi Arabia and GCC markets.",
+    siteName: COMPANY_NAME,
     locale: "en_MY",
-    images: [
-      {
-        url: socialImage,
-        width: 1200,
-        height: 630,
-        type: "image/jpeg",
-        alt: "GCC Market Entry Malaysia with eRomman — Saudi Arabia, UAE and Middle East expansion",
-      },
-    ],
+    alternateLocale: ["ms_MY", "ar_SA"],
   },
   twitter: {
-    card: "summary_large_image",
-    title: "GCC Market Entry Malaysia | Saudi Arabia & UAE | eRomman",
-    description: "Practical GCC market-entry support for Malaysian brands exploring Saudi Arabia, UAE and the Middle East.",
-    images: [socialImage],
+    card: "summary",
+    title: "TGPU Gulf Advisory — Malaysia ↔ Saudi Arabia & GCC",
+    description: "Cross-border market-entry, sourcing and trade advisory between Malaysia and GCC markets.",
   },
   icons: {
-    icon: siteUrl + "icon.svg?v=20260912",
-    apple: siteUrl + "apple-icon.png",
+    icon: "/icon.svg?v=20260917",
   },
 }
 
 export const viewport: Viewport = {
   colorScheme: "light",
-  themeColor: "#b3131b",
+  themeColor: "#0a5b45",
 }
 
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
   "@id": `${SITE_URL}/#organization`,
-  name: "eRomman Technologies Sdn Bhd",
-  alternateName: "eRomman",
-  url: EROMMAN_LINKS.home,
-  description: "E-commerce and GCC market-entry support for sellers and brands expanding into Middle East markets.",
+  name: COMPANY_NAME,
+  legalName: "TGPU GULF ADVISORY",
+  url: siteUrl,
+  identifier: COMPANY_REGISTRATION,
+  description:
+    "Malaysia-based market-entry, trade facilitation, supplier and buyer sourcing, documentation coordination and commercial advisory for Malaysia, Saudi Arabia and GCC markets.",
+  founder: {
+    "@type": "Person",
+    name: "Muhammad Mamduh Bin Saffin",
+    jobTitle: "Founder | GCC Market Entry Consultant",
+  },
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Kuala Lumpur",
+    addressCountry: "MY",
+  },
   contactPoint: {
     "@type": "ContactPoint",
-    contactType: "Seller Support",
-    email: SELLER_SUPPORT.email,
-    telephone: SELLER_SUPPORT.phone,
+    contactType: "Business Enquiries",
+    email: COMPANY_EMAIL,
+    telephone: COMPANY_PHONE_E164,
     availableLanguage: ["English", "Malay", "Arabic"],
+    areaServed: ["MY", "SA", "AE", "QA", "KW", "BH", "OM"],
   },
+  areaServed: [
+    { "@type": "Country", name: "Malaysia" },
+    { "@type": "Country", name: "Saudi Arabia" },
+    { "@type": "Country", name: "United Arab Emirates" },
+    { "@type": "Country", name: "Qatar" },
+    { "@type": "Country", name: "Kuwait" },
+    { "@type": "Country", name: "Bahrain" },
+    { "@type": "Country", name: "Oman" },
+  ],
+  knowsAbout: [
+    "GCC market entry",
+    "Saudi Arabia market entry",
+    "Malaysia supplier sourcing",
+    "Trade facilitation",
+    "Commercial introductions",
+    "Regulatory documentation coordination",
+  ],
 }
 
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "@id": `${SITE_URL}/#website`,
-  name: "GCC Market Entry by eRomman",
-  alternateName: "GCC Market Entry Malaysia",
+  name: COMPANY_NAME,
   url: siteUrl,
   description: metadata.description,
-  inLanguage: ["en-MY", "ms-MY", "ar"],
+  inLanguage: ["en-MY", "ms-MY", "ar-SA"],
   publisher: { "@id": `${SITE_URL}/#organization` },
-  author: {
-    "@type": "Person",
-    name: SELLER_SUPPORT.name,
-    jobTitle: SELLER_SUPPORT.role,
-    url: EROMMAN_LINKS.sellerSupportLinkedIn,
-  },
-}
-
-const authorSchema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "@id": `${SITE_URL}/#seller-support`,
-  name: SELLER_SUPPORT.name,
-  jobTitle: SELLER_SUPPORT.role,
-  url: EROMMAN_LINKS.sellerSupportLinkedIn,
-  email: SELLER_SUPPORT.email,
-  telephone: SELLER_SUPPORT.phone,
-  worksFor: { "@id": `${SITE_URL}/#organization` },
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -142,10 +149,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="font-sans antialiased">
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema).replace(/</g, "\\u003c") }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema).replace(/</g, "\\u003c") }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(authorSchema).replace(/</g, "\\u003c") }} />
         {children}
-        <OfficialErommanIdentity />
-        <ApprovedDriveVisuals />
         <Analytics />
       </body>
     </html>
