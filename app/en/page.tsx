@@ -1,21 +1,15 @@
 import type { Metadata } from "next"
-import { GccMarketEntryGuide } from "@/components/gcc-market-entry-guide"
-import { ViewingExperienceNotice } from "@/components/viewing-experience-notice"
-import { WeeklySellerBriefing } from "@/components/weekly-seller-briefing"
+import { TgpuGulfHome } from "@/components/tgpu-gulf-home"
+import { SITE_URL } from "@/lib/site"
 
 export const metadata: Metadata = {
-  title: "GCC Market Entry Malaysia | Saudi Arabia & UAE | eRomman",
-  description: "A practical GCC market-entry guide for Malaysian brands exploring Saudi Arabia, UAE and the wider Middle East with eRomman.",
-  alternates: { canonical: "https://gccmarketentry.me/" },
+  title: "TGPU Gulf Advisory | Malaysia–Saudi & GCC Market Entry",
+  description:
+    "Market entry, trade facilitation, supplier and buyer sourcing, documentation readiness and commercial coordination between Malaysia, Saudi Arabia and GCC markets.",
+  alternates: { canonical: `${SITE_URL}/` },
   robots: { index: false, follow: true },
 }
 
 export default function Page() {
-  return (
-    <>
-      <GccMarketEntryGuide lang="en" />
-      <ViewingExperienceNotice lang="en" />
-      <WeeklySellerBriefing lang="en" />
-    </>
-  )
+  return <TgpuGulfHome lang="en" />
 }
