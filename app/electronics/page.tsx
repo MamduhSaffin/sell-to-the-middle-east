@@ -1,48 +1,44 @@
 import type { Metadata } from "next"
-import { SeoLandingPage } from "@/components/seo-landing-page"
-
-const title = "Electronics GCC Market Entry for Malaysian Sellers"
-const description = "Practical GCC market-entry guidance for Malaysian electronics and accessory sellers: specifications, compatibility, documentation, pricing and marketplace readiness."
+import { TgpuServiceLanding } from "@/components/tgpu-service-landing"
+import { SITE_URL } from "@/lib/site"
 
 export const metadata: Metadata = {
-  title,
-  description,
-  keywords: ["sell electronics Saudi Arabia Malaysia", "electronics UAE marketplace", "GCC electronics market entry", "Malaysian electronics Middle East", "Amazon Saudi electronics seller"],
-  alternates: { canonical: "https://gccmarketentry.me/electronics/" },
-  openGraph: { title: `${title} | GCC Market Entry`, description, url: "https://gccmarketentry.me/electronics/" },
+  title: "Electronics & Technical Products GCC Market Entry",
+  description:
+    "TGPU Gulf Advisory supports Malaysian electronics and technical-product companies exploring Saudi Arabia and GCC markets with product-pathway review, partner search and commercial coordination.",
+  keywords: [
+    "Malaysia electronics Saudi Arabia",
+    "electronics distributor GCC Malaysia",
+    "Saudi importer Malaysian electronics",
+    "GCC electronics market entry",
+    "Malaysia technical products Gulf",
+  ],
+  alternates: { canonical: `${SITE_URL}/electronics/` },
+  openGraph: {
+    title: "Electronics & Technical Products GCC Market Entry | TGPU Gulf Advisory",
+    description: "Market-entry and commercial coordination for Malaysian electronics and technical products entering GCC markets.",
+    url: `${SITE_URL}/electronics/`,
+  },
 }
 
 export default function Page() {
-  return <SeoLandingPage
-    eyebrow="Electronics & accessories"
-    title="Prepare electronics and accessories for a practical GCC market test"
-    intro="Electronics can be attractive for cross-border e-commerce when the product is easy to understand, technically compatible, competitively priced and supported by complete specifications. Malaysian sellers should reduce uncertainty before listing by preparing clear product information and checking any category-specific requirements."
-    highlights={[
-      "Make specifications and compatibility information easy to verify.",
-      "Check plugs, voltage, connectivity and device compatibility where relevant.",
-      "Prepare clear warranty, packaging and product-identification information.",
-      "Compare the final GCC selling price against established alternatives before launch.",
-    ]}
-    sections={[
-      { title: "Lead with products that are easy to understand", paragraphs: ["Complex products create more customer-service and return risk. For the first GCC test, prioritise electronics or accessories with clear functions, clear compatibility and a simple value proposition."], bullets: ["Clear model and specification", "Simple customer use case", "Low ambiguity around compatibility", "Good product imagery and packaging"] },
-      { title: "Document technical compatibility", paragraphs: ["Customers need confidence that a device or accessory will work with their existing setup. Voltage, plug type, connectivity, supported devices, dimensions and other technical details should be explicit and consistent across the listing."], bullets: ["Voltage and power requirements", "Plug or adapter information", "Supported operating systems or devices", "Dimensions, capacity and included accessories"] },
-      { title: "Check category-specific documentation", paragraphs: ["Some electronics categories may be subject to technical, safety, wireless or marketplace documentation requirements. These vary by product and target market, so the correct approach is to identify requirements before promising a listing date."], bullets: ["Product and model identification", "Safety or compliance documents where relevant", "Barcode and packaging information", "Marketplace content requirements"] },
-      { title: "Model the final selling price", paragraphs: ["Electronics are often price-transparent because customers can compare specifications across multiple sellers. A viable GCC price should account for commission, fulfilment or pickup costs, cross-border operating expenses and the seller's target margin."], bullets: ["Compare like-for-like specifications", "Include expected platform costs", "Protect enough margin for promotions", "Avoid launching products that are already heavily commoditised"] },
-      { title: "Use a small assortment to learn", paragraphs: ["A first test can reveal whether the product positioning, price and technical information are clear enough for GCC customers. Expand only after the seller has evidence that the listing and fulfilment model are working."], bullets: ["Start with selected SKUs", "Track questions and returns", "Improve listing clarity", "Scale proven products"] },
-    ]}
-    faqs={[
-      { question: "What electronics information should I prepare?", answer: "Prepare model numbers, specifications, dimensions, compatibility, power requirements, packaging images, barcode details and any available compliance or warranty documents." },
-      { question: "Can all electronics be listed on GCC marketplaces?", answer: "No. Eligibility varies by product type, documentation, category rules and platform approval. Some products may need additional technical or regulatory review." },
-      { question: "Is pricing more important for electronics?", answer: "It is especially important because customers can compare similar specifications easily. The final GCC retail price should remain commercially realistic after marketplace and operational costs." },
-      { question: "Should I begin with my newest products?", answer: "Not automatically. A proven product with clear specifications and stable supply can be a better first test than a new product with limited sales evidence." },
-    ]}
-    canonicalPath="/electronics/"
-    breadcrumbLabel="Electronics"
-    related={[
-      { href: "/saudi-arabia/", label: "Saudi Arabia", description: "Review the wider Saudi market-entry process for Malaysian sellers." },
-      { href: "/uae/", label: "UAE", description: "Explore the UAE pathway and marketplace considerations." },
-      { href: "/guides/gcc-market-entry-checklist-malaysian-brands/", label: "GCC entry checklist", description: "Check product, pricing, documentation and operations before launch." },
-    ]}
-    whatsappPrompt="Hi Mamduh, I found the Electronics GCC Market Entry page. I would like help reviewing my electronics or accessories for Saudi Arabia/UAE."
-  />
+  return (
+    <TgpuServiceLanding
+      eyebrow="Electronics & technical products"
+      title="Structure the commercial and technical pathway before entering GCC markets"
+      intro="Electronics and technical products can require more than a sales listing. Specifications, conformity documents, product compatibility, labelling, importer responsibilities and the target sales channel can all affect the right market-entry route."
+      audienceTitle="Malaysian electronics brands, manufacturers and exporters"
+      audienceBody="Suitable for companies that need distributor/importer search, commercial assessment, technical-document coordination or a clearer route into Saudi Arabia, the UAE and other GCC markets."
+      supportTitle="Typical electronics market-entry support"
+      support={[
+        "Preliminary review of the product, technical specification and intended GCC market.",
+        "Search and engagement with suitable buyers, distributors, importers or commercial partners.",
+        "Coordination of documentation questions with appropriate technical or regulatory specialists where needed.",
+        "RFQ, quotation, product-specification and commercial-material coordination.",
+        "Cross-border follow-up on volume, packaging, logistics, timelines and commercial next steps.",
+      ]}
+      note="Conformity, safety, wireless, customs and marketplace requirements can differ by product and country. TGPU Gulf Advisory does not issue technical approvals and does not guarantee acceptance by any authority or sales channel."
+      whatsappText="Hello TGPU Gulf Advisory, I would like to discuss GCC market entry for an electronics or technical product from Malaysia."
+    />
+  )
 }
