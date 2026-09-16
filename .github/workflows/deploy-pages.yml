@@ -1,22 +1,23 @@
-name: Deploy GCC Market Entry to GitHub Pages
+name: Validate TGPU Gulf Advisory Website
 
 on:
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: tgpu-gulf-site-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
     env:
       NEXT_PUBLIC_BASE_PATH: ""
@@ -42,79 +43,18 @@ jobs:
       - name: TypeScript check
         run: pnpm check
 
-      - name: Add company profile and seller success videos to the seller guide
-        run: node scripts/inject-video-sections.mjs
-
-      - name: Apply approved eRomman Google Drive visuals
-        run: node scripts/apply-approved-drive-visuals.mjs
-
-      - name: Install social preview image tooling
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y imagemagick
-
-      - name: Download approved eRomman website images
-        run: |
-          mkdir -p public/images/approved public/images/social
-          curl -fL --retry 3 --retry-delay 2 \
-            "https://drive.google.com/uc?export=download&id=19fFneYa9XuEMYwIf_lE5ewyPc9ZSMmpi" \
-            -o public/images/approved/01-eRomman-GCC-Roll-Up-Banner.png
-          curl -fL --retry 3 --retry-delay 2 \
-            "https://drive.google.com/uc?export=download&id=1oMVCO_eK9yA0ITfxPsYhMttnz9cm34QI" \
-            -o public/images/approved/03-eRomman-GCC-Landing-Page-Hero.png
-          curl -fL --retry 3 --retry-delay 2 \
-            "https://drive.google.com/uc?export=download&id=18VeQbB_dpM7vJS_4WxhclxIfunxO4p6M" \
-            -o public/images/approved/04-eRomman-GCC-Consumer-Discovery-Infographic.png
-          curl -fL --retry 3 --retry-delay 2 \
-            "https://drive.google.com/uc?export=download&id=1zeA__K9ym1J9X6QdDhvXbj0kHv6xOas9" \
-            -o public/images/approved/05-eRomman-GCC-Website-Brochure.png
-          curl -fL --retry 3 --retry-delay 2 \
-            "https://drive.google.com/uc?export=download&id=1Ae2FhKHrRMS2z37iNa2xLB15GiiihfXs" \
-            -o public/images/approved/06-eRomman-GCC-Official-Market-Entry-Hero.png
-          convert public/images/approved/06-eRomman-GCC-Official-Market-Entry-Hero.png \
-            -resize '1200x630^' -gravity center -extent 1200x630 \
-            -sampling-factor 4:2:0 -strip -quality 85 \
-            public/images/social/gcc-market-entry-whatsapp-1200x630-v2.jpg
-          test -s public/images/approved/01-eRomman-GCC-Roll-Up-Banner.png
-          test -s public/images/approved/03-eRomman-GCC-Landing-Page-Hero.png
-          test -s public/images/approved/04-eRomman-GCC-Consumer-Discovery-Infographic.png
-          test -s public/images/approved/05-eRomman-GCC-Website-Brochure.png
-          test -s public/images/approved/06-eRomman-GCC-Official-Market-Entry-Hero.png
-          test -s public/images/social/gcc-market-entry-whatsapp-1200x630-v2.jpg
-          SOCIAL_PREVIEW_BYTES=$(stat -c%s public/images/social/gcc-market-entry-whatsapp-1200x630-v2.jpg)
-          echo "WhatsApp social preview size: ${SOCIAL_PREVIEW_BYTES} bytes"
-          test "$SOCIAL_PREVIEW_BYTES" -lt 600000
-
       - name: Build static export
         run: pnpm build
 
-      - name: Validate routes and fingerprint this release
-        run: node scripts/verify-pages.mjs stamp ./out "$GITHUB_SHA" "$NEXT_PUBLIC_BASE_PATH"
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./out
-
-  deploy:
-    environment:
-      name: github-pages
-      url: https://gccmarketentry.me/
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout verification script
-        uses: actions/checkout@v4
-
-      - name: Set up Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
-      - name: Confirm the release at the custom domain
-        timeout-minutes: 15
-        run: node scripts/verify-pages.mjs live "https://gccmarketentry.me/" "$GITHUB_SHA"
+      - name: Confirm core TGPU Gulf routes exist
+        run: |
+          test -f out/index.html
+          test -f out/ar/index.html
+          test -f out/bm/index.html
+          test -f out/saudi-arabia/index.html
+          test -f out/uae/index.html
+          test -f out/malaysia-sourcing/index.html
+          test -f out/beauty-wellness/index.html
+          test -f out/electronics/index.html
+          grep -q "TGPU Gulf Advisory" out/index.html
+          grep -q "+60 12-868 1339" out/index.html
