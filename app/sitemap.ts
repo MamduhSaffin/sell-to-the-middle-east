@@ -10,6 +10,7 @@ const routes = [
   { path: "/saudi-arabia/", priority: 0.95, changeFrequency: "monthly" as const },
   { path: "/uae/", priority: 0.9, changeFrequency: "monthly" as const },
   { path: "/malaysia-sourcing/", priority: 0.95, changeFrequency: "monthly" as const },
+  { path: "/ar/malaysia-sourcing/", priority: 0.95, changeFrequency: "monthly" as const },
   { path: "/beauty-wellness/", priority: 0.85, changeFrequency: "monthly" as const },
   { path: "/electronics/", priority: 0.8, changeFrequency: "monthly" as const },
 ]
