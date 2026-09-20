@@ -1,11 +1,10 @@
 import type { Metadata } from "next"
 import { GccMarketEntryGuide } from "@/components/gcc-market-entry-guide"
 import { ViewingExperienceNotice } from "@/components/viewing-experience-notice"
-import { WeeklySellerBriefing } from "@/components/weekly-seller-briefing"
 
 export const metadata: Metadata = {
-  title: "GCC Market Entry | العلامات الماليزية إلى أسواق الخليج",
-  description: "دليل عملي للعلامات الماليزية الراغبة في استكشاف السعودية والإمارات وأسواق الخليج والشرق الأوسط مع eRomman.",
+  title: "GCC Market Entry | دليل مجاني للشركات الماليزية",
+  description: "دليل مجاني ومستقل للشركات الماليزية التي تستكشف السعودية والإمارات وأسواق الخليج، مع مصادر رسمية وأدلة عملية وأدوات للتخطيط.",
   alternates: { canonical: "https://gccmarketentry.me/ar/" },
 }
 
@@ -14,7 +13,6 @@ export default function Page() {
     <>
       <GccMarketEntryGuide lang="ar" />
       <ViewingExperienceNotice lang="ar" />
-      <WeeklySellerBriefing lang="ar" />
     </>
   )
 }
