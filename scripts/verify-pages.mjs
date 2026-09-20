@@ -14,6 +14,9 @@ const routes = [
   "uae/",
   "official-sources/",
   "jobs-middle-east/",
+  "study-middle-east/",
+  "bm/study-middle-east/",
+  "ar/study-middle-east/",
   "collaborate/",
   "routes-to-market/",
   "malaysia-export-desk/",
@@ -69,6 +72,24 @@ export async function stamp(directory, commit, basePath) {
       assert.ok(html.includes("clevelandclinicabudhabi.ae"), "Middle East jobs directory is missing verified healthcare careers")
     }
 
+    if (route === "study-middle-east/") {
+      assert.ok(html.includes("Interested in studying in the Middle East?"), "English Middle East study page headline is missing")
+      assert.ok(html.includes("studyinsaudi.moe.gov.sa"), "Study in Saudi official portal is missing")
+      assert.ok(html.includes("admissions.kaust.edu.sa"), "KAUST funding link is missing")
+      assert.ok(html.includes("www.qu.edu.qa"), "Qatar University scholarship link is missing")
+      assert.ok(html.includes("www.ku.ac.ae"), "Khalifa University scholarship link is missing")
+      assert.ok(html.includes("www.squ.edu.om"), "Sultan Qaboos University scholarship link is missing")
+    }
+
+    if (route === "bm/study-middle-east/") {
+      assert.ok(html.includes("Berminat untuk belajar di Timur Tengah?"), "BM Middle East study page headline is missing")
+    }
+
+    if (route === "ar/study-middle-east/") {
+      assert.ok(html.includes("هل ترغب في الدراسة في الشرق الأوسط؟"), "Arabic Middle East study page headline is missing")
+      assert.ok(html.includes('dir="rtl"'), "Arabic study page RTL layout is missing")
+    }
+
     if (route === "collaborate/") {
       assert.ok(html.includes("Build useful GCC knowledge together"), "Collaboration page headline is missing")
       assert.ok(html.includes("only describe an organisation as a partner"), "Collaboration transparency rule is missing")
@@ -103,7 +124,7 @@ export async function stamp(directory, commit, basePath) {
   const manifest = { commit, basePath, files: [...files.values()] }
   await writeFile(resolve(root, "deployment.json"), JSON.stringify(manifest, null, 2) + "\n")
   await writeFile(resolve(root, ".nojekyll"), "")
-  console.log("Validated independent GCC Market Entry routes, jobs directory, collaboration page, favicon and social preview across " + files.size + " exported pages/assets for " + commit)
+  console.log("Validated GCC Market Entry routes, jobs, study directory, collaboration page, favicon and social preview across " + files.size + " exported pages/assets for " + commit)
   return manifest
 }
 
