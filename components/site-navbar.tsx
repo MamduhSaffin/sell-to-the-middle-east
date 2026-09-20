@@ -20,14 +20,14 @@ export function SiteNavbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/95 backdrop-blur-md">
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-        <a href={homeHref} className="flex shrink-0 items-center" aria-label="eRomman seller guide home">
+      <nav className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <a href={homeHref} className="flex shrink-0 items-center" aria-label="GCC Market Entry home">
           <img
-            src={SITE_BASE_PATH + "/images/eromman-logo.png"}
-            alt="eRomman"
-            width={1157}
-            height={238}
-            className="h-8 w-auto sm:h-9"
+            src={`${SITE_BASE_PATH}/gcc-market-entry-header.svg?v=20260921-nav`}
+            alt="GCC Market Entry"
+            width={560}
+            height={120}
+            className="h-12 w-auto sm:h-14"
           />
         </a>
 
