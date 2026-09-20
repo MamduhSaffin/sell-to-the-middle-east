@@ -438,7 +438,7 @@ export function GccMarketEntryGuide({ lang }: { lang: Lang }) {
           <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:py-28">
             <div>
               <img
-                src={path("/gcc-market-entry-logo.svg?v=20260920-hero")}
+                src={path("/gcc-market-entry-brand.webp?v=20260921-hero")}
                 alt="GCC Market Entry — Business, Jobs, Scholarships, Official Resources and Market Guides"
                 className="mb-7 h-auto w-[min(300px,78vw)] rounded-[1.75rem] bg-white shadow-2xl"
                 width={700}
