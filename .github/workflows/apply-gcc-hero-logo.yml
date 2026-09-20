@@ -23,23 +23,16 @@ jobs:
           from pathlib import Path
           p = Path('components/gcc-market-entry-guide.tsx')
           text = p.read_text(encoding='utf-8')
-          old = '''              <img
-                src={path("/gcc-market-entry-brand.webp?v=20260921-hero")}
-                alt="GCC Market Entry — Business, Jobs, Scholarships, Official Resources and Market Guides"
-                className="mb-7 h-auto w-[min(300px,78vw)] rounded-[1.75rem] bg-white shadow-2xl"
-                width={700}
-                height={700}
-              />'''
-          new = '''              <img
-                src={path("/gcc-market-entry-logo.svg?v=20260921-landscape")}
-                alt="GCC Market Entry — Business, Jobs, Scholarships, Official Resources and Market Guides"
-                className="mb-8 h-auto w-full max-w-[760px] rounded-[1.5rem] bg-white shadow-2xl"
-                width={1600}
-                height={800}
-              />'''
-          if old not in text:
-              raise SystemExit('Expected hero logo block was not found; no changes made.')
-          p.write_text(text.replace(old, new), encoding='utf-8')
+          replacements = [
+              ('/gcc-market-entry-brand.webp?v=20260921-hero', '/gcc-market-entry-logo.svg?v=20260921-landscape'),
+              ('className="mb-7 h-auto w-[min(300px,78vw)] rounded-[1.75rem] bg-white shadow-2xl"', 'className="mb-8 h-auto w-full max-w-[760px] rounded-[1.5rem] bg-white shadow-2xl"'),
+              ('width={700}\n                height={700}', 'width={1600}\n                height={800}'),
+          ]
+          for old, new in replacements:
+              if old not in text:
+                  raise SystemExit(f'Expected text not found: {old}')
+              text = text.replace(old, new, 1)
+          p.write_text(text, encoding='utf-8')
           PY
       - name: Commit hero logo correction
         shell: bash
