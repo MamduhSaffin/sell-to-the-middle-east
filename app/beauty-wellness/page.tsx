@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { SeoLandingPage } from "@/components/seo-landing-page"
 
 const title = "Beauty & Wellness GCC Market Entry for Malaysian Brands"
-const description = "Practical GCC market-entry guidance for Malaysian beauty and wellness brands: product claims, documentation, localisation, marketplace readiness and test-first expansion."
+const description = "Independent GCC market-entry guidance for Malaysian beauty and wellness brands: product claims, documentation, localisation, official-source verification and test-first expansion."
 
 export const metadata: Metadata = {
   title,
@@ -16,33 +16,32 @@ export default function Page() {
   return <SeoLandingPage
     eyebrow="Beauty & Wellness category"
     title="Build a GCC entry plan for beauty and wellness products"
-    intro="Beauty and wellness is a priority category for eRomman seller development, but category potential does not remove the need for careful product claims, ingredients, documents and localisation. Malaysian brands should prepare a focused assortment and review market-specific requirements before listing."
+    intro="Beauty, personal-care and wellness products can have strong GCC potential, but category opportunity does not remove the need for careful review of ingredients, claims, labels, documents and market-specific requirements. Start with a focused assortment and verify the applicable authority before listing or importing."
     highlights={[
       "Lead with products that already have strong customer proof in Malaysia.",
-      "Review ingredients, claims and product documents before marketplace submission.",
-      "Prepare professional images and Arabic-ready product information.",
-      "Start with selected hero SKUs instead of uploading the full catalogue immediately.",
+      "Review ingredients, claims and product documents before marketplace or import submission.",
+      "Prepare professional images and accurate Arabic-ready product information.",
+      "Start with selected hero products instead of committing the full catalogue immediately.",
     ]}
     sections={[
       { title: "Choose hero products with a clear story", paragraphs: ["A beauty range is easier to test when the first assortment has a clear purpose and strong product differentiation. Prioritise items that are already understood by Malaysian customers and that can be explained simply to a new audience."], bullets: ["Proven bestsellers", "Clear use case or benefit", "Professional packaging and imagery", "Sensible price-to-value positioning"] },
-      { title: "Treat claims and documentation seriously", paragraphs: ["Beauty, wellness and health-adjacent products can face stricter scrutiny than general merchandise. Ingredient information, product claims, certificates and target-market requirements should be checked before a listing is submitted or marketing copy is finalised."], bullets: ["Ingredient and product information", "Supported claims only", "Certificates or authority documents where required", "Consistent packaging and label information"] },
+      { title: "Treat claims and documentation seriously", paragraphs: ["Beauty, wellness and health-adjacent products can face stricter scrutiny than general merchandise. Ingredient information, product claims, certificates, labels and target-market requirements should be checked before a listing is submitted or marketing copy is finalised."], bullets: ["Ingredient and product information", "Supported claims only", "Certificates or registrations where required", "Consistent packaging and label information"] },
+      { title: "Identify the relevant authority by market", paragraphs: ["In Saudi Arabia, some beauty, cosmetic, health and related products can fall within SFDA processes. In the UAE, product requirements may involve federal standards or emirate-level consumer-product registration services depending on the exact product and route. Use official sources rather than assuming one process covers every item."], bullets: ["Confirm product classification", "Check the authority for the target market", "Verify current registration or conformity steps", "Keep evidence of claims and ingredients organised"] },
       { title: "Localise for GCC customers", paragraphs: ["Good localisation helps customers understand what the product is, who it is for and how it should be used. Arabic-ready titles, descriptions and instructions should remain accurate rather than becoming exaggerated marketing copy."], bullets: ["Clear Arabic-ready titles", "Usage and benefit explanation", "Skin or product suitability information", "Avoid unsupported medical-style claims"] },
-      { title: "Prepare marketplace-quality assets", paragraphs: ["Beauty listings are highly visual. Clean product images, multiple packaging angles, barcode information and clear product details can reduce friction during marketplace review and improve customer confidence after listing."], bullets: ["White-background product images", "Front, back and side packaging views", "Barcode close-up where required", "Accurate size, volume and variant details"] },
-      { title: "Scale after the first market signals", paragraphs: ["Do not assume that every Malaysian bestseller will perform equally in the GCC. Use the first selected products to learn which price points, formats and benefits resonate, then expand based on evidence."], bullets: ["Track engagement by SKU", "Compare pricing response", "Refine localisation", "Expand the winning products first"] },
+      { title: "Scale after the first market signals", paragraphs: ["Do not assume that every Malaysian bestseller will perform equally in the GCC. Use the first selected products to learn which price points, formats and benefits resonate, then expand based on evidence."], bullets: ["Track engagement by product", "Compare pricing response", "Refine localisation", "Expand the winning products first"] },
     ]}
     faqs={[
-      { question: "Are Malaysian beauty products suitable for Saudi Arabia and UAE?", answer: "Many may have potential, but suitability depends on the exact product, ingredients, claims, documentation, pricing and marketplace or authority requirements." },
-      { question: "Can I list supplements or health products the same way as cosmetics?", answer: "Not necessarily. Supplements and other health-related categories can require different regulatory and marketplace documentation and should be reviewed separately before submission." },
-      { question: "Should I launch my whole range?", answer: "Usually a smaller set of hero SKUs is more practical for the first market test. It reduces documentation and listing workload while giving clearer feedback on demand." },
-      { question: "What materials should I prepare first?", answer: "Prepare product links, ingredient and product information, packaging images, barcodes, available certificates and clear retail pricing. Additional documents can be identified during the review." },
+      { question: "Are Malaysian beauty products suitable for Saudi Arabia and the UAE?", answer: "Many may have potential, but suitability depends on the exact product, ingredients, claims, documentation, pricing and current marketplace or authority requirements." },
+      { question: "Can supplements be treated the same way as cosmetics?", answer: "Not necessarily. Supplements and other health-related products can have different regulatory classifications and documentation requirements and should be verified separately." },
+      { question: "Should I launch my whole range?", answer: "Usually a smaller set of hero products is more practical for the first market test. It reduces documentation and operational workload while giving clearer feedback on demand." },
+      { question: "What materials should I prepare first?", answer: "Prepare product links, ingredient and product information, packaging images, barcodes, available certificates, claims evidence and clear retail pricing. Then verify which additional documents are required for the exact target market." },
     ]}
     canonicalPath="/beauty-wellness/"
     breadcrumbLabel="Beauty & Wellness"
     related={[
-      { href: "/saudi-arabia/", label: "Saudi Arabia", description: "Understand the broader Saudi market-entry pathway." },
-      { href: "/uae/", label: "UAE", description: "Review the UAE market-entry considerations for Malaysian brands." },
-      { href: "/guides/arabic-localisation-for-gcc-ecommerce/", label: "Arabic localisation guide", description: "Prepare product content for Arabic-speaking GCC customers without weakening accuracy." },
+      { href: "/official-sources/", label: "Official source library", description: "Verify the relevant Saudi, UAE and Malaysian authorities before acting." },
+      { href: "/saudi-arabia/", label: "Saudi Arabia", description: "Understand the broader Saudi market-entry and verification pathway." },
+      { href: "/guides/arabic-localisation-for-gcc-ecommerce/", label: "Arabic localisation guide", description: "Prepare GCC-facing product content without weakening accuracy." },
     ]}
-    whatsappPrompt="Hi Mamduh, I found the Beauty & Wellness GCC Market Entry page. I would like help reviewing my beauty, wellness or personal-care products for Saudi Arabia/UAE."
   />
 }
