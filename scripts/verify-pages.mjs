@@ -13,6 +13,7 @@ const routes = [
   "saudi-arabia/",
   "uae/",
   "official-sources/",
+  "jobs-middle-east/",
   "routes-to-market/",
   "malaysia-export-desk/",
   "cost-planner/",
@@ -32,6 +33,9 @@ const headlines = new Map([
   ["ar/", "ادخل أسواق الخليج بمعلومات أوضح."],
 ])
 const sections = ["start", "countries", "readiness", "routes", "tools"]
+const socialPreviewPath = "images/social/gcc-market-entry-share-1200x630.png"
+const iconPath = "icon.svg"
+const appleIconPath = "apple-icon.png"
 
 export async function stamp(directory, commit, basePath) {
   assert.match(commit, /^[0-9a-f]{40}$/, "A full source commit SHA is required")
@@ -50,6 +54,19 @@ export async function stamp(directory, commit, basePath) {
   for (const route of routes) {
     const html = await record(route + "index.html", route)
     assert.ok(html.includes("/_next/static/"), "Compiled assets missing from " + (route || "/"))
+
+    if (route === "") {
+      assert.ok(html.includes("gcc-market-entry-share-1200x630.png"), "Homepage is missing the social sharing preview")
+      assert.ok(html.includes('content="1200"'), "Homepage social preview width metadata is missing")
+      assert.ok(html.includes('content="630"'), "Homepage social preview height metadata is missing")
+    }
+
+    if (route === "jobs-middle-east/") {
+      assert.ok(html.includes("Looking for a job in the Middle East?"), "Middle East jobs directory headline is missing")
+      assert.ok(html.includes("emiratesgroupcareers.com"), "Middle East jobs directory is missing Emirates official careers")
+      assert.ok(html.includes("careers.aramco.com"), "Middle East jobs directory is missing Aramco official careers")
+      assert.ok(html.includes("clevelandclinicabudhabi.ae"), "Middle East jobs directory is missing verified healthcare careers")
+    }
 
     if (guideRoutes.includes(route)) {
       assert.ok(html.includes(headlines.get(route)), "Independent GCC Market Entry guide missing from " + (route || "/"))
@@ -73,10 +90,14 @@ export async function stamp(directory, commit, basePath) {
     }
   }
 
+  await record(socialPreviewPath, socialPreviewPath)
+  await record(iconPath, iconPath)
+  await record(appleIconPath, appleIconPath)
+
   const manifest = { commit, basePath, files: [...files.values()] }
   await writeFile(resolve(root, "deployment.json"), JSON.stringify(manifest, null, 2) + "\n")
   await writeFile(resolve(root, ".nojekyll"), "")
-  console.log("Validated independent GCC Market Entry routes and " + files.size + " exported pages/assets for " + commit)
+  console.log("Validated independent GCC Market Entry routes, jobs directory, favicon and social preview across " + files.size + " exported pages/assets for " + commit)
   return manifest
 }
 
@@ -99,6 +120,9 @@ export async function verify(siteUrl, commit) {
   assert.equal(base.pathname, "/", "Custom domain must serve from the root path")
   assert.equal(manifest.basePath, "", "Published release has an unexpected base path")
   for (const route of routes) assert.ok(manifest.files.some((file) => file.path === route), "Missing route " + (route || "/"))
+  for (const assetPath of [socialPreviewPath, iconPath, appleIconPath]) {
+    assert.ok(manifest.files.some((file) => file.path === assetPath), "Missing shared asset " + assetPath)
+  }
 
   for (let offset = 0; offset < manifest.files.length; offset += 6) {
     await Promise.all(manifest.files.slice(offset, offset + 6).map(async (file) => {
