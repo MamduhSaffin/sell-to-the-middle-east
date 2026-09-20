@@ -1,0 +1,40 @@
+name: Apply GCC Market Entry logo hierarchy
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-logo-hierarchy.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Add approved detailed logo to main hero
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('components/gcc-market-entry-guide.tsx')
+          s=p.read_text(encoding='utf-8')
+          needle='''            <div>\n              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#e5c985]">{t.hero.eyebrow}</p>'''
+          repl='''            <div>\n              <img\n                src={path("/gcc-market-entry-logo.svg?v=20260920-hero")}\n                alt="GCC Market Entry — Business, Jobs, Scholarships, Official Resources and Market Guides"\n                className="mb-7 h-auto w-[min(300px,78vw)] rounded-[1.75rem] bg-white shadow-2xl"\n                width={700}\n                height={700}\n              />\n              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#e5c985]">{t.hero.eyebrow}</p>'''
+          if needle in s and 'v=20260920-hero' not in s:
+              s=s.replace(needle,repl,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit hero branding
+        shell: bash
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name 'GCC Market Entry Brand Maintenance'
+          git config user.email 'mamduh@tgpugulf.com'
+          git add components/gcc-market-entry-guide.tsx
+          git commit -m 'Show full approved GCC logo in homepage hero'
+          git push origin HEAD:main
