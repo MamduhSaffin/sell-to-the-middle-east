@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { GccMarketEntryGuide } from "@/components/gcc-market-entry-guide"
+import { JobsHighlight } from "@/components/jobs-highlight"
 import { ViewingExperienceNotice } from "@/components/viewing-experience-notice"
 
 export const metadata: Metadata = {
@@ -12,6 +13,7 @@ export default function Page() {
   return (
     <>
       <GccMarketEntryGuide lang="bm" />
+      <JobsHighlight lang="bm" />
       <ViewingExperienceNotice lang="bm" />
     </>
   )
