@@ -14,6 +14,7 @@ const routes = [
   "uae/",
   "official-sources/",
   "jobs-middle-east/",
+  "collaborate/",
   "routes-to-market/",
   "malaysia-export-desk/",
   "cost-planner/",
@@ -68,6 +69,11 @@ export async function stamp(directory, commit, basePath) {
       assert.ok(html.includes("clevelandclinicabudhabi.ae"), "Middle East jobs directory is missing verified healthcare careers")
     }
 
+    if (route === "collaborate/") {
+      assert.ok(html.includes("Build useful GCC knowledge together"), "Collaboration page headline is missing")
+      assert.ok(html.includes("only describe an organisation as a partner"), "Collaboration transparency rule is missing")
+    }
+
     if (guideRoutes.includes(route)) {
       assert.ok(html.includes(headlines.get(route)), "Independent GCC Market Entry guide missing from " + (route || "/"))
       for (const id of sections) assert.ok(html.includes('id="' + id + '"'), "Missing resource section " + id + " from " + (route || "/"))
@@ -97,7 +103,7 @@ export async function stamp(directory, commit, basePath) {
   const manifest = { commit, basePath, files: [...files.values()] }
   await writeFile(resolve(root, "deployment.json"), JSON.stringify(manifest, null, 2) + "\n")
   await writeFile(resolve(root, ".nojekyll"), "")
-  console.log("Validated independent GCC Market Entry routes, jobs directory, favicon and social preview across " + files.size + " exported pages/assets for " + commit)
+  console.log("Validated independent GCC Market Entry routes, jobs directory, collaboration page, favicon and social preview across " + files.size + " exported pages/assets for " + commit)
   return manifest
 }
 
