@@ -1,6 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
-  <rect width="180" height="180" rx="36" fill="#0b0b0b"/>
-  <circle cx="90" cy="100" r="49" fill="#cf1424"/>
-  <circle cx="90" cy="100" r="29" fill="#0b0b0b"/>
-  <path d="M47 58 L62 34 L79 56 L91 27 L104 56 L121 34 L135 58 L129 72 L52 72 Z" fill="#cf1424"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" role="img" aria-labelledby="title desc">
+  <title id="title">GCC Market Entry</title>
+  <desc id="desc">A green and gold compass-route mark for GCC Market Entry.</desc>
+  <rect width="180" height="180" rx="40" fill="#123b2c"/>
+  <circle cx="90" cy="90" r="49" fill="none" stroke="#c59b4f" stroke-width="7"/>
+  <path d="M55 112C72 92 83 82 105 68" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="54" cy="113" r="9" fill="#c59b4f" stroke="#123b2c" stroke-width="4"/>
+  <circle cx="106" cy="67" r="9" fill="#c59b4f" stroke="#123b2c" stroke-width="4"/>
+  <path d="M104 50l26 10-21 18 3-12-12-4z" fill="#ffffff"/>
+  <path d="M90 29v12M90 139v12M29 90h12M139 90h12" stroke="#c59b4f" stroke-width="6" stroke-linecap="round"/>
 </svg>
