@@ -12,7 +12,6 @@ import {
   ExternalLink,
   FileCheck2,
   FileText,
-  Globe2,
   Landmark,
   Languages,
   MapPinned,
@@ -28,6 +27,7 @@ import {
   X,
 } from "lucide-react"
 import { SITE_BASE_PATH } from "@/lib/site"
+import { GccBrandLogo } from "@/components/gcc-brand-logo"
 
 type Lang = "en" | "bm" | "ar"
 type Category = "general" | "beauty" | "supplement" | "food" | "electronics"
@@ -396,9 +396,8 @@ export function GccMarketEntryGuide({ lang }: { lang: Lang }) {
     <div dir={t.dir} lang={lang === "bm" ? "ms" : lang} className="min-h-screen bg-[#fbfaf4] text-[#14261e]">
       <header className="sticky top-0 z-50 border-b border-emerald-950/10 bg-[#fbfaf4]/95 backdrop-blur-xl">
         <div className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <a href={path("/")} className="flex items-center gap-3" aria-label="GCC Market Entry home">
-            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#123b2c] text-white shadow-sm"><Globe2 className="h-5 w-5" /></span>
-            <span><strong className="block text-sm font-black tracking-tight sm:text-base">GCC Market Entry</strong><small className="block text-[10px] font-bold uppercase tracking-[0.12em] text-[#6b776f]">{t.brandSub}</small></span>
+          <a href={path("/")} className="flex items-center" aria-label="GCC Market Entry home">
+            <GccBrandLogo />
           </a>
 
           <nav className="hidden items-center gap-5 text-xs font-extrabold text-[#526159] xl:flex" aria-label="Main navigation">

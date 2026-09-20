@@ -1,5 +1,6 @@
-import { ArrowRight, CheckCircle2, ExternalLink, Globe2, ShieldCheck } from "lucide-react"
+import { ArrowRight, CheckCircle2, ExternalLink, ShieldCheck } from "lucide-react"
 import { SITE_BASE_PATH, SITE_URL } from "@/lib/site"
+import { GccBrandLogo } from "@/components/gcc-brand-logo"
 
 type Section = {
   title: string
@@ -93,12 +94,8 @@ export function SeoLandingPage({
 
       <header className="border-b border-emerald-950/10 bg-white/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-5 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <a href={localPath("/")} className="flex items-center gap-3" aria-label="GCC Market Entry home">
-            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-[#123b2c] text-white"><Globe2 className="h-5 w-5" /></span>
-            <span>
-              <strong className="block text-sm font-black text-[#123b2c]">GCC Market Entry</strong>
-              <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-[#7a867e]">Independent knowledge hub</span>
-            </span>
+          <a href={localPath("/")} className="flex items-center" aria-label="GCC Market Entry home">
+            <GccBrandLogo compact />
           </a>
           <nav className="flex flex-wrap gap-x-5 gap-y-2 text-xs font-bold text-[#657168]" aria-label="GCC market resources">
             <a href={localPath("/saudi-arabia/")} className="hover:text-[#123b2c]">Saudi Arabia</a>
