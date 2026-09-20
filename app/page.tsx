@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import { GccMarketEntryGuide } from "@/components/gcc-market-entry-guide"
 import { JobsHighlight } from "@/components/jobs-highlight"
+import { StudyHighlight } from "@/components/study-highlight"
 import { ViewingExperienceNotice } from "@/components/viewing-experience-notice"
 import { SITE_URL } from "@/lib/site"
 
@@ -75,6 +76,7 @@ export default function Page() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} />
       <GccMarketEntryGuide lang="en" />
       <JobsHighlight lang="en" />
+      <StudyHighlight lang="en" />
       <ViewingExperienceNotice lang="en" />
     </>
   )
