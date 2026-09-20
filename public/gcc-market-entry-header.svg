@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 120" role="img" aria-labelledby="title desc">
+  <title id="title">GCC Market Entry</title>
+  <desc id="desc">Compact GCC Market Entry header logo.</desc>
+  <g transform="translate(7 6)">
+    <path d="M36 23c19 4 35 12 48 23l18 16 6 22 14 14-3 18 14 16-10 17-23 4-13 19-23 5-18-13-21 4-14-15-13-28 7-24-9-18 14-25 23-9 15-25Z" fill="#075842"/>
+    <path d="M12 94c39-2 70-17 98-46" fill="none" stroke="#d6a431" stroke-width="9" stroke-linecap="round"/>
+    <path d="m101 37 30 5-17 25-2-12-13-2Z" fill="#d6a431"/>
+  </g>
+  <text x="158" y="62" font-family="Arial,Helvetica,sans-serif" font-size="58" font-weight="900" fill="#075842">GCC</text>
+  <text x="158" y="101" font-family="Arial,Helvetica,sans-serif" font-size="35" font-weight="900" fill="#075842">Market Entry</text>
+</svg>
