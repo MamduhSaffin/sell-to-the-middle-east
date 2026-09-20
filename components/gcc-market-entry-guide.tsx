@@ -438,11 +438,11 @@ export function GccMarketEntryGuide({ lang }: { lang: Lang }) {
           <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:py-28">
             <div>
               <img
-                src={path("/gcc-market-entry-brand.webp?v=20260921-hero")}
+                src={path("/gcc-market-entry-logo.svg?v=20260921-landscape")}
                 alt="GCC Market Entry — Business, Jobs, Scholarships, Official Resources and Market Guides"
-                className="mb-7 h-auto w-[min(300px,78vw)] rounded-[1.75rem] bg-white shadow-2xl"
-                width={700}
-                height={700}
+                className="mb-8 h-auto w-full max-w-[760px] rounded-[1.5rem] bg-white shadow-2xl"
+                width={1600}
+                height={800}
               />
               <p className="text-xs font-black uppercase tracking-[0.2em] text-[#e5c985]">{t.hero.eyebrow}</p>
               <h1 className="mt-5 max-w-4xl font-serif text-5xl font-bold leading-[0.98] tracking-[-0.04em] sm:text-6xl lg:text-7xl">{t.hero.title}</h1>
