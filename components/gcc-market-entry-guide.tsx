@@ -5,729 +5,558 @@ import {
   ArrowRight,
   BadgeCheck,
   BarChart3,
+  BookOpenCheck,
+  Building2,
+  Calculator,
   CheckCircle2,
-  ChevronRight,
-  Cpu,
   ExternalLink,
   FileCheck2,
+  FileText,
   Globe2,
-  HeartPulse,
-  Home,
+  Landmark,
   Languages,
-  Mail,
+  MapPinned,
   Menu,
-  MessageCircle,
-  PackageCheck,
-  Phone,
-  Pill,
+  Network,
+  PackageSearch,
+  Route,
+  Scale,
   SearchCheck,
   ShieldCheck,
-  Shirt,
-  Sparkles,
   Store,
   Truck,
-  UtensilsCrossed,
   X,
-  Zap,
-  type LucideIcon,
 } from "lucide-react"
 import { SITE_BASE_PATH } from "@/lib/site"
-import { EROMMAN_LINKS, SELLER_SUPPORT } from "@/lib/links"
-import { CompanyProfileVideo } from "@/components/company-profile-video"
-import { SellerSuccessStories } from "@/components/seller-success-stories"
 
 type Lang = "en" | "bm" | "ar"
-type CategoryKey = "beauty" | "electronics" | "home" | "fashion" | "supplement" | "food" | "other"
-type DocsKey = "ready" | "partial" | "none"
-type SalesKey = "established" | "growing" | "early"
-type TargetKey = "saudi" | "uae" | "gcc"
+type Category = "general" | "beauty" | "supplement" | "food" | "electronics"
+type Docs = "ready" | "partial" | "early"
+type Market = "saudi" | "uae" | "gcc"
 
-type CategoryOption = {
-  key: CategoryKey
-  icon: LucideIcon
-  score: number
-  label: Record<Lang, string>
-  badge: Record<Lang, string>
-  note: Record<Lang, string>
-}
-
-const categories: CategoryOption[] = [
-  {
-    key: "beauty",
-    icon: HeartPulse,
-    score: 3,
-    label: { en: "Beauty & Wellness", bm: "Kecantikan & Wellness", ar: "الجمال والعناية" },
-    badge: { en: "Priority focus", bm: "Fokus utama", ar: "تركيز رئيسي" },
-    note: {
-      en: "Strong focus area. Product claims, ingredients and market-specific documentation still need review.",
-      bm: "Kategori fokus yang kuat. Tuntutan produk, ramuan dan dokumen khusus pasaran masih perlu disemak.",
-      ar: "من فئات التركيز الرئيسية، مع ضرورة مراجعة الادعاءات والمكونات والوثائق الخاصة بكل سوق.",
-    },
-  },
-  {
-    key: "electronics",
-    icon: Cpu,
-    score: 3,
-    label: { en: "Electronics & Accessories", bm: "Elektronik & Aksesori", ar: "الإلكترونيات والإكسسوارات" },
-    badge: { en: "Good potential", bm: "Potensi baik", ar: "فرصة جيدة" },
-    note: {
-      en: "Products with clear specifications, compatibility information and competitive pricing are easier to assess.",
-      bm: "Produk dengan spesifikasi, maklumat keserasian dan harga yang jelas lebih mudah dinilai.",
-      ar: "المنتجات ذات المواصفات الواضحة ومعلومات التوافق والتسعير التنافسي أسهل في التقييم.",
-    },
-  },
-  {
-    key: "home",
-    icon: Home,
-    score: 2,
-    label: { en: "Home & Lifestyle", bm: "Rumah & Gaya Hidup", ar: "المنزل ونمط الحياة" },
-    badge: { en: "Reviewable", bm: "Boleh dinilai", ar: "قابل للتقييم" },
-    note: {
-      en: "Practical, differentiated and easy-to-ship products may fit well for a controlled GCC market test.",
-      bm: "Produk praktikal, berbeza dan mudah dihantar boleh sesuai untuk ujian pasaran GCC secara terkawal.",
-      ar: "المنتجات العملية والمتميزة وسهلة الشحن قد تناسب اختباراً منظماً للسوق الخليجي.",
-    },
-  },
-  {
-    key: "fashion",
-    icon: Shirt,
-    score: 1,
-    label: { en: "Fashion & Accessories", bm: "Fesyen & Aksesori", ar: "الأزياء والإكسسوارات" },
-    badge: { en: "Selective", bm: "Secara terpilih", ar: "انتقائي" },
-    note: {
-      en: "Opportunity exists, but sizing, exchanges and cross-border return practicality should be reviewed carefully.",
-      bm: "Ada peluang, tetapi isu saiz, pertukaran dan pemulangan rentas sempadan perlu dinilai dengan teliti.",
-      ar: "توجد فرص، لكن المقاسات والاستبدال وعمليات الإرجاع عبر الحدود تحتاج إلى تقييم دقيق.",
-    },
-  },
-  {
-    key: "supplement",
-    icon: Pill,
-    score: 1,
-    label: { en: "Supplements & Health", bm: "Suplemen & Kesihatan", ar: "المكملات والصحة" },
-    badge: { en: "Documentation-led", bm: "Bergantung dokumen", ar: "تعتمد على الوثائق" },
-    note: {
-      en: "Market potential can be strong, but regulatory and marketplace documentation must be checked before listing.",
-      bm: "Potensi pasaran boleh kuat, tetapi dokumen kawal selia dan marketplace perlu disemak sebelum penyenaraian.",
-      ar: "قد تكون الفرصة قوية، لكن يجب التحقق من المتطلبات التنظيمية ووثائق المنصات قبل الإدراج.",
-    },
-  },
-  {
-    key: "food",
-    icon: UtensilsCrossed,
-    score: 0,
-    label: { en: "Food & Perishables", bm: "Makanan & Mudah Rosak", ar: "الأغذية والمنتجات سريعة التلف" },
-    badge: { en: "Separate review", bm: "Semakan berasingan", ar: "مراجعة منفصلة" },
-    note: {
-      en: "Logistics, shelf life and import requirements make this category less straightforward for the current programme.",
-      bm: "Logistik, jangka hayat dan keperluan import menjadikan kategori ini kurang sesuai untuk laluan semasa.",
-      ar: "متطلبات الشحن والصلاحية والاستيراد تجعل هذه الفئة أقل بساطة ضمن المسار الحالي.",
-    },
-  },
-  {
-    key: "other",
-    icon: PackageCheck,
-    score: 1,
-    label: { en: "Other Product", bm: "Produk Lain", ar: "منتج آخر" },
-    badge: { en: "Needs review", bm: "Perlu semakan", ar: "يحتاج مراجعة" },
-    note: {
-      en: "Send the product link for a category and market-fit review before deciding the entry route.",
-      bm: "Hantar pautan produk untuk semakan kategori dan kesesuaian pasaran sebelum memilih laluan kemasukan.",
-      ar: "أرسل رابط المنتج لمراجعة الفئة وملاءمة السوق قبل تحديد مسار الدخول.",
-    },
-  },
-]
+const path = (value: string) => `${SITE_BASE_PATH}${value}`
 
 const copy = {
   en: {
-    dir: "ltr",
-    portal: "GCC Market Entry",
-    portalSub: "Seller Growth Portal",
-    nav: { fit: "Product Fit", how: "How It Works", opportunities: "Opportunities", marketplaces: "Marketplaces", plans: "Plans", stories: "Seller Stories", faq: "FAQ" },
+    dir: "ltr" as const,
+    language: "English",
+    brandSub: "Independent GCC knowledge hub",
+    nav: { start: "Start Here", countries: "Country Guides", routes: "Routes to Market", tools: "Free Tools", sources: "Official Sources" },
     hero: {
-      eyebrow: "GCC Market Entry · Powered by eRomman",
-      title1: "Expand Your Brand",
-      title2: "Into the GCC",
-      body: "A practical market-entry pathway for Malaysian sellers exploring Saudi Arabia, UAE and the wider GCC. Start with suitable products, localise for Arabic-speaking customers, test demand and scale based on evidence.",
-      primary: "Check My Product’s GCC Potential",
-      secondary: "Talk to Mamduh",
-      bullets: ["Keep stock in Malaysia", "Start with selected SKUs", "Arabic localisation support", "No GCC office needed to test"],
-      route: "Malaysia → eRomman → GCC customers",
-      markets: "Target markets",
+      eyebrow: "FREE • INDEPENDENT • MULTILINGUAL",
+      title: "Enter the GCC with better information.",
+      body: "A practical learning hub for Malaysian businesses exploring Saudi Arabia, the UAE and the wider Gulf. Use official-source-first guidance, country notes, readiness tools and free planning resources before you spend money or commit inventory.",
+      primary: "Start the roadmap",
+      secondary: "Check my readiness",
+      badges: ["Free to use", "English • BM • العربية", "Official-source first"],
     },
-    trust: {
-      title: "Built around a low-disruption market test",
-      items: [
-        ["1,300+", "sellers onboarded"],
-        ["250,000", "SKUs listed"],
-        ["9M+", "campaign views"],
-        ["4", "regional locations"],
+    intro: {
+      title: "Know what to verify before you pay anyone.",
+      body: "GCC Market Entry is not a marketplace, regulator or paid package. It is an independent educational resource designed to help you ask better questions, understand the moving parts and verify requirements with the correct authority or platform.",
+    },
+    roadmap: {
+      eyebrow: "START HERE",
+      title: "A six-step GCC market-entry roadmap",
+      steps: [
+        ["01", "Check product-market fit", "Choose a small group of products with a clear value proposition and realistic cross-border economics."],
+        ["02", "Choose the market", "Compare Saudi Arabia, the UAE and other GCC markets instead of assuming one route fits every brand."],
+        ["03", "Map the rules", "Identify the authority, technical regulation, product-registration or marketplace requirements that may apply."],
+        ["04", "Prepare the route to market", "Decide whether marketplace, importer, distributor, retailer, B2B or another model is the practical starting point."],
+        ["05", "Model the real cost", "Include compliance, testing, localisation, freight, customs, fulfilment, platform fees and marketing before judging margin."],
+        ["06", "Test, learn and scale", "Start with a controlled launch, measure response and expand only after the commercial and operational model makes sense."],
       ],
-      note: "eRomman ecosystem snapshot; operational figures may change over time.",
     },
-    fit: {
-      eyebrow: "60-second product check",
-      title: "Is your product a practical candidate for GCC review?",
-      body: "This quick checker does not approve a product. It helps identify whether your brand looks ready for an initial conversation and what needs attention first.",
+    countries: {
+      eyebrow: "COUNTRY GUIDES",
+      title: "Start with the market, not the platform",
+      body: "Each GCC market has its own commercial environment, authorities and operating details. Saudi Arabia and the UAE have dedicated guides now; the remaining markets will be expanded progressively.",
+      live: "Open guide",
+      developing: "Research section in development",
+    },
+    knowledge: {
+      eyebrow: "KNOWLEDGE LIBRARY",
+      title: "Use the section that matches your question",
+      items: [
+        ["Saudi compliance", "SFDA, SABER, ZATCA/FASAH and product-specific verification starting points.", "/saudi-arabia/"],
+        ["UAE compliance", "MoIAT, tax, consumer-product and emirate-level starting points.", "/uae/"],
+        ["Beauty & wellness", "Claims, ingredient information, product assets and category-specific preparation.", "/beauty-wellness/"],
+        ["Electronics", "Specifications, compatibility, technical documentation and pricing readiness.", "/electronics/"],
+        ["Guides & checklists", "Free practical guides for localisation, readiness and controlled market testing.", "/guides/"],
+        ["Official sources", "A curated directory of government and institutional sources to verify current requirements.", "/official-sources/"],
+      ],
+    },
+    checker: {
+      eyebrow: "FREE READINESS CHECK",
+      title: "Where should your research start?",
+      body: "This is a planning tool, not an approval decision. It highlights the type of work you may need before a serious market-entry conversation.",
       category: "Product category",
-      docs: "Documentation readiness",
-      sales: "Current sales stage",
-      target: "Priority market",
-      productLink: "Product or brand link (optional)",
-      placeholder: "https://yourbrand.com/product",
-      docsOptions: { ready: "Core documents are ready", partial: "Some documents are ready", none: "Not prepared yet" },
-      salesOptions: { established: "Established online / retail sales", growing: "Growing brand with active sales", early: "Early-stage / testing" },
-      targetOptions: { saudi: "Saudi Arabia", uae: "UAE", gcc: "Wider GCC" },
-      resultLabel: "Initial assessment",
-      highTitle: "Strong candidate for an initial GCC review",
-      highBody: "Your current profile looks suitable for a focused product and documentation assessment.",
-      midTitle: "Worth a focused GCC assessment",
-      midBody: "There is potential, but one or two areas should be strengthened before marketplace submission.",
-      lowTitle: "More preparation is recommended first",
-      lowBody: "The product may still have potential, but documentation, category fit or cross-border practicality needs more work.",
-      disclaimer: "Indicative only. Final eligibility depends on product suitability, category rules, documentation, platform requirements and the relevant authority or marketplace approval process.",
-      whatsapp: "Send This Review to WhatsApp",
+      docs: "Documentation status",
+      market: "Target market",
+      cat: {
+        general: "General consumer product",
+        beauty: "Beauty / personal care",
+        supplement: "Supplements / health",
+        food: "Food / beverage",
+        electronics: "Electronics / accessories",
+      },
+      doc: { ready: "Core product documents organised", partial: "Some documents available", early: "Still gathering basics" },
+      markets: { saudi: "Saudi Arabia", uae: "UAE", gcc: "Not decided / wider GCC" },
+      result: "Planning result",
+      high: ["Good base for deeper market research", "You appear to have enough structure to move into market-specific verification. Check the official sources, route-to-market options and cost model before committing."],
+      mid: ["A few preparation gaps should be closed", "Your next step is to organise product information and identify market-specific requirements before focusing on platform onboarding or commercial promises."],
+      low: ["Start with the fundamentals first", "Build a clean product file, clarify the target market and use the official-source directory before paying for registrations, listings or expansion services."],
+      disclaimer: "Indicative planning only. Regulatory, customs, tax and marketplace requirements can change and depend on the exact product and operating model.",
     },
-    opportunities: {
-      eyebrow: "Category opportunities",
-      title: "Different categories need different entry strategies",
-      body: "The right starting point is not simply ‘list everything’. Start with the categories and SKUs that are practical to localise, document, ship and test.",
-    },
-    how: {
-      eyebrow: "How GCC market entry works",
-      title: "Start small. Validate demand. Scale strategically.",
-      body: "You continue operating in Malaysia while eRomman supports the market-facing and cross-border journey.",
-      steps: [
-        ["Product review", "Select a manageable group of suitable SKUs and identify obvious documentation gaps."],
-        ["Localise", "Prepare product information for Arabic-speaking customers and target-market expectations."],
-        ["Marketplace review", "Assess suitable eRomman and third-party marketplace opportunities subject to their requirements."],
-        ["Test demand", "Introduce selected products and observe customer response, pricing and operational practicality."],
-        ["Scale what works", "Expand gradually based on validated demand rather than committing too much inventory upfront."],
-      ],
-    },
-    after: {
-      eyebrow: "After you contact Mamduh",
-      title: "Know exactly what happens next",
-      steps: [
-        ["1", "Product link review", "Share your website, Shopee, TikTok Shop or product catalogue."],
-        ["2", "Category & document check", "Identify platform, regulatory or product-information requirements that may affect entry."],
-        ["3", "Recommended starting route", "Choose suitable SKUs and the most practical market or marketplace pathway."],
-        ["4", "Onboarding & listing", "Prepare seller information, localisation and listing materials."],
-        ["5", "Market test & growth", "Track response and expand only when the opportunity is validated."],
-      ],
-    },
-    support: {
-      eyebrow: "What eRomman supports",
-      title: "More than a product listing",
+    routes: {
+      eyebrow: "ROUTES TO MARKET",
+      title: "There is more than one way into the GCC",
       items: [
-        ["Arabic localisation", "Product listing support, translation and Arabic-market presentation."],
-        ["Marketplace access", "A central route to eRomman plus selected third-party marketplace opportunities."],
-        ["Marketing visibility", "Campaign, content, Arabic SEO and promotional support depending on package and suitability."],
-        ["Seller guidance", "A direct point of contact to help sellers understand the next operational step."],
-        ["Cross-border coordination", "Order, pickup and fulfilment coordination for suitable seller arrangements."],
-        ["Market validation", "A test-first approach so sellers can learn before scaling further."],
+        ["Marketplace", "Useful for digital demand testing when seller and product eligibility are clear.", "Store"],
+        ["Importer / distributor", "A local commercial partner may handle import, distribution and channel access under an agreed arrangement.", "Network"],
+        ["Direct B2B", "Sell to a buyer, wholesaler or institutional customer rather than building a consumer storefront first.", "Building"],
+        ["Retail partnership", "Suitable where physical shelf presence, local merchandising or an established retailer matters.", "Landmark"],
+        ["Local entity", "A longer-term option when the commercial case justifies deeper local operations and responsibilities.", "Scale"],
+        ["Licensing / strategic partner", "A partnership-led route for brands where local capabilities, manufacturing or distribution rights are central.", "Route"],
       ],
+      open: "Compare routes",
     },
-    marketplaces: {
-      eyebrow: "Marketplace ecosystem",
-      title: "One starting point, multiple possible channels",
-      body: "Suitable products may be reviewed for opportunities across eRomman and selected Middle East marketplace channels.",
-      platforms: ["eRomman", "Amazon Saudi Arabia", "Amazon UAE", "Noon Saudi Arabia", "Noon UAE", "SHEIN Saudi Arabia", "SHEIN UAE", "Trendyol", "Carrefour Saudi Arabia"],
-      disclaimer: "Marketplace exposure is not automatic. It is subject to product suitability, category rules, documentation and the approval process of each platform.",
-    },
-    pricing: {
-      eyebrow: "Hari Malaysia Special · September 2026",
-      title: "Choose the level of support that matches your expansion stage",
-      body: "Current September offer: 50% off selected annual packages plus 8 extra months, for a total membership period of 20 months. Valid until 30 September 2026.",
-      plans: [
-        { name: "Silver", price: "RM645", normal: "RM1,290", label: "Starter", features: ["Seller onboarding", "Middle East marketplace access", "Product listing", "Marketplace opportunity review"] },
-        { name: "Gold", price: "RM1,645", normal: "RM3,290", label: "Growth", features: ["Everything in Silver", "Arabic localisation", "Arabic SEO support", "Monthly campaign participation"] },
-        { name: "Platinum", price: "RM5,000", normal: "RM10,000", label: "Visibility", features: ["Everything in Gold", "Marketing campaign inclusion", "Dedicated support", "Premium seller features"] },
-        { name: "Pro Platinum", price: "Contact us", normal: "Custom", label: "Corporate", features: ["Everything in Platinum", "Priority marketing opportunities", "Arab brand manager", "Multi-platform support"] },
-      ],
-      ask: "Discuss This Plan",
-      note: "Package scope, eligibility and payment arrangements should be confirmed with seller support before payment.",
-    },
-    cost: {
-      eyebrow: "Seller cost snapshot",
-      title: "Estimate your post-commission settlement",
-      body: "Use this as a simple planning tool. Commission is charged after a successful sale. Customer shipping is paid by the buyer under the current seller guide.",
-      price: "Selling price (RM)",
-      rate: "Commission rate (%)",
-      pickup: "eRomman pickup",
-      yes: "Yes — RM7 pickup fee",
-      no: "No — seller hands over independently",
-      commission: "Estimated commission",
-      pickupFee: "Pickup fee",
-      receives: "Estimated seller settlement",
-      note: "Illustrative estimate only. Confirm the current category rate and operational charges before onboarding. Seller payment is processed within 10–15 working days after successful delivery under the current guide.",
-    },
-    faq: {
-      eyebrow: "Seller FAQ",
-      title: "Questions sellers normally ask before starting",
+    tools: {
+      eyebrow: "FREE TOOLS",
+      title: "Plan before you spend",
       items: [
-        ["Do I need to move stock to the Middle East?", "No. Sellers can keep stock in Malaysia while testing the market, subject to the agreed fulfilment arrangement."],
-        ["Do I need to list every product?", "No. Starting with a smaller group of suitable SKUs is usually more practical for market validation."],
-        ["Can eRomman guarantee Amazon or Noon approval?", "No. Third-party marketplace listing depends on product eligibility, documentation, category rules and platform approval."],
-        ["What about supplements, health or beauty products?", "These categories can have strong potential, but market-specific regulatory and marketplace documentation must be checked before submission."],
-        ["Who pays customer shipping?", "Under the current seller guide, the buyer pays shipping. Confirm the final arrangement during onboarding."],
-        ["When does the seller get paid?", "The current guide states 10–15 working days after successful delivery and completion of the order."],
+        ["Cost planner", "Build your own GCC cost estimate without using invented package prices.", "/cost-planner/"],
+        ["Malaysia Export Desk", "Start with MATRADE, SME Corp, Halal Malaysia and other Malaysian export-support resources.", "/malaysia-export-desk/"],
+        ["Official Source Library", "Verify current rules from authorities and official institutions before acting.", "/official-sources/"],
+        ["Entry checklist", "Use a structured checklist before you commit inventory, documentation work or marketing budget.", "/guides/gcc-market-entry-checklist-malaysian-brands/"],
       ],
     },
-    contact: {
-      eyebrow: "Start with one product link",
-      title: "Let’s identify the most practical GCC starting point for your brand.",
-      body: "Send your website, marketplace store or product link. I can help review the category, documentation considerations and the most sensible first route before you decide.",
-      whatsapp: "Check My Products on WhatsApp",
-      email: "Email Seller Support",
+    verify: {
+      eyebrow: "VERIFY BEFORE YOU ACT",
+      title: "Official sources come before sales claims.",
+      body: "Where a requirement can materially affect your product, shipment, tax position or marketplace access, use the relevant authority or platform as the final reference. This website explains the pathway; it does not replace official approval or professional legal, tax or customs advice.",
+      button: "Open Official Source Library",
     },
-    footer: "GCC Market Entry is a seller information portal prepared by Muhammad Mamduh Bin Saffin using eRomman seller materials. For official corporate information, policies and registration, visit eromman.com.",
+    advisory: {
+      eyebrow: "OPTIONAL HUMAN SUPPORT",
+      title: "Need help turning research into a commercial plan?",
+      body: "GCC Market Entry remains free and independent. If you later need human support for market research, supplier or buyer sourcing, introductions or commercial coordination, you can separately explore TGPU Gulf Advisory & Trade.",
+      button: "Explore TGPU Gulf",
+    },
+    footer: "GCC Market Entry is an independent educational resource. It is not an official government authority, marketplace, certification body or guarantee of market access.",
   },
   bm: {
-    dir: "ltr",
-    portal: "GCC Market Entry",
-    portalSub: "Portal Pertumbuhan Penjual",
-    nav: { fit: "Semak Produk", how: "Cara Ia Berfungsi", opportunities: "Peluang", marketplaces: "Marketplace", plans: "Pelan", stories: "Kisah Penjual", faq: "Soalan Lazim" },
+    dir: "ltr" as const,
+    language: "Bahasa Melayu",
+    brandSub: "Pusat ilmu GCC bebas",
+    nav: { start: "Mula Di Sini", countries: "Panduan Negara", routes: "Laluan Pasaran", tools: "Alat Percuma", sources: "Sumber Rasmi" },
     hero: {
-      eyebrow: "GCC Market Entry · Bersama eRomman",
-      title1: "Kembangkan Jenama Anda",
-      title2: "Ke Pasaran GCC",
-      body: "Laluan kemasukan pasaran yang praktikal untuk penjual Malaysia meneroka Arab Saudi, UAE dan GCC. Mulakan dengan produk yang sesuai, lokalisasikan untuk pelanggan berbahasa Arab, uji permintaan dan berkembang berdasarkan bukti pasaran.",
-      primary: "Semak Potensi GCC Produk Saya",
-      secondary: "WhatsApp Mamduh",
-      bullets: ["Stok kekal di Malaysia", "Mula dengan SKU terpilih", "Sokongan lokalisasi Arab", "Tak perlu pejabat GCC untuk menguji"],
-      route: "Malaysia → eRomman → Pelanggan GCC",
-      markets: "Pasaran sasaran",
+      eyebrow: "PERCUMA • BEBAS • PELBAGAI BAHASA",
+      title: "Masuk pasaran GCC dengan maklumat yang lebih jelas.",
+      body: "Pusat pembelajaran praktikal untuk syarikat Malaysia yang meneroka Arab Saudi, UAE dan pasaran Teluk. Gunakan panduan berasaskan sumber rasmi, nota negara, alat kesiapsiagaan dan perancangan percuma sebelum mengeluarkan kos atau menghantar stok.",
+      primary: "Mulakan roadmap",
+      secondary: "Semak kesiapsiagaan",
+      badges: ["Percuma", "BM • English • العربية", "Utamakan sumber rasmi"],
     },
-    trust: {
-      title: "Direka untuk ujian pasaran dengan gangguan minimum",
-      items: [["1,300+", "penjual onboard"], ["250,000", "SKU disenaraikan"], ["9M+", "paparan kempen"], ["4", "lokasi serantau"]],
-      note: "Gambaran ekosistem eRomman; angka operasi boleh berubah dari semasa ke semasa.",
+    intro: {
+      title: "Tahu apa yang perlu disemak sebelum membayar sesiapa.",
+      body: "GCC Market Entry bukan marketplace, regulator atau pakej berbayar. Ia ialah sumber pendidikan bebas untuk membantu anda memahami proses, bertanya soalan yang betul dan menyemak keperluan dengan pihak berkuasa atau platform yang tepat.",
     },
-    fit: {
-      eyebrow: "Semakan produk 60 saat",
-      title: "Adakah produk anda calon praktikal untuk semakan GCC?",
-      body: "Semakan ringkas ini bukan kelulusan produk. Ia membantu mengenal pasti sama ada jenama anda sudah bersedia untuk perbincangan awal dan perkara yang perlu diberi perhatian dahulu.",
+    roadmap: {
+      eyebrow: "MULA DI SINI",
+      title: "Roadmap kemasukan pasaran GCC dalam enam langkah",
+      steps: [
+        ["01", "Semak product-market fit", "Pilih beberapa produk dengan nilai yang jelas dan ekonomi rentas sempadan yang realistik."],
+        ["02", "Pilih pasaran", "Bandingkan Arab Saudi, UAE dan pasaran GCC lain; jangan anggap satu laluan sesuai untuk semua jenama."],
+        ["03", "Petakan peraturan", "Kenal pasti pihak berkuasa, peraturan teknikal, pendaftaran produk atau syarat marketplace yang mungkin terpakai."],
+        ["04", "Pilih laluan pasaran", "Tentukan sama ada marketplace, importer, distributor, retailer, B2B atau model lain paling praktikal."],
+        ["05", "Kira kos sebenar", "Masukkan kos pematuhan, ujian, terjemahan, freight, kastam, fulfilment, platform dan pemasaran."],
+        ["06", "Uji, belajar dan scale", "Mulakan secara terkawal, ukur respons dan besarkan hanya apabila model komersial dan operasi masuk akal."],
+      ],
+    },
+    countries: {
+      eyebrow: "PANDUAN NEGARA",
+      title: "Mulakan dengan pasaran, bukan platform",
+      body: "Setiap pasaran GCC mempunyai persekitaran komersial, pihak berkuasa dan proses tersendiri. Arab Saudi dan UAE mempunyai panduan khusus sekarang; negara lain akan ditambah secara berperingkat.",
+      live: "Buka panduan",
+      developing: "Bahagian penyelidikan sedang dibangunkan",
+    },
+    knowledge: {
+      eyebrow: "PUSTAKA ILMU",
+      title: "Pilih bahagian mengikut persoalan anda",
+      items: [
+        ["Pematuhan Saudi", "Titik mula untuk SFDA, SABER, ZATCA/FASAH dan semakan produk.", "/saudi-arabia/"],
+        ["Pematuhan UAE", "Titik mula untuk MoIAT, cukai, produk pengguna dan keperluan emirate.", "/uae/"],
+        ["Kecantikan & wellness", "Tuntutan, ramuan, aset produk dan persediaan kategori.", "/beauty-wellness/"],
+        ["Elektronik", "Spesifikasi, keserasian, dokumen teknikal dan kesiapsiagaan harga.", "/electronics/"],
+        ["Panduan & checklist", "Panduan percuma untuk lokalisasi, kesiapsiagaan dan ujian pasaran.", "/guides/"],
+        ["Sumber rasmi", "Direktori sumber kerajaan dan institusi untuk menyemak keperluan terkini.", "/official-sources/"],
+      ],
+    },
+    checker: {
+      eyebrow: "SEMAKAN KESIAPSIAGAAN PERCUMA",
+      title: "Di mana patut penyelidikan anda bermula?",
+      body: "Ini alat perancangan, bukan keputusan kelulusan. Ia membantu mengenal pasti kerja yang mungkin perlu dilakukan sebelum anda serius memasuki pasaran.",
       category: "Kategori produk",
-      docs: "Kesediaan dokumen",
-      sales: "Tahap jualan semasa",
-      target: "Pasaran keutamaan",
-      productLink: "Pautan produk atau jenama (pilihan)",
-      placeholder: "https://jenamaanda.com/produk",
-      docsOptions: { ready: "Dokumen utama sudah sedia", partial: "Sebahagian dokumen sudah sedia", none: "Belum disediakan" },
-      salesOptions: { established: "Jualan online / retail sudah kukuh", growing: "Jenama berkembang dengan jualan aktif", early: "Peringkat awal / ujian" },
-      targetOptions: { saudi: "Arab Saudi", uae: "UAE", gcc: "GCC lebih luas" },
-      resultLabel: "Penilaian awal",
-      highTitle: "Calon yang kuat untuk semakan awal GCC",
-      highBody: "Profil semasa anda kelihatan sesuai untuk penilaian produk dan dokumen secara fokus.",
-      midTitle: "Berbaloi untuk penilaian GCC yang lebih fokus",
-      midBody: "Ada potensi, tetapi satu atau dua perkara perlu diperkuat sebelum penghantaran ke marketplace.",
-      lowTitle: "Disaran buat persediaan tambahan dahulu",
-      lowBody: "Produk mungkin masih berpotensi, tetapi dokumen, kesesuaian kategori atau praktikaliti rentas sempadan perlu diperbaiki.",
-      disclaimer: "Untuk panduan awal sahaja. Kelayakan akhir bergantung pada kesesuaian produk, peraturan kategori, dokumen, syarat platform dan proses kelulusan pihak berkaitan.",
-      whatsapp: "Hantar Semakan Ini ke WhatsApp",
+      docs: "Status dokumentasi",
+      market: "Pasaran sasaran",
+      cat: { general: "Produk pengguna umum", beauty: "Kecantikan / penjagaan diri", supplement: "Suplemen / kesihatan", food: "Makanan / minuman", electronics: "Elektronik / aksesori" },
+      doc: { ready: "Dokumen asas produk tersusun", partial: "Sebahagian dokumen tersedia", early: "Masih kumpul maklumat asas" },
+      markets: { saudi: "Arab Saudi", uae: "UAE", gcc: "Belum pasti / GCC lebih luas" },
+      result: "Hasil perancangan",
+      high: ["Asas yang baik untuk penyelidikan lebih mendalam", "Anda sudah mempunyai struktur asas untuk bergerak kepada semakan khusus pasaran. Semak sumber rasmi, laluan pasaran dan model kos sebelum membuat komitmen."],
+      mid: ["Beberapa jurang perlu diselesaikan", "Susun maklumat produk dan kenal pasti keperluan khusus pasaran sebelum memberi fokus kepada onboarding platform atau janji komersial."],
+      low: ["Mulakan dengan asas dahulu", "Bina fail produk yang kemas, jelaskan pasaran sasaran dan gunakan direktori sumber rasmi sebelum membayar pendaftaran, listing atau servis pengembangan."],
+      disclaimer: "Untuk perancangan sahaja. Keperluan regulatori, kastam, cukai dan marketplace boleh berubah dan bergantung pada produk serta model operasi.",
     },
-    opportunities: {
-      eyebrow: "Peluang kategori",
-      title: "Kategori berbeza perlukan strategi kemasukan yang berbeza",
-      body: "Pendekatan terbaik bukan sekadar ‘senaraikan semua’. Mulakan dengan kategori dan SKU yang praktikal untuk dilokalisasi, didokumenkan, dihantar dan diuji.",
-    },
-    how: {
-      eyebrow: "Bagaimana kemasukan pasaran GCC berfungsi",
-      title: "Mula kecil. Sahkan permintaan. Berkembang secara strategik.",
-      body: "Anda terus beroperasi di Malaysia sementara eRomman membantu bahagian yang menghadap pasaran dan perjalanan rentas sempadan.",
-      steps: [
-        ["Semakan produk", "Pilih beberapa SKU yang sesuai dan kenal pasti kekurangan dokumen utama."],
-        ["Lokalisasi", "Sediakan maklumat produk untuk pelanggan berbahasa Arab dan jangkaan pasaran sasaran."],
-        ["Semakan marketplace", "Nilai peluang eRomman dan marketplace pihak ketiga berdasarkan syarat masing-masing."],
-        ["Uji permintaan", "Perkenalkan produk terpilih dan lihat respons pelanggan, harga dan praktikaliti operasi."],
-        ["Skala yang berjaya", "Tambah produk secara berperingkat berdasarkan permintaan yang telah disahkan."],
-      ],
-    },
-    after: {
-      eyebrow: "Selepas anda hubungi Mamduh",
-      title: "Jelas apa yang akan berlaku seterusnya",
-      steps: [
-        ["1", "Semakan pautan produk", "Kongsi laman web, Shopee, TikTok Shop atau katalog produk anda."],
-        ["2", "Semakan kategori & dokumen", "Kenal pasti syarat platform, regulatori atau maklumat produk yang boleh mempengaruhi kemasukan."],
-        ["3", "Cadangan laluan permulaan", "Pilih SKU dan pasaran atau marketplace yang paling praktikal untuk bermula."],
-        ["4", "Onboarding & listing", "Sediakan maklumat penjual, lokalisasi dan bahan penyenaraian."],
-        ["5", "Ujian pasaran & pertumbuhan", "Pantau respons dan berkembang apabila peluang telah disahkan."],
-      ],
-    },
-    support: {
-      eyebrow: "Sokongan eRomman",
-      title: "Lebih daripada sekadar listing produk",
+    routes: {
+      eyebrow: "LALUAN KE PASARAN",
+      title: "Ada lebih daripada satu cara untuk memasuki GCC",
       items: [
-        ["Lokalisasi Arab", "Sokongan listing, terjemahan dan persembahan produk untuk pasaran Arab."],
-        ["Akses marketplace", "Laluan berpusat ke eRomman dan peluang marketplace pihak ketiga yang sesuai."],
-        ["Visibiliti pemasaran", "Kempen, kandungan, Arabic SEO dan promosi bergantung pada pelan serta kesesuaian."],
-        ["Panduan penjual", "PIC untuk membantu penjual faham langkah operasi seterusnya."],
-        ["Koordinasi rentas sempadan", "Koordinasi order, pickup dan fulfilment untuk susunan yang sesuai."],
-        ["Validasi pasaran", "Pendekatan uji dahulu supaya penjual belajar sebelum berkembang."],
+        ["Marketplace", "Sesuai untuk ujian permintaan digital apabila kelayakan seller dan produk jelas.", "Store"],
+        ["Importer / distributor", "Rakan komersial tempatan boleh mengurus import, pengedaran dan akses saluran mengikut perjanjian.", "Network"],
+        ["B2B terus", "Jual kepada buyer, wholesaler atau pelanggan institusi tanpa membina storefront pengguna terlebih dahulu.", "Building"],
+        ["Kerjasama retail", "Sesuai apabila kehadiran fizikal, merchandising tempatan atau retailer established penting.", "Landmark"],
+        ["Entiti tempatan", "Pilihan jangka panjang apabila kes komersial membenarkan operasi dan tanggungjawab tempatan yang lebih mendalam.", "Scale"],
+        ["Lesen / rakan strategik", "Laluan berasaskan kerjasama apabila keupayaan tempatan, pembuatan atau hak pengedaran penting.", "Route"],
       ],
+      open: "Bandingkan laluan",
     },
-    marketplaces: {
-      eyebrow: "Ekosistem marketplace",
-      title: "Satu titik mula, beberapa saluran berpotensi",
-      body: "Produk yang sesuai boleh dinilai untuk peluang di eRomman dan marketplace Timur Tengah terpilih.",
-      platforms: ["eRomman", "Amazon Arab Saudi", "Amazon UAE", "Noon Arab Saudi", "Noon UAE", "SHEIN Arab Saudi", "SHEIN UAE", "Trendyol", "Carrefour Arab Saudi"],
-      disclaimer: "Pendedahan marketplace bukan automatik. Ia tertakluk pada kesesuaian produk, peraturan kategori, dokumen dan proses kelulusan setiap platform.",
-    },
-    pricing: {
-      eyebrow: "Promosi Hari Malaysia · September 2026",
-      title: "Pilih tahap sokongan mengikut peringkat pengembangan anda",
-      body: "Tawaran September semasa: diskaun 50% untuk pelan tahunan terpilih serta tambahan 8 bulan, menjadikan jumlah keahlian 20 bulan. Sah sehingga 30 September 2026.",
-      plans: [
-        { name: "Silver", price: "RM645", normal: "RM1,290", label: "Permulaan", features: ["Onboarding penjual", "Akses marketplace Timur Tengah", "Listing produk", "Semakan peluang marketplace"] },
-        { name: "Gold", price: "RM1,645", normal: "RM3,290", label: "Pertumbuhan", features: ["Semua dalam Silver", "Lokalisasi Arab", "Sokongan Arabic SEO", "Penyertaan kempen bulanan"] },
-        { name: "Platinum", price: "RM5,000", normal: "RM10,000", label: "Visibiliti", features: ["Semua dalam Gold", "Penyertaan kempen pemasaran", "Sokongan khusus", "Ciri premium penjual"] },
-        { name: "Pro Platinum", price: "Hubungi kami", normal: "Custom", label: "Korporat", features: ["Semua dalam Platinum", "Peluang pemasaran keutamaan", "Arab brand manager", "Sokongan multi-platform"] },
-      ],
-      ask: "Bincang Pelan Ini",
-      note: "Skop pelan, kelayakan dan aturan pembayaran perlu disahkan dengan seller support sebelum pembayaran.",
-    },
-    cost: {
-      eyebrow: "Gambaran kos penjual",
-      title: "Anggar settlement selepas komisen",
-      body: "Gunakan sebagai alat perancangan ringkas. Komisen dikenakan selepas jualan berjaya. Kos penghantaran pelanggan dibayar oleh pembeli mengikut panduan penjual semasa.",
-      price: "Harga jualan (RM)", rate: "Kadar komisen (%)", pickup: "Pickup eRomman", yes: "Ya — caj pickup RM7", no: "Tidak — penjual serah sendiri", commission: "Anggaran komisen", pickupFee: "Caj pickup", receives: "Anggaran settlement penjual", note: "Anggaran sahaja. Sahkan kadar kategori dan caj operasi semasa sebelum onboarding. Panduan semasa menyatakan bayaran penjual diproses dalam 10–15 hari bekerja selepas penghantaran berjaya.",
-    },
-    faq: {
-      eyebrow: "Soalan lazim penjual",
-      title: "Soalan yang biasanya ditanya sebelum bermula",
+    tools: {
+      eyebrow: "ALAT PERCUMA",
+      title: "Rancang sebelum berbelanja",
       items: [
-        ["Perlu pindahkan stok ke Timur Tengah?", "Tidak. Penjual boleh simpan stok di Malaysia ketika menguji pasaran, tertakluk pada susunan fulfilment yang dipersetujui."],
-        ["Perlu senaraikan semua produk?", "Tidak. Mulakan dengan kumpulan SKU yang lebih kecil dan sesuai untuk validasi pasaran."],
-        ["Boleh eRomman jamin kelulusan Amazon atau Noon?", "Tidak. Listing pihak ketiga bergantung pada kelayakan produk, dokumen, peraturan kategori dan kelulusan platform."],
-        ["Bagaimana dengan suplemen, kesihatan atau beauty?", "Kategori ini boleh berpotensi kuat, tetapi dokumen regulatori dan marketplace khusus pasaran perlu disemak sebelum submission."],
-        ["Siapa bayar penghantaran pelanggan?", "Mengikut panduan semasa, pembeli membayar penghantaran. Sahkan susunan akhir semasa onboarding."],
-        ["Bila penjual dibayar?", "Panduan semasa menyatakan 10–15 hari bekerja selepas penghantaran berjaya dan order selesai."],
+        ["Perancang kos", "Bina anggaran kos GCC anda sendiri tanpa harga pakej yang direka-reka.", "/cost-planner/"],
+        ["Malaysia Export Desk", "Mulakan dengan MATRADE, SME Corp, Halal Malaysia dan sumber sokongan eksport Malaysia.", "/malaysia-export-desk/"],
+        ["Pustaka Sumber Rasmi", "Semak peraturan semasa melalui pihak berkuasa dan institusi rasmi.", "/official-sources/"],
+        ["Checklist kemasukan", "Gunakan checklist sebelum komit stok, kerja dokumentasi atau bajet pemasaran.", "/guides/gcc-market-entry-checklist-malaysian-brands/"],
       ],
     },
-    contact: {
-      eyebrow: "Mula dengan satu pautan produk",
-      title: "Mari kenal pasti titik mula GCC yang paling praktikal untuk jenama anda.",
-      body: "Hantar laman web, kedai marketplace atau pautan produk anda. Saya boleh bantu semak kategori, keperluan dokumen dan laluan permulaan yang lebih praktikal sebelum anda membuat keputusan.",
-      whatsapp: "Semak Produk Saya di WhatsApp",
-      email: "Email Seller Support",
+    verify: {
+      eyebrow: "SEMAK SEBELUM BERTINDAK",
+      title: "Sumber rasmi lebih penting daripada dakwaan jualan.",
+      body: "Apabila sesuatu keperluan boleh memberi kesan kepada produk, shipment, cukai atau akses marketplace, gunakan pihak berkuasa atau platform berkaitan sebagai rujukan akhir. Laman ini menerangkan laluan; ia bukan pengganti kelulusan rasmi atau nasihat profesional undang-undang, cukai atau kastam.",
+      button: "Buka Pustaka Sumber Rasmi",
     },
-    footer: "GCC Market Entry ialah portal maklumat penjual yang disediakan oleh Muhammad Mamduh Bin Saffin menggunakan bahan penjual eRomman. Untuk maklumat korporat, polisi dan pendaftaran rasmi, sila rujuk eromman.com.",
+    advisory: {
+      eyebrow: "SOKONGAN MANUSIA PILIHAN",
+      title: "Perlukan bantuan menukar penyelidikan kepada pelan komersial?",
+      body: "GCC Market Entry kekal percuma dan bebas. Jika kemudian anda perlukan bantuan manusia untuk market research, sourcing buyer/supplier, introduction atau koordinasi komersial, anda boleh meneroka TGPU Gulf Advisory & Trade secara berasingan.",
+      button: "Terokai TGPU Gulf",
+    },
+    footer: "GCC Market Entry ialah sumber pendidikan bebas. Ia bukan pihak berkuasa kerajaan, marketplace, badan pensijilan atau jaminan akses pasaran.",
   },
   ar: {
-    dir: "rtl",
-    portal: "GCC Market Entry",
-    portalSub: "بوابة نمو البائعين",
-    nav: { fit: "فحص المنتج", how: "آلية العمل", opportunities: "الفرص", marketplaces: "المنصات", plans: "الباقات", stories: "قصص البائعين", faq: "الأسئلة الشائعة" },
+    dir: "rtl" as const,
+    language: "العربية",
+    brandSub: "مركز معرفي مستقل لدخول أسواق الخليج",
+    nav: { start: "ابدأ هنا", countries: "أدلة الدول", routes: "مسارات السوق", tools: "أدوات مجانية", sources: "المصادر الرسمية" },
     hero: {
-      eyebrow: "GCC Market Entry · بدعم eRomman",
-      title1: "وسّع علامتك التجارية",
-      title2: "إلى أسواق الخليج",
-      body: "مسار عملي للعلامات الماليزية الراغبة في استكشاف السعودية والإمارات ودول الخليج. ابدأ بمنتجات مناسبة، وهيّئ المحتوى للجمهور العربي، واختبر الطلب ثم توسّع بناءً على مؤشرات السوق.",
-      primary: "افحص قابلية منتجي للسوق الخليجي",
-      secondary: "تواصل مع ممدوح",
-      bullets: ["المخزون يبقى في ماليزيا", "ابدأ بعدد محدود من المنتجات", "دعم التوطين بالعربية", "لا حاجة إلى مكتب خليجي للاختبار"],
-      route: "ماليزيا ← eRomman ← عملاء الخليج",
-      markets: "الأسواق المستهدفة",
+      eyebrow: "مجاني • مستقل • متعدد اللغات",
+      title: "ادخل أسواق الخليج بمعلومات أوضح.",
+      body: "مركز معرفي عملي للشركات الماليزية التي تستكشف السعودية والإمارات وأسواق الخليج. استخدم إرشادات تبدأ من المصادر الرسمية، وأدلة الدول، وأدوات الجاهزية والتخطيط المجانية قبل إنفاق المال أو الالتزام بالمخزون.",
+      primary: "ابدأ خارطة الطريق",
+      secondary: "افحص الجاهزية",
+      badges: ["مجاني للجميع", "العربية • English • BM", "المصدر الرسمي أولاً"],
     },
-    trust: {
-      title: "مصمم لاختبار السوق بأقل تغيير تشغيلي ممكن",
-      items: [["1,300+", "بائع تم ضمه"], ["250,000", "منتج مدرج"], ["9M+", "مشاهدة للحملات"], ["4", "مواقع إقليمية"]],
-      note: "لمحة عن منظومة eRomman؛ قد تتغير الأرقام التشغيلية مع الوقت.",
+    intro: {
+      title: "اعرف ما يجب التحقق منه قبل أن تدفع لأي جهة.",
+      body: "GCC Market Entry ليس منصة بيع ولا جهة تنظيمية ولا باقة مدفوعة. إنه مورد تعليمي مستقل يساعدك على فهم الخطوات وطرح الأسئلة الصحيحة والتحقق من المتطلبات لدى الجهة الرسمية أو المنصة المناسبة.",
     },
-    fit: {
-      eyebrow: "فحص المنتج خلال 60 ثانية",
-      title: "هل منتجك مرشح عملي للمراجعة في أسواق الخليج؟",
-      body: "هذا الفحص لا يُعد موافقة على المنتج، وإنما يساعد على تحديد مدى جاهزية العلامة للمراجعة الأولية وما الذي ينبغي تحسينه أولاً.",
-      category: "فئة المنتج", docs: "جاهزية الوثائق", sales: "مرحلة المبيعات الحالية", target: "السوق ذو الأولوية", productLink: "رابط المنتج أو العلامة (اختياري)", placeholder: "https://yourbrand.com/product",
-      docsOptions: { ready: "الوثائق الأساسية جاهزة", partial: "بعض الوثائق جاهزة", none: "لم تُجهز بعد" },
-      salesOptions: { established: "مبيعات إلكترونية / تجزئة مستقرة", growing: "علامة نامية بمبيعات نشطة", early: "مرحلة مبكرة / اختبار" },
-      targetOptions: { saudi: "السعودية", uae: "الإمارات", gcc: "دول الخليج" },
-      resultLabel: "التقييم الأولي",
-      highTitle: "مرشح قوي لمراجعة أولية للسوق الخليجي", highBody: "يبدو أن ملفك الحالي مناسب لمراجعة مركزة للمنتج والوثائق.",
-      midTitle: "يستحق تقييماً خليجياً أكثر تركيزاً", midBody: "توجد فرصة، لكن يُفضّل تعزيز نقطة أو نقطتين قبل التقديم إلى المنصات.",
-      lowTitle: "يُنصح بمزيد من التجهيز أولاً", lowBody: "قد تظل هناك فرصة، لكن الوثائق أو ملاءمة الفئة أو الجوانب التشغيلية عبر الحدود تحتاج إلى تطوير.",
-      disclaimer: "للاسترشاد الأولي فقط. الأهلية النهائية تعتمد على ملاءمة المنتج وقواعد الفئة والوثائق ومتطلبات كل منصة وإجراءات موافقة الجهات ذات الصلة.",
-      whatsapp: "أرسل هذا التقييم عبر واتساب",
-    },
-    opportunities: { eyebrow: "فرص الفئات", title: "لكل فئة استراتيجية دخول مختلفة", body: "النهج الأفضل ليس إدراج جميع المنتجات منذ البداية، بل اختيار المنتجات الأسهل في التوطين والتوثيق والشحن والاختبار." },
-    how: {
-      eyebrow: "كيف يعمل الدخول إلى أسواق الخليج",
-      title: "ابدأ بشكل محدود، اختبر الطلب، ثم توسّع بذكاء.",
-      body: "تواصل تشغيل أعمالك في ماليزيا بينما تدعم eRomman الجوانب المواجهة للسوق والتنسيق عبر الحدود.",
+    roadmap: {
+      eyebrow: "ابدأ هنا",
+      title: "خارطة طريق من ست خطوات لدخول أسواق الخليج",
       steps: [
-        ["مراجعة المنتج", "اختيار عدد مناسب من المنتجات وتحديد الفجوات الواضحة في الوثائق."],
-        ["التوطين", "تهيئة معلومات المنتج للعملاء الناطقين بالعربية ومتطلبات السوق المستهدف."],
-        ["مراجعة المنصات", "تقييم فرص eRomman والمنصات الأخرى وفق متطلبات كل منصة."],
-        ["اختبار الطلب", "طرح منتجات مختارة ومراقبة الاستجابة والتسعير والعملية التشغيلية."],
-        ["التوسع فيما ينجح", "زيادة المنتجات تدريجياً بناءً على طلب مُثبت بدلاً من الالتزام الكبير منذ البداية."],
+        ["01", "تحقق من ملاءمة المنتج للسوق", "اختر مجموعة صغيرة من المنتجات ذات قيمة واضحة واقتصاديات واقعية للبيع عبر الحدود."],
+        ["02", "اختر السوق", "قارن بين السعودية والإمارات وبقية الخليج بدلاً من افتراض أن مساراً واحداً يناسب كل العلامات."],
+        ["03", "حدد المتطلبات", "اعرف الجهة المختصة واللوائح الفنية وتسجيل المنتج ومتطلبات المنصة التي قد تنطبق."],
+        ["04", "اختر مسار الوصول للسوق", "حدد ما إذا كانت المنصة أو المستورد أو الموزع أو التجزئة أو B2B أو نموذج آخر هو البداية العملية."],
+        ["05", "احسب التكلفة الحقيقية", "أدخل تكاليف المطابقة والاختبارات والتعريب والشحن والجمارك والتخزين ورسوم المنصة والتسويق."],
+        ["06", "اختبر وتعلم ثم توسع", "ابدأ بإطلاق محدود، راقب الاستجابة، ثم توسع عندما يصبح النموذج التجاري والتشغيلي منطقياً."],
       ],
     },
-    after: {
-      eyebrow: "بعد التواصل مع ممدوح", title: "اعرف بوضوح ما الذي سيحدث بعد ذلك",
-      steps: [["1", "مراجعة رابط المنتج", "أرسل موقعك أو متجر Shopee أو TikTok Shop أو الكتالوج."], ["2", "مراجعة الفئة والوثائق", "تحديد متطلبات المنصة أو الجهات التنظيمية أو معلومات المنتج."], ["3", "تحديد مسار البداية", "اختيار المنتجات والسوق أو المنصة الأكثر عملية للبدء."], ["4", "التهيئة والإدراج", "إعداد بيانات البائع والتوطين ومواد الإدراج."], ["5", "اختبار السوق والنمو", "متابعة الاستجابة والتوسع عندما تتأكد الفرصة."]],
+    countries: {
+      eyebrow: "أدلة الدول",
+      title: "ابدأ بالسوق، وليس بالمنصة",
+      body: "لكل سوق خليجي بيئته التجارية وجهاته التنظيمية وتفاصيله التشغيلية. تتوفر حالياً أدلة للسعودية والإمارات، وسيتم توسيع بقية الأسواق تدريجياً.",
+      live: "افتح الدليل",
+      developing: "قسم البحث قيد التطوير",
     },
-    support: {
-      eyebrow: "دعم eRomman", title: "أكثر من مجرد إدراج منتج",
-      items: [["التوطين بالعربية", "دعم إدراج المنتجات والترجمة وطريقة العرض المناسبة للسوق العربي."], ["الوصول إلى المنصات", "مسار مركزي إلى eRomman وفرص مختارة على منصات خارجية."], ["الظهور التسويقي", "حملات ومحتوى وSEO عربي وعروض بحسب الباقة والملاءمة."], ["إرشاد البائع", "نقطة تواصل مباشرة لتوضيح الخطوة التشغيلية التالية."], ["التنسيق عبر الحدود", "تنسيق الطلبات والاستلام والتنفيذ للترتيبات المناسبة."], ["اختبار السوق", "نهج يبدأ بالاختبار والتعلم قبل التوسع."]],
+    knowledge: {
+      eyebrow: "مكتبة المعرفة",
+      title: "اختر القسم المناسب لسؤالك",
+      items: [
+        ["الامتثال في السعودية", "نقاط بداية لـ SFDA وSABER وZATCA/FASAH والتحقق الخاص بالمنتج.", "/saudi-arabia/"],
+        ["الامتثال في الإمارات", "نقاط بداية لـ MoIAT والضرائب والمنتجات الاستهلاكية ومتطلبات الإمارة.", "/uae/"],
+        ["الجمال والعناية", "الادعاءات والمكونات وأصول المنتج والاستعداد الخاص بالفئة.", "/beauty-wellness/"],
+        ["الإلكترونيات", "المواصفات والتوافق والوثائق الفنية والاستعداد السعري.", "/electronics/"],
+        ["الأدلة والقوائم", "أدلة مجانية للتعريب والجاهزية واختبار السوق بشكل منظم.", "/guides/"],
+        ["المصادر الرسمية", "دليل للجهات الحكومية والمؤسسات الرسمية للتحقق من المتطلبات الحالية.", "/official-sources/"],
+      ],
     },
-    marketplaces: { eyebrow: "منظومة المنصات", title: "نقطة بداية واحدة وقنوات محتملة متعددة", body: "يمكن تقييم المنتجات المناسبة لفرص على eRomman وبعض منصات الشرق الأوسط المختارة.", platforms: ["eRomman", "Amazon السعودية", "Amazon الإمارات", "Noon السعودية", "Noon الإمارات", "SHEIN السعودية", "SHEIN الإمارات", "Trendyol", "Carrefour السعودية"], disclaimer: "الظهور على المنصات ليس تلقائياً، بل يخضع لملاءمة المنتج وقواعد الفئة والوثائق وإجراءات موافقة كل منصة." },
-    pricing: {
-      eyebrow: "عرض يوم ماليزيا · سبتمبر 2026", title: "اختر مستوى الدعم المناسب لمرحلة توسعك", body: "العرض الحالي لشهر سبتمبر: خصم 50% على باقات سنوية مختارة مع 8 أشهر إضافية، ليصبح إجمالي العضوية 20 شهراً. صالح حتى 30 سبتمبر 2026.",
-      plans: [{ name: "Silver", price: "RM645", normal: "RM1,290", label: "بداية", features: ["تهيئة البائع", "الوصول إلى سوق الشرق الأوسط", "إدراج المنتجات", "مراجعة فرص المنصات"] }, { name: "Gold", price: "RM1,645", normal: "RM3,290", label: "نمو", features: ["كل مزايا Silver", "التوطين بالعربية", "دعم SEO عربي", "المشاركة في الحملات الشهرية"] }, { name: "Platinum", price: "RM5,000", normal: "RM10,000", label: "ظهور", features: ["كل مزايا Gold", "الإدراج في حملات التسويق", "دعم مخصص", "ميزات بائع متقدمة"] }, { name: "Pro Platinum", price: "تواصل معنا", normal: "مخصص", label: "شركات", features: ["كل مزايا Platinum", "فرص تسويقية ذات أولوية", "مدير علامة عربي", "دعم متعدد المنصات"] }],
-      ask: "ناقش هذه الباقة", note: "يجب تأكيد نطاق الباقة والأهلية وترتيبات الدفع مع فريق دعم البائعين قبل الدفع.",
+    checker: {
+      eyebrow: "فحص جاهزية مجاني",
+      title: "من أين يجب أن يبدأ بحثك؟",
+      body: "هذه أداة تخطيط وليست قرار موافقة. تساعدك على تحديد نوع العمل المطلوب قبل الدخول الجاد للسوق.",
+      category: "فئة المنتج",
+      docs: "حالة الوثائق",
+      market: "السوق المستهدف",
+      cat: { general: "منتج استهلاكي عام", beauty: "جمال / عناية شخصية", supplement: "مكملات / صحة", food: "أغذية / مشروبات", electronics: "إلكترونيات / إكسسوارات" },
+      doc: { ready: "الوثائق الأساسية منظمة", partial: "بعض الوثائق متوفرة", early: "ما زلت أجمع الأساسيات" },
+      markets: { saudi: "السعودية", uae: "الإمارات", gcc: "غير محدد / الخليج عموماً" },
+      result: "نتيجة التخطيط",
+      high: ["قاعدة جيدة لبحث أعمق", "لديك هيكل مبدئي جيد للانتقال إلى التحقق الخاص بالسوق. راجع المصادر الرسمية ومسارات السوق ونموذج التكلفة قبل الالتزام."],
+      mid: ["هناك بعض الفجوات التي يجب إغلاقها", "نظّم معلومات المنتج وحدد المتطلبات الخاصة بالسوق قبل التركيز على تسجيل المنصات أو الوعود التجارية."],
+      low: ["ابدأ بالأساسيات أولاً", "أنشئ ملفاً واضحاً للمنتج وحدد السوق المستهدف واستخدم دليل المصادر الرسمية قبل دفع رسوم التسجيل أو الإدراج أو خدمات التوسع."],
+      disclaimer: "للتخطيط فقط. المتطلبات التنظيمية والجمركية والضريبية ومتطلبات المنصات قد تتغير وتعتمد على المنتج ونموذج التشغيل.",
     },
-    cost: { eyebrow: "لمحة عن تكاليف البائع", title: "قدّر صافي التسوية بعد العمولة", body: "استخدم الأداة للتخطيط فقط. تُفرض العمولة بعد إتمام البيع بنجاح، ووفق الدليل الحالي يتحمل المشتري تكلفة الشحن.", price: "سعر البيع (RM)", rate: "نسبة العمولة (%)", pickup: "استلام eRomman", yes: "نعم — رسوم استلام RM7", no: "لا — البائع يسلّم بشكل مستقل", commission: "العمولة التقديرية", pickupFee: "رسوم الاستلام", receives: "صافي التسوية التقديري", note: "تقدير توضيحي فقط. أكّد نسبة الفئة والرسوم التشغيلية الحالية قبل الانضمام. ينص الدليل الحالي على معالجة دفعة البائع خلال 10–15 يوم عمل بعد التسليم الناجح." },
-    faq: { eyebrow: "أسئلة البائعين", title: "أسئلة شائعة قبل البدء", items: [["هل يجب نقل المخزون إلى الشرق الأوسط؟", "لا. يمكن إبقاء المخزون في ماليزيا أثناء اختبار السوق وفق ترتيب التنفيذ المتفق عليه."], ["هل يجب إدراج جميع المنتجات؟", "لا. البدء بعدد أصغر من المنتجات المناسبة أكثر عملية لاختبار السوق."], ["هل تضمن eRomman قبول Amazon أو Noon؟", "لا. الإدراج على المنصات الخارجية يعتمد على أهلية المنتج والوثائق وقواعد الفئة وموافقة المنصة."], ["ماذا عن المكملات والصحة والجمال؟", "قد تكون فرصها قوية، لكن يجب فحص المتطلبات التنظيمية ووثائق كل سوق ومنصة قبل التقديم."], ["من يدفع شحن العميل؟", "وفق الدليل الحالي يدفع المشتري تكلفة الشحن، ويجب تأكيد الترتيب النهائي أثناء الانضمام."], ["متى يحصل البائع على مستحقاته؟", "ينص الدليل الحالي على 10–15 يوم عمل بعد التسليم الناجح وإكمال الطلب."]]},
-    contact: { eyebrow: "ابدأ برابط منتج واحد", title: "لنحدد نقطة البداية الخليجية الأكثر عملية لعلامتك.", body: "أرسل موقعك أو متجر المنصة أو رابط المنتج. يمكنني مساعدتك في مراجعة الفئة والوثائق والمسار الأنسب قبل اتخاذ القرار.", whatsapp: "افحص منتجاتي عبر واتساب", email: "راسل دعم البائعين" },
-    footer: "GCC Market Entry بوابة معلومات للبائعين أعدّها Muhammad Mamduh Bin Saffin بالاستناد إلى مواد eRomman للبائعين. للمعلومات الرسمية والسياسات والتسجيل يرجى الرجوع إلى eromman.com.",
+    routes: {
+      eyebrow: "مسارات الوصول للسوق",
+      title: "هناك أكثر من طريق لدخول الخليج",
+      items: [
+        ["المنصات الإلكترونية", "مناسبة لاختبار الطلب الرقمي عندما تكون أهلية البائع والمنتج واضحة.", "Store"],
+        ["المستورد / الموزع", "يمكن لشريك تجاري محلي إدارة الاستيراد والتوزيع والوصول إلى القنوات وفق اتفاق واضح.", "Network"],
+        ["البيع المباشر B2B", "البيع لمشترٍ أو تاجر جملة أو عميل مؤسسي بدلاً من بناء متجر للمستهلك أولاً.", "Building"],
+        ["شراكة التجزئة", "مناسبة عندما يكون الوجود على الرفوف أو التسويق المحلي أو شريك تجزئة قائم مهماً.", "Landmark"],
+        ["كيان محلي", "خيار طويل الأجل عندما تبرر الحالة التجارية عمليات ومسؤوليات محلية أعمق.", "Scale"],
+        ["الترخيص / الشريك الاستراتيجي", "مسار قائم على الشراكة عندما تكون القدرات المحلية أو التصنيع أو حقوق التوزيع محورية.", "Route"],
+      ],
+      open: "قارن المسارات",
+    },
+    tools: {
+      eyebrow: "أدوات مجانية",
+      title: "خطط قبل أن تنفق",
+      items: [
+        ["مخطط التكلفة", "أنشئ تقديرك الخاص لتكاليف دخول الخليج دون أسعار باقات مفترضة.", "/cost-planner/"],
+        ["مكتب التصدير الماليزي", "ابدأ من MATRADE وSME Corp وHalal Malaysia وموارد دعم التصدير الماليزية.", "/malaysia-export-desk/"],
+        ["مكتبة المصادر الرسمية", "تحقق من المتطلبات الحالية عبر الجهات والمؤسسات الرسمية.", "/official-sources/"],
+        ["قائمة التحقق", "استخدم قائمة منظمة قبل الالتزام بالمخزون أو الوثائق أو ميزانية التسويق.", "/guides/gcc-market-entry-checklist-malaysian-brands/"],
+      ],
+    },
+    verify: {
+      eyebrow: "تحقق قبل أن تتصرف",
+      title: "المصدر الرسمي أهم من أي ادعاء تسويقي.",
+      body: "عندما يمكن لمتطلب ما أن يؤثر على المنتج أو الشحنة أو الضرائب أو الوصول إلى منصة، استخدم الجهة الرسمية أو المنصة المعنية كمرجع نهائي. هذا الموقع يشرح المسار ولا يحل محل الموافقة الرسمية أو المشورة القانونية أو الضريبية أو الجمركية المهنية.",
+      button: "افتح مكتبة المصادر الرسمية",
+    },
+    advisory: {
+      eyebrow: "دعم بشري اختياري",
+      title: "هل تحتاج إلى تحويل البحث إلى خطة تجارية؟",
+      body: "يبقى GCC Market Entry مجانياً ومستقلاً. إذا احتجت لاحقاً إلى دعم بشري في أبحاث السوق أو البحث عن مشترين وموردين أو التعارف التجاري أو التنسيق، يمكنك استكشاف TGPU Gulf Advisory & Trade بشكل منفصل.",
+      button: "استكشف TGPU Gulf",
+    },
+    footer: "GCC Market Entry مورد تعليمي مستقل. ليس جهة حكومية أو منصة بيع أو جهة اعتماد ولا يضمن الوصول إلى السوق.",
   },
 } as const
 
-const docsScore: Record<DocsKey, number> = { ready: 2, partial: 1, none: 0 }
-const salesScore: Record<SalesKey, number> = { established: 2, growing: 1, early: 0 }
+const countries = [
+  { name: "Saudi Arabia", flag: "🇸🇦", href: "/saudi-arabia/", live: true },
+  { name: "United Arab Emirates", flag: "🇦🇪", href: "/uae/", live: true },
+  { name: "Kuwait", flag: "🇰🇼", live: false },
+  { name: "Qatar", flag: "🇶🇦", live: false },
+  { name: "Oman", flag: "🇴🇲", live: false },
+  { name: "Bahrain", flag: "🇧🇭", live: false },
+] as const
 
-const fmt = (value: number) => value.toLocaleString("en-MY", { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+const routeIcon = (name: string) => {
+  const props = { className: "h-5 w-5" }
+  if (name === "Store") return <Store {...props} />
+  if (name === "Network") return <Network {...props} />
+  if (name === "Building") return <Building2 {...props} />
+  if (name === "Landmark") return <Landmark {...props} />
+  if (name === "Scale") return <Scale {...props} />
+  return <Route {...props} />
+}
 
 export function GccMarketEntryGuide({ lang }: { lang: Lang }) {
   const t = copy[lang]
   const isArabic = lang === "ar"
   const [menuOpen, setMenuOpen] = useState(false)
-  const [category, setCategory] = useState<CategoryKey>("beauty")
-  const [docs, setDocs] = useState<DocsKey>("partial")
-  const [sales, setSales] = useState<SalesKey>("growing")
-  const [target, setTarget] = useState<TargetKey>("saudi")
-  const [productLink, setProductLink] = useState("")
-  const [price, setPrice] = useState("100")
-  const [rate, setRate] = useState("18")
-  const [pickup, setPickup] = useState(true)
+  const [category, setCategory] = useState<Category>("general")
+  const [docs, setDocs] = useState<Docs>("partial")
+  const [market, setMarket] = useState<Market>("gcc")
 
-  const selectedCategory = categories.find((item) => item.key === category) ?? categories[0]
-  const fitScore = selectedCategory.score + docsScore[docs] + salesScore[sales]
-  const fitLevel = category === "food" || (category === "supplement" && docs === "none") ? "low" : fitScore >= 5 ? "high" : fitScore >= 3 ? "mid" : "low"
-  const fitTitle = fitLevel === "high" ? t.fit.highTitle : fitLevel === "mid" ? t.fit.midTitle : t.fit.lowTitle
-  const fitBody = fitLevel === "high" ? t.fit.highBody : fitLevel === "mid" ? t.fit.midBody : t.fit.lowBody
-
-  const targetLabels: Record<TargetKey, string> = {
-    saudi: t.fit.targetOptions.saudi,
-    uae: t.fit.targetOptions.uae,
-    gcc: t.fit.targetOptions.gcc,
-  }
-
-  const docsLabels: Record<DocsKey, string> = {
-    ready: t.fit.docsOptions.ready,
-    partial: t.fit.docsOptions.partial,
-    none: t.fit.docsOptions.none,
-  }
-
-  const salesLabels: Record<SalesKey, string> = {
-    established: t.fit.salesOptions.established,
-    growing: t.fit.salesOptions.growing,
-    early: t.fit.salesOptions.early,
-  }
-
-  const whatsappReview = useMemo(() => {
-    const message = [
-      "Hi Mamduh, I used the GCC Market Entry product checker.",
-      `Category: ${selectedCategory.label.en}`,
-      `Target: ${targetLabels[target]}`,
-      `Documents: ${docsLabels[docs]}`,
-      `Sales stage: ${salesLabels[sales]}`,
-      `Initial result: ${fitTitle}`,
-      productLink ? `Product link: ${productLink}` : "",
-      "Could you help me review the most practical GCC starting point?",
-    ].filter(Boolean).join("\n")
-    return `https://wa.me/60126413812?text=${encodeURIComponent(message)}`
-  }, [docs, docsLabels, fitTitle, productLink, sales, salesLabels, selectedCategory.label.en, target, targetLabels])
-
-  const sellingPrice = Math.max(0, Number.parseFloat(price) || 0)
-  const commissionRate = Math.min(100, Math.max(0, Number.parseFloat(rate) || 0))
-  const commission = (sellingPrice * commissionRate) / 100
-  const pickupFee = pickup ? 7 : 0
-  const settlement = Math.max(0, sellingPrice - commission - pickupFee)
+  const readiness = useMemo(() => {
+    let score = docs === "ready" ? 3 : docs === "partial" ? 2 : 0
+    if (market !== "gcc") score += 2
+    if (category === "general" || category === "electronics") score += 2
+    else if (category === "beauty") score += 1
+    else score += 0
+    if (score >= 6) return t.checker.high
+    if (score >= 3) return t.checker.mid
+    return t.checker.low
+  }, [category, docs, market, t])
 
   const languageLinks = [
-    { code: "en" as const, label: "EN", href: (SITE_BASE_PATH || "") + "/en/" },
-    { code: "bm" as const, label: "BM", href: (SITE_BASE_PATH || "") + "/bm/" },
-    { code: "ar" as const, label: "AR", href: (SITE_BASE_PATH || "") + "/ar/" },
-  ]
-
-  const supportIcons = [Languages, Globe2, BarChart3, SearchCheck, Truck, Zap]
-  const processIcons = [SearchCheck, Languages, Store, BarChart3, Zap]
+    ["BM", path("/bm/")],
+    ["EN", path("/")],
+    ["العربية", path("/ar/")],
+  ] as const
 
   return (
-    <div dir={t.dir} lang={lang === "bm" ? "ms" : lang} className={isArabic ? "font-sans" : ""}>
-      <header className="sticky top-0 z-50 border-b border-red-100/80 bg-white/95 shadow-[0_8px_30px_rgba(120,10,18,0.06)] backdrop-blur-xl">
-        <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
-          <a href={(SITE_BASE_PATH || "") + "/"} className="flex min-w-0 items-center gap-3" aria-label="GCC Market Entry">
-            <img src={SITE_BASE_PATH + "/images/eromman-logo.png"} alt="eRomman" width={1157} height={238} className="h-8 w-auto sm:h-9" />
-            <span className="hidden h-8 w-px bg-red-100 sm:block" />
-            <span className="hidden min-w-0 sm:block">
-              <span className="block truncate text-sm font-black tracking-tight text-[#221a18]">{t.portal}</span>
-              <span className="block truncate text-[10px] font-bold uppercase tracking-[0.14em] text-primary">{t.portalSub}</span>
-            </span>
+    <div dir={t.dir} lang={lang === "bm" ? "ms" : lang} className="min-h-screen bg-[#fbfaf4] text-[#14261e]">
+      <header className="sticky top-0 z-50 border-b border-emerald-950/10 bg-[#fbfaf4]/95 backdrop-blur-xl">
+        <div className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+          <a href={path("/")} className="flex items-center gap-3" aria-label="GCC Market Entry home">
+            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#123b2c] text-white shadow-sm"><Globe2 className="h-5 w-5" /></span>
+            <span><strong className="block text-sm font-black tracking-tight sm:text-base">GCC Market Entry</strong><small className="block text-[10px] font-bold uppercase tracking-[0.12em] text-[#6b776f]">{t.brandSub}</small></span>
           </a>
 
-          <ul className="hidden items-center gap-4 xl:flex">
-            {[
-              [t.nav.fit, "#fit-check"],
-              [t.nav.how, "#how-it-works"],
-              [t.nav.opportunities, "#opportunities"],
-              [t.nav.marketplaces, "#marketplaces"],
-              [t.nav.plans, "#pricing"],
-              [t.nav.stories, "#seller-success-stories"],
-              [t.nav.faq, "#faq"],
-            ].map(([label, href]) => (
-              <li key={href}><a href={href} className="text-xs font-bold text-muted-foreground transition hover:text-primary">{label}</a></li>
-            ))}
-          </ul>
+          <nav className="hidden items-center gap-5 text-xs font-extrabold text-[#526159] xl:flex" aria-label="Main navigation">
+            <a href="#start" className="hover:text-[#123b2c]">{t.nav.start}</a>
+            <a href="#countries" className="hover:text-[#123b2c]">{t.nav.countries}</a>
+            <a href="#routes" className="hover:text-[#123b2c]">{t.nav.routes}</a>
+            <a href="#tools" className="hover:text-[#123b2c]">{t.nav.tools}</a>
+            <a href={path("/official-sources/")} className="hover:text-[#123b2c]">{t.nav.sources}</a>
+          </nav>
 
           <div className="hidden items-center gap-2 md:flex">
-            <div className="flex rounded-full border border-border bg-card p-1">
-              {languageLinks.map((item) => <a key={item.code} href={item.href} className={"rounded-full px-3 py-1.5 text-xs font-bold " + (item.code === lang ? "bg-primary text-white" : "text-muted-foreground hover:text-primary")}>{item.label}</a>)}
+            <div className="flex rounded-full border border-emerald-950/10 bg-white p-1">
+              {languageLinks.map(([label, href]) => (
+                <a key={label} href={href} className={`rounded-full px-3 py-1.5 text-xs font-black ${((lang === "bm" && label === "BM") || (lang === "en" && label === "EN") || (lang === "ar" && label === "العربية")) ? "bg-[#123b2c] text-white" : "text-[#526159]"}`}>{label}</a>
+              ))}
             </div>
-            <a href="#fit-check" className="rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-primary/20">{t.nav.fit}</a>
           </div>
 
-          <button type="button" onClick={() => setMenuOpen((value) => !value)} className="inline-flex h-10 w-10 items-center justify-center rounded-lg md:hidden" aria-label="Menu">
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </nav>
+          <button type="button" onClick={() => setMenuOpen((v) => !v)} className="grid h-10 w-10 place-items-center rounded-xl border border-emerald-950/10 bg-white xl:hidden" aria-label={menuOpen ? "Close menu" : "Open menu"}>{menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}</button>
+        </div>
         {menuOpen && (
-          <div className="border-t border-border bg-white md:hidden">
-            <div className="mx-auto max-w-7xl px-4 py-4">
-              <div className="mb-3 flex gap-2">{languageLinks.map((item) => <a key={item.code} href={item.href} className={"rounded-full px-3 py-1.5 text-xs font-bold " + (item.code === lang ? "bg-primary text-white" : "border border-border")}>{item.label}</a>)}</div>
-              {[[t.nav.fit, "#fit-check"], [t.nav.how, "#how-it-works"], [t.nav.opportunities, "#opportunities"], [t.nav.marketplaces, "#marketplaces"], [t.nav.plans, "#pricing"], [t.nav.stories, "#seller-success-stories"], [t.nav.faq, "#faq"]].map(([label, href]) => <a key={href} href={href} onClick={() => setMenuOpen(false)} className="block rounded-lg px-3 py-2 text-sm font-semibold hover:bg-secondary">{label}</a>)}
+          <div className="border-t border-emerald-950/10 bg-white px-4 py-4 xl:hidden">
+            <div className="mx-auto grid max-w-7xl gap-2 text-sm font-bold">
+              <a href="#start" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 hover:bg-[#eef4ef]">{t.nav.start}</a>
+              <a href="#countries" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 hover:bg-[#eef4ef]">{t.nav.countries}</a>
+              <a href="#routes" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 hover:bg-[#eef4ef]">{t.nav.routes}</a>
+              <a href="#tools" onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2 hover:bg-[#eef4ef]">{t.nav.tools}</a>
+              <a href={path("/official-sources/")} className="rounded-xl px-3 py-2 hover:bg-[#eef4ef]">{t.nav.sources}</a>
+              <div className="mt-2 flex gap-2 border-t border-emerald-950/10 pt-3">{languageLinks.map(([label, href]) => <a key={label} href={href} className="rounded-full border border-emerald-950/10 px-3 py-1.5 text-xs font-black">{label}</a>)}</div>
             </div>
           </div>
         )}
       </header>
 
       <main>
-        <section className="relative overflow-hidden bg-[#fffaf7]">
-          <div className="pointer-events-none absolute -left-24 top-16 h-80 w-80 rounded-full bg-primary/10 blur-3xl" />
-          <div className="pointer-events-none absolute right-0 top-0 h-[30rem] w-[30rem] rounded-full bg-accent/15 blur-3xl" />
-          <div className="mx-auto grid max-w-7xl items-center gap-12 px-4 pb-20 pt-12 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8 lg:pb-24 lg:pt-16">
-            <div className="relative z-10">
-              <span className="inline-flex items-center gap-2 rounded-full border border-primary/15 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-primary shadow-sm"><Sparkles className="h-4 w-4 text-accent" />{t.hero.eyebrow}</span>
-              <h1 className="mt-6 text-[2.7rem] font-black leading-[0.96] tracking-[-0.045em] text-[#171312] sm:text-6xl lg:text-[5rem]">
-                <span className="block">{t.hero.title1}</span>
-                <span className="mt-1 block text-primary">{t.hero.title2}</span>
-              </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-relaxed text-[#645852] sm:text-xl">{t.hero.body}</p>
-              <div className="mt-7 flex flex-wrap gap-2.5">{t.hero.bullets.map((item) => <span key={item} className="inline-flex items-center gap-2 rounded-xl border border-red-100 bg-white px-3.5 py-2.5 text-sm font-bold text-[#332b28] shadow-sm"><CheckCircle2 className="h-4 w-4 text-primary" />{item}</span>)}</div>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <a href="#fit-check" className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-7 py-3.5 text-sm font-black text-white shadow-xl shadow-primary/20 transition hover:-translate-y-0.5">{t.hero.primary}<ArrowRight className="h-4 w-4" /></a>
-                <a href={EROMMAN_LINKS.sellerSupportWhatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-primary/20 bg-white px-7 py-3.5 text-sm font-black text-primary transition hover:bg-primary/5"><MessageCircle className="h-4 w-4" />{t.hero.secondary}</a>
+        <section className="relative overflow-hidden bg-[#0d3023] text-white">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(197,155,79,0.25),transparent_28%),radial-gradient(circle_at_12%_85%,rgba(73,130,96,0.22),transparent_30%)]" />
+          <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:py-28">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.2em] text-[#e5c985]">{t.hero.eyebrow}</p>
+              <h1 className="mt-5 max-w-4xl font-serif text-5xl font-bold leading-[0.98] tracking-[-0.04em] sm:text-6xl lg:text-7xl">{t.hero.title}</h1>
+              <p className="mt-6 max-w-3xl text-lg leading-8 text-white/78">{t.hero.body}</p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <a href="#start" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#e5c985] px-6 py-3.5 text-sm font-black text-[#173426]">{t.hero.primary}<ArrowRight className={`h-4 w-4 ${isArabic ? "rotate-180" : ""}`} /></a>
+                <a href="#readiness" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/25 bg-white/5 px-6 py-3.5 text-sm font-black text-white">{t.hero.secondary}<SearchCheck className="h-4 w-4" /></a>
               </div>
-              <div className="mt-10 border-t border-red-100 pt-6">
-                <p className="text-[10px] font-black uppercase tracking-[0.18em] text-muted-foreground">{t.hero.markets}</p>
-                <div className="mt-3 flex flex-wrap gap-2">{["Saudi Arabia", "UAE", "Kuwait", "Qatar", "Bahrain", "Oman"].map((market) => <span key={market} className="rounded-full bg-primary/7 px-3 py-1.5 text-xs font-black text-primary">{market}</span>)}</div>
-              </div>
+              <div className="mt-7 flex flex-wrap gap-2">{t.hero.badges.map((item) => <span key={item} className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/7 px-3 py-2 text-xs font-bold text-white/85"><CheckCircle2 className="h-3.5 w-3.5 text-[#e5c985]" />{item}</span>)}</div>
             </div>
-
-            <div className="relative">
-              <div className="relative overflow-hidden rounded-[2rem] border border-red-100 bg-white shadow-[0_35px_90px_rgba(91,10,17,0.18)]">
-                <img src={SITE_BASE_PATH + "/images/official/eromman-gcc-bridge-hero.webp"} alt="GCC market entry with eRomman" width={1024} height={1024} className="h-[470px] w-full object-cover sm:h-[560px]" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#6d0710]/85 via-transparent to-white/5" />
-                <div className="absolute left-5 top-5 rounded-xl border border-white/50 bg-white/92 px-4 py-3 shadow-lg backdrop-blur-md">
-                  <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary">{t.portal}</p>
-                  <p className="mt-1 max-w-[15rem] text-sm font-black leading-tight text-[#221b19]">{t.hero.route}</p>
-                </div>
-                <div className="absolute bottom-5 left-5 right-5 grid gap-2 rounded-2xl border border-white/30 bg-white/95 p-4 shadow-2xl backdrop-blur-xl sm:grid-cols-3">
-                  {[{ icon: SearchCheck, label: t.how.steps[0][0] }, { icon: Languages, label: t.how.steps[1][0] }, { icon: BarChart3, label: t.how.steps[3][0] }].map(({ icon: Icon, label }) => <div key={label} className="flex items-center gap-2 rounded-xl bg-[#fff5f2] px-3 py-3"><span className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-white"><Icon className="h-4 w-4" /></span><span className="text-xs font-black text-[#3a302d]">{label}</span></div>)}
-                </div>
+            <aside className="self-center rounded-[2rem] border border-white/12 bg-white/7 p-7 shadow-2xl backdrop-blur-sm">
+              <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#e5c985] text-[#173426]"><ShieldCheck className="h-6 w-6" /></div>
+              <h2 className="mt-5 text-2xl font-black">{t.intro.title}</h2>
+              <p className="mt-4 leading-7 text-white/75">{t.intro.body}</p>
+              <div className="mt-6 grid gap-3 text-sm text-white/82">
+                <div className="flex gap-3"><BadgeCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#e5c985]" /><span>Independent from marketplaces and certification bodies</span></div>
+                <div className="flex gap-3"><BookOpenCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#e5c985]" /><span>Educational guidance with clear verification points</span></div>
+                <div className="flex gap-3"><Languages className="mt-0.5 h-5 w-5 shrink-0 text-[#e5c985]" /><span>{t.language} · BM · English · العربية</span></div>
               </div>
-            </div>
+            </aside>
           </div>
         </section>
 
-        <section className="bg-[#860810] py-10 text-white">
+        <section id="start" className="py-18 lg:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between"><div><p className="text-xs font-black uppercase tracking-[0.18em] text-[#f2cf7b]">eRomman ecosystem</p><h2 className="mt-2 text-2xl font-black">{t.trust.title}</h2></div><p className="max-w-xl text-xs leading-relaxed text-white/60">{t.trust.note}</p></div>
-            <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{t.trust.items.map((item) => <div key={item[1]} className="rounded-2xl border border-white/15 bg-white/8 p-5"><p className="text-3xl font-black">{item[0]}</p><p className="mt-1 text-xs font-bold uppercase tracking-[0.1em] text-white/65">{item[1]}</p></div>)}</div>
-          </div>
-        </section>
-
-        <section id="fit-check" className="bg-white py-20 lg:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start">
-              <div className="lg:sticky lg:top-28">
-                <p className="text-xs font-black uppercase tracking-[0.22em] text-primary">{t.fit.eyebrow}</p>
-                <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">{t.fit.title}</h2>
-                <p className="mt-5 text-base leading-relaxed text-muted-foreground sm:text-lg">{t.fit.body}</p>
-                <div className="mt-7 rounded-2xl border border-primary/15 bg-primary/5 p-5"><ShieldCheck className="h-6 w-6 text-primary" /><p className="mt-3 text-sm leading-relaxed text-muted-foreground">{t.fit.disclaimer}</p></div>
-              </div>
-
-              <div className="rounded-[2rem] border border-red-100 bg-[#fffaf7] p-5 shadow-[0_24px_70px_rgba(92,12,18,0.08)] sm:p-8">
-                <div className="grid gap-5 sm:grid-cols-2">
-                  <label className="text-sm font-bold">{t.fit.category}<select value={category} onChange={(event) => setCategory(event.target.value as CategoryKey)} className="mt-2 w-full rounded-xl border border-input bg-white px-3 py-3 font-medium outline-none focus:ring-2 focus:ring-primary/20">{categories.map((item) => <option key={item.key} value={item.key}>{item.label[lang]}</option>)}</select></label>
-                  <label className="text-sm font-bold">{t.fit.docs}<select value={docs} onChange={(event) => setDocs(event.target.value as DocsKey)} className="mt-2 w-full rounded-xl border border-input bg-white px-3 py-3 font-medium outline-none focus:ring-2 focus:ring-primary/20"><option value="ready">{t.fit.docsOptions.ready}</option><option value="partial">{t.fit.docsOptions.partial}</option><option value="none">{t.fit.docsOptions.none}</option></select></label>
-                  <label className="text-sm font-bold">{t.fit.sales}<select value={sales} onChange={(event) => setSales(event.target.value as SalesKey)} className="mt-2 w-full rounded-xl border border-input bg-white px-3 py-3 font-medium outline-none focus:ring-2 focus:ring-primary/20"><option value="established">{t.fit.salesOptions.established}</option><option value="growing">{t.fit.salesOptions.growing}</option><option value="early">{t.fit.salesOptions.early}</option></select></label>
-                  <label className="text-sm font-bold">{t.fit.target}<select value={target} onChange={(event) => setTarget(event.target.value as TargetKey)} className="mt-2 w-full rounded-xl border border-input bg-white px-3 py-3 font-medium outline-none focus:ring-2 focus:ring-primary/20"><option value="saudi">{t.fit.targetOptions.saudi}</option><option value="uae">{t.fit.targetOptions.uae}</option><option value="gcc">{t.fit.targetOptions.gcc}</option></select></label>
-                </div>
-                <label className="mt-5 block text-sm font-bold">{t.fit.productLink}<input value={productLink} onChange={(event) => setProductLink(event.target.value)} placeholder={t.fit.placeholder} className="mt-2 w-full rounded-xl border border-input bg-white px-3 py-3 font-medium outline-none focus:ring-2 focus:ring-primary/20" /></label>
-
-                <div className="mt-7 overflow-hidden rounded-2xl border border-primary/15 bg-white">
-                  <div className="flex items-center justify-between gap-3 border-b border-red-100 px-5 py-4"><div className="flex items-center gap-3"><span className="grid h-11 w-11 place-items-center rounded-xl bg-primary/8 text-primary"><selectedCategory.icon className="h-5 w-5" /></span><div><p className="text-xs font-black uppercase tracking-[0.14em] text-primary">{t.fit.resultLabel}</p><p className="font-black">{selectedCategory.label[lang]}</p></div></div><span className="rounded-full bg-primary/8 px-3 py-1.5 text-xs font-black text-primary">{selectedCategory.badge[lang]}</span></div>
-                  <div className="p-5 sm:p-6"><div className="flex items-start gap-3"><BadgeCheck className="mt-1 h-6 w-6 shrink-0 text-primary" /><div><h3 className="text-xl font-black">{fitTitle}</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{fitBody}</p><p className="mt-3 text-sm leading-relaxed text-[#6b5d58]">{selectedCategory.note[lang]}</p></div></div><a href={whatsappReview} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3.5 text-sm font-black text-white shadow-lg shadow-primary/20 sm:w-auto"><MessageCircle className="h-4 w-4" />{t.fit.whatsapp}</a></div>
-                </div>
-              </div>
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-[#9a742f]">{t.roadmap.eyebrow}</p>
+            <h2 className="mt-3 max-w-4xl font-serif text-4xl font-bold tracking-[-0.03em] text-[#123b2c] sm:text-5xl">{t.roadmap.title}</h2>
+            <div className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {t.roadmap.steps.map(([num, title, body]) => (
+                <article key={num} className="rounded-[1.6rem] border border-emerald-950/10 bg-white p-6 shadow-[0_14px_40px_rgba(18,59,44,0.06)]">
+                  <span className="text-xs font-black tracking-[0.18em] text-[#9a742f]">{num}</span>
+                  <h3 className="mt-3 text-xl font-black text-[#123b2c]">{title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-[#66736b]">{body}</p>
+                </article>
+              ))}
             </div>
           </div>
         </section>
 
-        <section id="opportunities" className="border-y border-red-100 bg-[#fff8f3] py-20 lg:py-24">
+        <section id="countries" className="border-y border-emerald-950/8 bg-[#f1f4ed] py-18 lg:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-3xl text-center"><p className="text-xs font-black uppercase tracking-[0.22em] text-primary">{t.opportunities.eyebrow}</p><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">{t.opportunities.title}</h2><p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">{t.opportunities.body}</p></div>
-            <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">{categories.slice(0, 6).map((item) => { const Icon = item.icon; return <article key={item.key} className="group rounded-2xl border border-red-100 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"><div className="flex items-start justify-between gap-4"><span className="grid h-12 w-12 place-items-center rounded-xl bg-primary/8 text-primary transition group-hover:bg-primary group-hover:text-white"><Icon className="h-5 w-5" /></span><span className="rounded-full bg-[#fff1ec] px-3 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-primary">{item.badge[lang]}</span></div><h3 className="mt-5 text-xl font-black">{item.label[lang]}</h3><p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.note[lang]}</p></article> })}</div>
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-[#9a742f]">{t.countries.eyebrow}</p>
+            <h2 className="mt-3 font-serif text-4xl font-bold tracking-[-0.03em] text-[#123b2c] sm:text-5xl">{t.countries.title}</h2>
+            <p className="mt-4 max-w-3xl leading-7 text-[#66736b]">{t.countries.body}</p>
+            <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {countries.map((country) => {
+                const card = <><div className="text-3xl">{country.flag}</div><h3 className="mt-4 text-lg font-black text-[#123b2c]">{country.name}</h3><p className="mt-2 text-xs font-bold uppercase tracking-[0.1em] text-[#7a867e]">{country.live ? t.countries.live : t.countries.developing}</p>{country.live && <ArrowRight className={`mt-5 h-4 w-4 text-[#9a742f] ${isArabic ? "rotate-180" : ""}`} />}</>
+                return country.live && "href" in country ? <a key={country.name} href={path(country.href)} className="rounded-[1.5rem] border border-emerald-950/10 bg-white p-6 transition hover:-translate-y-1 hover:shadow-lg">{card}</a> : <article key={country.name} className="rounded-[1.5rem] border border-dashed border-emerald-950/15 bg-white/65 p-6">{card}</article>
+              })}
+            </div>
           </div>
         </section>
 
-        <section id="how-it-works" className="bg-white py-20 lg:py-24">
+        <section className="py-18 lg:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-3xl text-center"><p className="text-xs font-black uppercase tracking-[0.22em] text-primary">{t.how.eyebrow}</p><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">{t.how.title}</h2><p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">{t.how.body}</p></div>
-            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">{t.how.steps.map((step, index) => { const Icon = processIcons[index]; return <article key={step[0]} className="relative rounded-2xl border border-border bg-card p-6 shadow-sm"><span className="absolute right-4 top-4 text-3xl font-black text-primary/10">0{index + 1}</span><Icon className="h-6 w-6 text-primary" /><h3 className="mt-5 text-lg font-black">{step[0]}</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step[1]}</p></article> })}</div>
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-[#9a742f]">{t.knowledge.eyebrow}</p>
+            <h2 className="mt-3 font-serif text-4xl font-bold tracking-[-0.03em] text-[#123b2c] sm:text-5xl">{t.knowledge.title}</h2>
+            <div className="mt-9 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {t.knowledge.items.map(([title, body, href], index) => {
+                const icons = [ShieldCheck, MapPinned, PackageSearch, FileCheck2, BookOpenCheck, SearchCheck]
+                const Icon = icons[index]
+                return <a key={title} href={path(href)} className="group rounded-[1.5rem] border border-emerald-950/10 bg-white p-6 transition hover:-translate-y-1 hover:border-[#c59b4f]/60 hover:shadow-lg"><span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#eef4ef] text-[#123b2c]"><Icon className="h-5 w-5" /></span><h3 className="mt-5 text-lg font-black group-hover:text-[#9a742f]">{title}</h3><p className="mt-2 text-sm leading-6 text-[#66736b]">{body}</p><span className="mt-5 inline-flex items-center gap-2 text-xs font-black text-[#123b2c]">Explore <ArrowRight className={`h-3.5 w-3.5 ${isArabic ? "rotate-180" : ""}`} /></span></a>
+              })}
+            </div>
           </div>
         </section>
 
-        <section className="bg-[#8f0912] py-20 text-white lg:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-start"><div><p className="text-xs font-black uppercase tracking-[0.22em] text-[#f2cf7b]">{t.after.eyebrow}</p><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">{t.after.title}</h2></div><div className="space-y-3">{t.after.steps.map((step) => <div key={step[0]} className="grid gap-3 rounded-2xl border border-white/15 bg-white/8 p-5 sm:grid-cols-[auto_0.45fr_1fr] sm:items-center"><span className="grid h-10 w-10 place-items-center rounded-full bg-white text-sm font-black text-primary">{step[0]}</span><h3 className="font-black">{step[1]}</h3><p className="text-sm leading-relaxed text-white/70">{step[2]}</p></div>)}</div></div>
+        <section id="readiness" className="border-y border-emerald-950/8 bg-[#0f3829] py-18 text-white lg:py-24">
+          <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.18em] text-[#e5c985]">{t.checker.eyebrow}</p>
+              <h2 className="mt-3 font-serif text-4xl font-bold tracking-[-0.03em] sm:text-5xl">{t.checker.title}</h2>
+              <p className="mt-5 max-w-xl leading-7 text-white/70">{t.checker.body}</p>
+              <div className="mt-7 rounded-2xl border border-white/12 bg-white/6 p-5"><p className="text-xs font-bold leading-6 text-white/68">{t.checker.disclaimer}</p></div>
+            </div>
+            <div className="rounded-[2rem] bg-white p-6 text-[#14261e] shadow-2xl sm:p-8">
+              <div className="grid gap-5 sm:grid-cols-3">
+                <label className="text-sm font-black">{t.checker.category}<select value={category} onChange={(e) => setCategory(e.target.value as Category)} className="mt-2 w-full rounded-xl border border-[#dce5de] bg-white px-3 py-3 text-sm font-medium"><option value="general">{t.checker.cat.general}</option><option value="beauty">{t.checker.cat.beauty}</option><option value="supplement">{t.checker.cat.supplement}</option><option value="food">{t.checker.cat.food}</option><option value="electronics">{t.checker.cat.electronics}</option></select></label>
+                <label className="text-sm font-black">{t.checker.docs}<select value={docs} onChange={(e) => setDocs(e.target.value as Docs)} className="mt-2 w-full rounded-xl border border-[#dce5de] bg-white px-3 py-3 text-sm font-medium"><option value="ready">{t.checker.doc.ready}</option><option value="partial">{t.checker.doc.partial}</option><option value="early">{t.checker.doc.early}</option></select></label>
+                <label className="text-sm font-black">{t.checker.market}<select value={market} onChange={(e) => setMarket(e.target.value as Market)} className="mt-2 w-full rounded-xl border border-[#dce5de] bg-white px-3 py-3 text-sm font-medium"><option value="saudi">{t.checker.markets.saudi}</option><option value="uae">{t.checker.markets.uae}</option><option value="gcc">{t.checker.markets.gcc}</option></select></label>
+              </div>
+              <div className="mt-7 rounded-2xl bg-[#f1f4ed] p-6"><p className="text-xs font-black uppercase tracking-[0.14em] text-[#9a742f]">{t.checker.result}</p><h3 className="mt-3 text-2xl font-black text-[#123b2c]">{readiness[0]}</h3><p className="mt-3 leading-7 text-[#66736b]">{readiness[1]}</p><div className="mt-5 flex flex-wrap gap-3"><a href={path("/official-sources/")} className="inline-flex items-center gap-2 rounded-full bg-[#123b2c] px-4 py-2.5 text-xs font-black text-white"><ShieldCheck className="h-4 w-4" />{t.nav.sources}</a><a href={path("/cost-planner/")} className="inline-flex items-center gap-2 rounded-full border border-[#123b2c]/15 px-4 py-2.5 text-xs font-black text-[#123b2c]"><Calculator className="h-4 w-4" />{t.tools.items[0][0]}</a></div></div>
+            </div>
           </div>
         </section>
 
-        <section className="bg-[#fffaf7] py-20 lg:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="mx-auto max-w-3xl text-center"><p className="text-xs font-black uppercase tracking-[0.22em] text-primary">{t.support.eyebrow}</p><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">{t.support.title}</h2></div><div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{t.support.items.map((item, index) => { const Icon = supportIcons[index]; return <article key={item[0]} className="rounded-2xl border border-red-100 bg-white p-6 shadow-sm"><span className="grid h-11 w-11 place-items-center rounded-xl bg-primary/8 text-primary"><Icon className="h-5 w-5" /></span><h3 className="mt-4 text-lg font-black">{item[0]}</h3><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item[1]}</p></article> })}</div></div>
+        <section id="routes" className="py-18 lg:py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-[#9a742f]">{t.routes.eyebrow}</p>
+            <h2 className="mt-3 font-serif text-4xl font-bold tracking-[-0.03em] text-[#123b2c] sm:text-5xl">{t.routes.title}</h2>
+            <div className="mt-9 grid gap-4 md:grid-cols-2 lg:grid-cols-3">{t.routes.items.map(([title, body, icon]) => <article key={title} className="rounded-[1.5rem] border border-emerald-950/10 bg-white p-6"><span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#eef4ef] text-[#123b2c]">{routeIcon(icon)}</span><h3 className="mt-5 text-lg font-black">{title}</h3><p className="mt-2 text-sm leading-6 text-[#66736b]">{body}</p></article>)}</div>
+            <a href={path("/routes-to-market/")} className="mt-7 inline-flex items-center gap-2 rounded-full border border-[#123b2c]/15 bg-white px-5 py-3 text-sm font-black text-[#123b2c]">{t.routes.open}<ArrowRight className={`h-4 w-4 ${isArabic ? "rotate-180" : ""}`} /></a>
+          </div>
         </section>
 
-        <section id="marketplaces" className="border-y border-red-100 bg-white py-20 lg:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="mx-auto max-w-3xl text-center"><p className="text-xs font-black uppercase tracking-[0.22em] text-primary">{t.marketplaces.eyebrow}</p><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">{t.marketplaces.title}</h2><p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">{t.marketplaces.body}</p></div><div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{t.marketplaces.platforms.map((platform, index) => <div key={platform} className={"flex min-h-24 items-center justify-center rounded-2xl border p-5 text-center text-lg font-black " + (index === 0 ? "border-primary bg-primary text-white" : "border-red-100 bg-[#fffaf7]")}>{platform}</div>)}</div><p className="mx-auto mt-7 max-w-4xl rounded-2xl border border-primary/15 bg-primary/5 p-5 text-center text-sm leading-relaxed text-muted-foreground">{t.marketplaces.disclaimer}</p></div>
+        <section id="tools" className="border-y border-emerald-950/8 bg-[#f1f4ed] py-18 lg:py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <p className="text-xs font-black uppercase tracking-[0.18em] text-[#9a742f]">{t.tools.eyebrow}</p>
+            <h2 className="mt-3 font-serif text-4xl font-bold tracking-[-0.03em] text-[#123b2c] sm:text-5xl">{t.tools.title}</h2>
+            <div className="mt-9 grid gap-4 md:grid-cols-2">
+              {t.tools.items.map(([title, body, href], index) => {
+                const icons = [Calculator, Landmark, ShieldCheck, FileText]
+                const Icon = icons[index]
+                return <a key={title} href={path(href)} className="group flex gap-5 rounded-[1.6rem] border border-emerald-950/10 bg-white p-6 transition hover:-translate-y-1 hover:shadow-lg"><span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-[#123b2c] text-white"><Icon className="h-5 w-5" /></span><span><h3 className="text-lg font-black group-hover:text-[#9a742f]">{title}</h3><p className="mt-2 text-sm leading-6 text-[#66736b]">{body}</p></span></a>
+              })}
+            </div>
+          </div>
         </section>
 
-        <CompanyProfileVideo lang={lang} />
-        <SellerSuccessStories lang={lang} />
-
-        <section id="pricing" className="bg-[#fff8f3] py-20 lg:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="max-w-3xl"><p className="text-xs font-black uppercase tracking-[0.22em] text-primary">{t.pricing.eyebrow}</p><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">{t.pricing.title}</h2><p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">{t.pricing.body}</p></div><div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">{t.pricing.plans.map((plan, index) => <article key={plan.name} className={"flex flex-col rounded-2xl border p-6 " + (index === 1 ? "border-primary bg-white shadow-xl ring-1 ring-primary" : "border-red-100 bg-white")}><p className="text-xs font-black uppercase tracking-[0.16em] text-primary">{plan.label}</p><h3 className="mt-2 text-2xl font-black">{plan.name}</h3><div className="mt-5"><p className="text-3xl font-black text-primary">{plan.price}</p><p className="mt-1 text-sm text-muted-foreground line-through">{plan.normal}</p></div><ul className="mt-6 flex-1 space-y-3">{plan.features.map((feature) => <li key={feature} className="flex items-start gap-2 text-sm leading-relaxed text-muted-foreground"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" />{feature}</li>)}</ul><a href={EROMMAN_LINKS.sellerSupportWhatsapp} target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-black text-white">{t.pricing.ask}<ChevronRight className="h-4 w-4" /></a></article>)}</div><p className="mt-6 rounded-2xl border border-border bg-white p-5 text-sm leading-relaxed text-muted-foreground">{t.pricing.note}</p></div>
-        </section>
-
-        <section id="cost-estimator" className="bg-white py-20 lg:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start"><div><p className="text-xs font-black uppercase tracking-[0.22em] text-primary">{t.cost.eyebrow}</p><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">{t.cost.title}</h2><p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">{t.cost.body}</p></div><div className="overflow-hidden rounded-[2rem] border border-red-100 bg-[#fffaf7] shadow-[0_20px_60px_rgba(92,12,18,0.08)]"><div className="grid gap-5 p-6 sm:grid-cols-2 sm:p-8"><label className="text-sm font-bold">{t.cost.price}<div className="mt-2 flex items-center rounded-xl border border-input bg-white"><span className="pl-3 text-muted-foreground">RM</span><input type="number" min="0" step="0.01" value={price} onChange={(event) => setPrice(event.target.value)} className="w-full bg-transparent px-2 py-3 outline-none" /></div></label><label className="text-sm font-bold">{t.cost.rate}<input type="number" min="0" max="100" step="1" value={rate} onChange={(event) => setRate(event.target.value)} className="mt-2 w-full rounded-xl border border-input bg-white px-3 py-3 outline-none" /></label><label className="text-sm font-bold sm:col-span-2">{t.cost.pickup}<select value={pickup ? "yes" : "no"} onChange={(event) => setPickup(event.target.value === "yes")} className="mt-2 w-full rounded-xl border border-input bg-white px-3 py-3 outline-none"><option value="yes">{t.cost.yes}</option><option value="no">{t.cost.no}</option></select></label></div><div className="bg-primary p-6 text-white sm:p-8"><dl className="space-y-4 text-sm"><div className="flex justify-between gap-4"><dt className="text-white/70">{t.cost.commission}</dt><dd className="font-black">- RM {fmt(commission)}</dd></div><div className="flex justify-between gap-4"><dt className="text-white/70">{t.cost.pickupFee}</dt><dd className="font-black">- RM {fmt(pickupFee)}</dd></div></dl><div className="mt-6 border-t border-white/20 pt-6"><div className="flex items-end justify-between gap-4"><span className="text-sm text-white/70">{t.cost.receives}</span><span className="text-3xl font-black">RM {fmt(settlement)}</span></div></div><p className="mt-5 text-xs leading-relaxed text-white/70">{t.cost.note}</p></div></div></div></div>
-        </section>
-
-        <section id="faq" className="border-y border-red-100 bg-[#fffaf7] py-20 lg:py-24">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8"><p className="text-xs font-black uppercase tracking-[0.22em] text-primary">{t.faq.eyebrow}</p><h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">{t.faq.title}</h2><div className="mt-9 divide-y divide-border overflow-hidden rounded-2xl border border-border bg-white">{t.faq.items.map((item) => <details key={item[0]} className="p-6 open:bg-secondary/40"><summary className="cursor-pointer font-black">{item[0]}</summary><p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item[1]}</p></details>)}</div></div>
-        </section>
-
-        <section id="contact" className="bg-white py-20 lg:py-24">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"><div className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-primary to-[#75070e] text-white"><div className="grid gap-10 px-6 py-12 sm:px-10 lg:grid-cols-[1.2fr_0.8fr] lg:px-14 lg:py-16"><div><p className="text-xs font-black uppercase tracking-[0.22em] text-[#f2cf7b]">{t.contact.eyebrow}</p><h2 className="mt-3 max-w-3xl text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">{t.contact.title}</h2><p className="mt-5 max-w-2xl text-base leading-relaxed text-white/78 sm:text-lg">{t.contact.body}</p><div className="mt-8 flex flex-wrap gap-3"><a href={EROMMAN_LINKS.sellerSupportWhatsapp} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3 text-sm font-black text-primary"><MessageCircle className="h-4 w-4" />{t.contact.whatsapp}</a><a href={EROMMAN_LINKS.sellerSupportEmail} className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-6 py-3 text-sm font-black"><Mail className="h-4 w-4" />{t.contact.email}</a></div></div><aside className="rounded-2xl bg-white p-6 text-foreground"><img src={SITE_BASE_PATH + "/images/eromman-logo.png"} alt="eRomman" width={1157} height={238} className="h-8 w-auto" /><p className="mt-6 text-xl font-black">{SELLER_SUPPORT.name}</p><p className="mt-1 text-sm text-muted-foreground">{SELLER_SUPPORT.role}</p><div className="mt-6 space-y-3 text-sm"><a href={EROMMAN_LINKS.sellerSupportEmail} className="flex items-center gap-3 hover:text-primary"><Mail className="h-4 w-4 text-primary" />{SELLER_SUPPORT.email}</a><a href={EROMMAN_LINKS.sellerSupportPhone} className="flex items-center gap-3 hover:text-primary"><Phone className="h-4 w-4 text-primary" />{SELLER_SUPPORT.phone}</a><a href={EROMMAN_LINKS.sellerSupportLinkedIn} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-primary"><ExternalLink className="h-4 w-4 text-primary" />LinkedIn</a><a href={EROMMAN_LINKS.home} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 hover:text-primary"><ExternalLink className="h-4 w-4 text-primary" />www.eromman.com</a></div></aside></div></div></div>
+        <section className="py-18 lg:py-24">
+          <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
+            <article className="rounded-[2rem] bg-[#123b2c] p-8 text-white sm:p-10"><ShieldCheck className="h-7 w-7 text-[#e5c985]" /><p className="mt-5 text-xs font-black uppercase tracking-[0.18em] text-[#e5c985]">{t.verify.eyebrow}</p><h2 className="mt-3 font-serif text-3xl font-bold sm:text-4xl">{t.verify.title}</h2><p className="mt-4 leading-7 text-white/72">{t.verify.body}</p><a href={path("/official-sources/")} className="mt-7 inline-flex items-center gap-2 rounded-full bg-[#e5c985] px-5 py-3 text-sm font-black text-[#173426]">{t.verify.button}<ArrowRight className={`h-4 w-4 ${isArabic ? "rotate-180" : ""}`} /></a></article>
+            <article className="rounded-[2rem] border border-emerald-950/10 bg-white p-8 sm:p-10"><Truck className="h-7 w-7 text-[#9a742f]" /><p className="mt-5 text-xs font-black uppercase tracking-[0.18em] text-[#9a742f]">{t.advisory.eyebrow}</p><h2 className="mt-3 font-serif text-3xl font-bold text-[#123b2c] sm:text-4xl">{t.advisory.title}</h2><p className="mt-4 leading-7 text-[#66736b]">{t.advisory.body}</p><a href="https://tgpugulf.com/tgpu-gulf/" target="_blank" rel="noopener noreferrer" className="mt-7 inline-flex items-center gap-2 rounded-full border border-[#123b2c]/15 px-5 py-3 text-sm font-black text-[#123b2c]">{t.advisory.button}<ExternalLink className="h-4 w-4" /></a></article>
+          </div>
         </section>
       </main>
 
-      <footer className="border-t border-red-900/30 bg-[#6f0710] text-white"><div className="mx-auto flex max-w-7xl flex-col gap-5 px-4 py-10 text-sm text-white/70 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8"><p className="max-w-4xl leading-relaxed">{t.footer}</p><a href={EROMMAN_LINKS.home} target="_blank" rel="noopener noreferrer" className="inline-flex shrink-0 items-center gap-2 font-black text-white">eromman.com<ExternalLink className="h-4 w-4" /></a></div></footer>
-
-      <a href={EROMMAN_LINKS.sellerSupportWhatsapp} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp seller support" className="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 rounded-full bg-[#148f55] px-4 py-3 text-sm font-black text-white shadow-2xl transition hover:-translate-y-1 rtl:left-5 rtl:right-auto"><MessageCircle className="h-5 w-5" /><span className="hidden sm:inline">{t.hero.secondary}</span></a>
+      <footer className="border-t border-emerald-950/10 bg-[#09241a] text-white">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 text-xs leading-6 text-white/65 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8"><p className="max-w-4xl">{t.footer}</p><a href={path("/official-sources/")} className="font-black text-[#e5c985]">{t.nav.sources}</a></div>
+      </footer>
     </div>
   )
 }
