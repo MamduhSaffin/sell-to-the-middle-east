@@ -1,0 +1,53 @@
+name: Apply official GCC Market Entry logo
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-official-logo.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Replace generic globe marks with the official GCC logo
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          guide=Path('components/gcc-market-entry-guide.tsx')
+          text=guide.read_text(encoding='utf-8')
+          text=text.replace('  Globe2,\n','')
+          text=text.replace('import { SITE_BASE_PATH } from "@/lib/site"\n','import { SITE_BASE_PATH } from "@/lib/site"\nimport { GccBrandLogo } from "@/components/gcc-brand-logo"\n')
+          old='''          <a href={path("/")} className="flex items-center gap-3" aria-label="GCC Market Entry home">\n            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#123b2c] text-white shadow-sm"><Globe2 className="h-5 w-5" /></span>\n            <span><strong className="block text-sm font-black tracking-tight sm:text-base">GCC Market Entry</strong><small className="block text-[10px] font-bold uppercase tracking-[0.12em] text-[#6b776f]">{t.brandSub}</small></span>\n          </a>'''
+          new='''          <a href={path("/")} className="flex items-center" aria-label="GCC Market Entry home">\n            <GccBrandLogo />\n          </a>'''
+          if old not in text:
+              raise SystemExit('Main guide brand block not found')
+          guide.write_text(text.replace(old,new,1),encoding='utf-8')
+
+          seo=Path('components/seo-landing-page.tsx')
+          text=seo.read_text(encoding='utf-8')
+          text=text.replace('import { ArrowRight, CheckCircle2, ExternalLink, Globe2, ShieldCheck } from "lucide-react"','import { ArrowRight, CheckCircle2, ExternalLink, ShieldCheck } from "lucide-react"')
+          text=text.replace('import { SITE_BASE_PATH, SITE_URL } from "@/lib/site"\n','import { SITE_BASE_PATH, SITE_URL } from "@/lib/site"\nimport { GccBrandLogo } from "@/components/gcc-brand-logo"\n')
+          old='''          <a href={localPath("/")} className="flex items-center gap-3" aria-label="GCC Market Entry home">\n            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-[#123b2c] text-white"><Globe2 className="h-5 w-5" /></span>\n            <span>\n              <strong className="block text-sm font-black text-[#123b2c]">GCC Market Entry</strong>\n              <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-[#7a867e]">Independent knowledge hub</span>\n            </span>\n          </a>'''
+          new='''          <a href={localPath("/")} className="flex items-center" aria-label="GCC Market Entry home">\n            <GccBrandLogo compact />\n          </a>'''
+          if old not in text:
+              raise SystemExit('SEO brand block not found')
+          seo.write_text(text.replace(old,new,1),encoding='utf-8')
+          PY
+      - name: Commit GCC logo rollout
+        shell: bash
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name 'GCC Market Entry Brand Maintenance'
+          git config user.email 'mamduh@tgpugulf.com'
+          git add components/gcc-market-entry-guide.tsx components/seo-landing-page.tsx
+          git commit -m 'Use official GCC Market Entry logo across site headers'
+          git push origin HEAD:main
