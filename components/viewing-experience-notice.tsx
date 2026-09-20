@@ -51,12 +51,12 @@ export function ViewingExperienceNotice({ lang }: { lang: Lang }) {
   if (!target) return null
 
   return createPortal(
-    <aside className="border-b border-red-100 bg-white" aria-label={text.label} dir={text.dir}>
+    <aside className="border-b border-emerald-950/10 bg-white" aria-label={text.label} dir={text.dir}>
       <div className="mx-auto max-w-7xl px-4 py-3 sm:px-6 lg:px-8">
-        <div className="flex items-start justify-center gap-3 rounded-2xl border border-red-100 bg-[#fffaf7] px-4 py-3 text-sm text-[#5f514b] shadow-sm sm:items-center">
-          <MonitorSmartphone className="mt-0.5 h-5 w-5 shrink-0 text-primary sm:mt-0" aria-hidden="true" />
+        <div className="flex items-start justify-center gap-3 rounded-2xl border border-emerald-950/10 bg-[#f6f5ee] px-4 py-3 text-sm text-[#5f6b63] shadow-sm sm:items-center">
+          <MonitorSmartphone className="mt-0.5 h-5 w-5 shrink-0 text-[#123b2c] sm:mt-0" aria-hidden="true" />
           <p className="leading-relaxed">
-            <strong className="font-black text-[#2c2421]">{text.label}:</strong>{" "}
+            <strong className="font-black text-[#183d2e]">{text.label}:</strong>{" "}
             {text.message}
           </p>
         </div>
