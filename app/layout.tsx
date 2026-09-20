@@ -4,6 +4,7 @@ import { Analytics } from "@/components/analytics"
 import { SITE_URL } from "@/lib/site"
 
 const siteUrl = `${SITE_URL}/`
+const socialImage = siteUrl + "images/social/gcc-market-entry-share-1200x630.png"
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -51,19 +52,29 @@ export const metadata: Metadata = {
     url: siteUrl,
     title: "GCC Market Entry — Free Independent Guide for Malaysian Businesses",
     description:
-      "Official-source-first guidance, country guides, readiness tools and practical GCC market-entry resources. Free to use in English, Bahasa Melayu and Arabic.",
+      "Official-source-first guidance, country guides, readiness tools, verified Middle East career links and practical GCC market-entry resources. Free to use in English, Bahasa Melayu and Arabic.",
     siteName: "GCC Market Entry",
     locale: "en_MY",
+    images: [
+      {
+        url: socialImage,
+        width: 1200,
+        height: 630,
+        type: "image/png",
+        alt: "GCC Market Entry — Malaysia to Saudi Arabia, UAE and the wider GCC",
+      },
+    ],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: "GCC Market Entry | Malaysia to Saudi Arabia, UAE & GCC",
     description:
-      "A free independent GCC market-entry knowledge hub for Malaysian businesses.",
+      "A free independent GCC market-entry knowledge hub for Malaysian businesses, with official sources, free tools and verified Middle East career links.",
+    images: [socialImage],
   },
   icons: {
-    icon: siteUrl + "icon.svg?v=20260920",
-    apple: siteUrl + "apple-icon.png",
+    icon: siteUrl + "icon.svg?v=20260920b",
+    apple: siteUrl + "apple-icon.png?v=20260920b",
   },
 }
 
