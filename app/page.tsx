@@ -1,13 +1,12 @@
 import type { Metadata } from "next"
 import { GccMarketEntryGuide } from "@/components/gcc-market-entry-guide"
 import { ViewingExperienceNotice } from "@/components/viewing-experience-notice"
-import { WeeklySellerBriefing } from "@/components/weekly-seller-briefing"
 import { SITE_URL } from "@/lib/site"
 
 export const metadata: Metadata = {
-  title: "GCC Market Entry Malaysia | Sell to Saudi Arabia & UAE | eRomman",
+  title: "GCC Market Entry | Free Guide for Malaysian Businesses",
   description:
-    "GCC market entry for Malaysian brands with eRomman. Explore Saudi Arabia, UAE and the Middle East through Arabic localisation, marketplace readiness, market validation, digital marketing and seller support.",
+    "A free, independent GCC market-entry resource for Malaysian businesses exploring Saudi Arabia, the UAE and the wider Gulf through official sources, practical guides and planning tools.",
   alternates: {
     canonical: `${SITE_URL}/`,
     languages: {
@@ -19,29 +18,14 @@ export const metadata: Metadata = {
   },
 }
 
-const serviceSchema = {
+const collectionSchema = {
   "@context": "https://schema.org",
-  "@type": "Service",
-  name: "GCC Market Entry Support for Malaysian Brands",
-  serviceType: "GCC market entry, marketplace readiness, localisation and seller support",
+  "@type": "CollectionPage",
+  name: "GCC Market Entry",
   url: `${SITE_URL}/`,
-  provider: {
-    "@type": "Organization",
-    "@id": `${SITE_URL}/#organization`,
-    name: "eRomman Technologies Sdn Bhd",
-  },
-  areaServed: [
-    { "@type": "Country", name: "Saudi Arabia" },
-    { "@type": "Country", name: "United Arab Emirates" },
-    { "@type": "Country", name: "Kuwait" },
-    { "@type": "Country", name: "Qatar" },
-    { "@type": "Country", name: "Bahrain" },
-    { "@type": "Country", name: "Oman" },
-  ],
-  audience: {
-    "@type": "BusinessAudience",
-    audienceType: "Malaysian brands and sellers exploring GCC e-commerce expansion",
-  },
+  description:
+    "Independent educational resources for Malaysian businesses researching Saudi Arabia, the UAE and wider GCC market-entry pathways.",
+  inLanguage: ["en-MY", "ms-MY", "ar"],
 }
 
 const faqSchema = {
@@ -50,34 +34,34 @@ const faqSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "Do I need to move stock to the Middle East?",
+      name: "Is GCC Market Entry a marketplace or government authority?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "No. Sellers can keep stock in Malaysia while testing the market, subject to the agreed fulfilment arrangement.",
+        text: "No. GCC Market Entry is an independent educational resource. Regulatory, tax, customs and marketplace requirements should be verified with the relevant official authority or platform.",
       },
     },
     {
       "@type": "Question",
-      name: "Do I need to list every product?",
+      name: "Do I need to launch my full product catalogue?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "No. Starting with a smaller group of suitable SKUs is usually more practical for market validation.",
+        text: "Not necessarily. A smaller group of suitable products can make early market research and controlled testing easier to manage.",
       },
     },
     {
       "@type": "Question",
-      name: "Can eRomman guarantee Amazon or Noon approval?",
+      name: "Does this website guarantee Amazon, Noon or regulatory approval?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "No. Third-party marketplace listing depends on product eligibility, documentation, category rules and platform approval.",
+        text: "No. Eligibility and approval depend on the exact product, seller structure, documentation, category rules and the current requirements of the relevant platform or authority.",
       },
     },
     {
       "@type": "Question",
-      name: "What about supplements, health or beauty products?",
+      name: "Are the tools and guides free?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "These categories can have strong potential, but market-specific regulatory and marketplace documentation must be checked before submission.",
+        text: "Yes. The learning resources, planning tools and official-source directory on GCC Market Entry are provided free to use.",
       },
     },
   ],
@@ -86,11 +70,10 @@ const faqSchema = {
 export default function Page() {
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema).replace(/</g, "\\u003c") }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionSchema).replace(/</g, "\\u003c") }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} />
       <GccMarketEntryGuide lang="en" />
       <ViewingExperienceNotice lang="en" />
-      <WeeklySellerBriefing lang="en" />
     </>
   )
 }
