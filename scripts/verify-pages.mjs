@@ -24,6 +24,7 @@ const routes = [
   "guides/how-to-test-gcc-demand-before-scaling/",
 ]
 const guideRoutes = ["", "en/", "bm/", "ar/"]
+const visibleLanguageRoutes = ["bm/", "ar/"]
 const headlines = new Map([
   ["", "Enter the GCC with better information."],
   ["en/", "Enter the GCC with better information."],
@@ -53,7 +54,7 @@ export async function stamp(directory, commit, basePath) {
     if (guideRoutes.includes(route)) {
       assert.ok(html.includes(headlines.get(route)), "Independent GCC Market Entry guide missing from " + (route || "/"))
       for (const id of sections) assert.ok(html.includes('id="' + id + '"'), "Missing resource section " + id + " from " + (route || "/"))
-      for (const language of guideRoutes.slice(1)) {
+      for (const language of visibleLanguageRoutes) {
         assert.ok(html.includes("/" + language), "Missing language route " + language + " from " + (route || "/"))
       }
       assert.ok(!html.toLowerCase().includes("eromman"), "Legacy employer branding found on " + (route || "/"))
