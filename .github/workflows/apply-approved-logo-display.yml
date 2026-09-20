@@ -1,0 +1,58 @@
+name: Apply approved GCC Market Entry logo
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-approved-logo-display.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply approved logo to shared headers and social preview
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          guide=Path('components/gcc-market-entry-guide.tsx')
+          s=guide.read_text(encoding='utf-8')
+          old='''          <a href={path("/")} className="flex items-center gap-3" aria-label="GCC Market Entry home">\n            <span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#123b2c] text-white shadow-sm"><Globe2 className="h-5 w-5" /></span>\n            <span><strong className="block text-sm font-black tracking-tight sm:text-base">GCC Market Entry</strong><small className="block text-[10px] font-bold uppercase tracking-[0.12em] text-[#6b776f]">{t.brandSub}</small></span>\n          </a>'''
+          new='''          <a href={path("/")} className="flex items-center gap-3" aria-label="GCC Market Entry home">\n            <img src={path("/gcc-market-entry-logo.svg?v=20260920-approved")} alt="GCC Market Entry" className="h-14 w-14 rounded-xl object-contain sm:h-16 sm:w-16" />\n            <span><strong className="block text-sm font-black tracking-tight sm:text-base">GCC Market Entry</strong><small className="block text-[10px] font-bold uppercase tracking-[0.12em] text-[#6b776f]">{t.brandSub}</small></span>\n          </a>'''
+          if old not in s:
+              raise SystemExit('Main GCC header pattern not found')
+          guide.write_text(s.replace(old,new,1),encoding='utf-8')
+
+          seo=Path('components/seo-landing-page.tsx')
+          s=seo.read_text(encoding='utf-8')
+          old='''          <a href={localPath("/")} className="flex items-center gap-3" aria-label="GCC Market Entry home">\n            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-[#123b2c] text-white"><Globe2 className="h-5 w-5" /></span>\n            <span>\n              <strong className="block text-sm font-black text-[#123b2c]">GCC Market Entry</strong>\n              <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-[#7a867e]">Independent knowledge hub</span>\n            </span>\n          </a>'''
+          new='''          <a href={localPath("/")} className="flex items-center gap-3" aria-label="GCC Market Entry home">\n            <img src={localPath("/gcc-market-entry-logo.svg?v=20260920-approved")} alt="GCC Market Entry" className="h-14 w-14 rounded-xl object-contain sm:h-16 sm:w-16" />\n            <span>\n              <strong className="block text-sm font-black text-[#123b2c]">GCC Market Entry</strong>\n              <span className="block text-[10px] font-bold uppercase tracking-[0.14em] text-[#7a867e]">Independent knowledge hub</span>\n            </span>\n          </a>'''
+          if old not in s:
+              raise SystemExit('SEO GCC header pattern not found')
+          seo.write_text(s.replace(old,new,1),encoding='utf-8')
+
+          preview=Path('public/social-preview.svg')
+          s=preview.read_text(encoding='utf-8')
+          replacement='''<g transform="translate(70 48)">\n    <rect width="86" height="86" rx="22" fill="#fffdf8" stroke="#123b2c" stroke-opacity=".12"/>\n    <text x="10" y="47" font-family="Arial, Helvetica, sans-serif" font-size="31" font-weight="900" fill="#075842">GCC</text>\n    <path d="M22 69c18-2 34-9 47-22" fill="none" stroke="#d6a431" stroke-width="6" stroke-linecap="round"/>\n    <path d="m63 39 18 4-11 14v-7l-8-2Z" fill="#d6a431"/>\n    <text x="108" y="31" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="800" fill="#123b2c">GCC MARKET ENTRY</text>\n    <text x="108" y="58" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" letter-spacing="2.1" fill="#8a6b2d">FREE • INDEPENDENT • MULTILINGUAL</text>\n  </g>'''
+          s2,repl_count=re.subn(r'<g transform="translate\(70 62\)">.*?</g>',replacement,s,count=1,flags=re.S)
+          if repl_count!=1:
+              raise SystemExit('Social preview logo block not found')
+          preview.write_text(s2,encoding='utf-8')
+          PY
+      - name: Commit approved GCC branding
+        shell: bash
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name 'GCC Market Entry Brand Maintenance'
+          git config user.email 'mamduh@tgpugulf.com'
+          git add components/gcc-market-entry-guide.tsx components/seo-landing-page.tsx public/social-preview.svg
+          git commit -m 'Show approved GCC Market Entry logo across site'
+          git push origin HEAD:main
