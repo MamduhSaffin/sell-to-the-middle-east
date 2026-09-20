@@ -1,39 +1,31 @@
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
 import { Analytics } from "@/components/analytics"
-import { ApprovedDriveVisuals } from "@/components/approved-drive-visuals"
-import { OfficialErommanIdentity } from "@/components/official-eromman-identity"
-import { EROMMAN_LINKS, SELLER_SUPPORT } from "@/lib/links"
 import { SITE_URL } from "@/lib/site"
 
 const siteUrl = `${SITE_URL}/`
-const socialImage = siteUrl + "images/social/gcc-market-entry-whatsapp-1200x630-v2.jpg"
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "GCC Market Entry Malaysia | Saudi Arabia & UAE | eRomman",
-    template: "%s | GCC Market Entry Malaysia",
+    default: "GCC Market Entry | Free GCC Guide for Malaysian Businesses",
+    template: "%s | GCC Market Entry",
   },
   description:
-    "GCC market entry support for Malaysian brands exploring Saudi Arabia, UAE and the Middle East with eRomman, including product fit, Arabic localisation, marketplace readiness, digital marketing and seller support.",
+    "A free, independent and multilingual GCC market-entry resource for Malaysian businesses exploring Saudi Arabia, the UAE and the wider Gulf through official sources, practical guides and planning tools.",
   keywords: [
     "GCC market entry Malaysia",
-    "GCC market entry",
-    "sell to Saudi Arabia from Malaysia",
-    "sell to UAE from Malaysia",
-    "Malaysia Middle East ecommerce",
-    "Saudi Arabia marketplace Malaysia",
-    "UAE marketplace Malaysia",
-    "Arabic ecommerce localisation",
-    "cross-border ecommerce Malaysia",
-    "Malaysian brands GCC",
-    "eRomman GCC",
+    "Saudi Arabia market entry Malaysia",
+    "UAE market entry Malaysia",
+    "Malaysia GCC export",
+    "GCC compliance guide",
+    "Arabic localisation ecommerce",
+    "GCC marketplace guide",
+    "Malaysian exporters GCC",
   ],
-  authors: [{ name: SELLER_SUPPORT.name }],
-  creator: SELLER_SUPPORT.name,
-  publisher: "eRomman Technologies Sdn Bhd",
-  category: "E-commerce market entry",
+  creator: "GCC Market Entry",
+  publisher: "GCC Market Entry",
+  category: "Business education and market-entry research",
   robots: {
     index: true,
     follow: true,
@@ -57,95 +49,50 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: siteUrl,
-    title: "GCC Market Entry Malaysia — Saudi Arabia, UAE & Middle East | eRomman",
+    title: "GCC Market Entry — Free Independent Guide for Malaysian Businesses",
     description:
-      "A practical GCC market-entry pathway for Malaysian sellers: product fit, Arabic localisation, marketplace readiness, market validation and seller support with eRomman.",
-    siteName: "GCC Market Entry by eRomman",
+      "Official-source-first guidance, country guides, readiness tools and practical GCC market-entry resources. Free to use in English, Bahasa Melayu and Arabic.",
+    siteName: "GCC Market Entry",
     locale: "en_MY",
-    images: [
-      {
-        url: socialImage,
-        width: 1200,
-        height: 630,
-        type: "image/jpeg",
-        alt: "GCC Market Entry Malaysia with eRomman — Saudi Arabia, UAE and Middle East expansion",
-      },
-    ],
   },
   twitter: {
-    card: "summary_large_image",
-    title: "GCC Market Entry Malaysia | Saudi Arabia & UAE | eRomman",
-    description: "Practical GCC market-entry support for Malaysian brands exploring Saudi Arabia, UAE and the Middle East.",
-    images: [socialImage],
+    card: "summary",
+    title: "GCC Market Entry | Malaysia to Saudi Arabia, UAE & GCC",
+    description:
+      "A free independent GCC market-entry knowledge hub for Malaysian businesses.",
   },
   icons: {
-    icon: siteUrl + "icon.svg?v=20260912",
+    icon: siteUrl + "icon.svg?v=20260920",
     apple: siteUrl + "apple-icon.png",
   },
 }
 
 export const viewport: Viewport = {
   colorScheme: "light",
-  themeColor: "#b3131b",
-}
-
-const organizationSchema = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "@id": `${SITE_URL}/#organization`,
-  name: "eRomman Technologies Sdn Bhd",
-  alternateName: "eRomman",
-  url: EROMMAN_LINKS.home,
-  description: "E-commerce and GCC market-entry support for sellers and brands expanding into Middle East markets.",
-  contactPoint: {
-    "@type": "ContactPoint",
-    contactType: "Seller Support",
-    email: SELLER_SUPPORT.email,
-    telephone: SELLER_SUPPORT.phone,
-    availableLanguage: ["English", "Malay", "Arabic"],
-  },
+  themeColor: "#123b2c",
 }
 
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "@id": `${SITE_URL}/#website`,
-  name: "GCC Market Entry by eRomman",
+  name: "GCC Market Entry",
   alternateName: "GCC Market Entry Malaysia",
   url: siteUrl,
-  description: metadata.description,
+  description:
+    "Free independent guidance for Malaysian businesses exploring Saudi Arabia, the UAE and wider GCC markets.",
   inLanguage: ["en-MY", "ms-MY", "ar"],
-  publisher: { "@id": `${SITE_URL}/#organization` },
-  author: {
-    "@type": "Person",
-    name: SELLER_SUPPORT.name,
-    jobTitle: SELLER_SUPPORT.role,
-    url: EROMMAN_LINKS.sellerSupportLinkedIn,
-  },
-}
-
-const authorSchema = {
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "@id": `${SITE_URL}/#seller-support`,
-  name: SELLER_SUPPORT.name,
-  jobTitle: SELLER_SUPPORT.role,
-  url: EROMMAN_LINKS.sellerSupportLinkedIn,
-  email: SELLER_SUPPORT.email,
-  telephone: SELLER_SUPPORT.phone,
-  worksFor: { "@id": `${SITE_URL}/#organization` },
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className="bg-background">
       <body className="font-sans antialiased">
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema).replace(/</g, "\\u003c") }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema).replace(/</g, "\\u003c") }} />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(authorSchema).replace(/</g, "\\u003c") }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema).replace(/</g, "\\u003c") }}
+        />
         {children}
-        <OfficialErommanIdentity />
-        <ApprovedDriveVisuals />
         <Analytics />
       </body>
     </html>
