@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import "./globals.css"
 import { Analytics } from "@/components/analytics"
+import { PublicContactBar } from "@/components/public-contact-bar"
 import { SiteSearchNavigation } from "@/components/site-search-navigation"
 import { SITE_URL } from "@/lib/site"
 
@@ -105,6 +106,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema).replace(/</g, "\\u003c") }}
         />
         {children}
+        <PublicContactBar />
         <SiteSearchNavigation />
         <Analytics />
       </body>
