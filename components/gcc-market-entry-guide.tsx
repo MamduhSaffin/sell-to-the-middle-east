@@ -437,6 +437,13 @@ export function GccMarketEntryGuide({ lang }: { lang: Lang }) {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_15%,rgba(197,155,79,0.25),transparent_28%),radial-gradient(circle_at_12%_85%,rgba(73,130,96,0.22),transparent_30%)]" />
           <div className="relative mx-auto grid max-w-7xl gap-12 px-4 py-20 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:px-8 lg:py-28">
             <div>
+              <img
+                src={path("/gcc-market-entry-logo.svg?v=20260920-hero")}
+                alt="GCC Market Entry — Business, Jobs, Scholarships, Official Resources and Market Guides"
+                className="mb-7 h-auto w-[min(300px,78vw)] rounded-[1.75rem] bg-white shadow-2xl"
+                width={700}
+                height={700}
+              />
               <p className="text-xs font-black uppercase tracking-[0.2em] text-[#e5c985]">{t.hero.eyebrow}</p>
               <h1 className="mt-5 max-w-4xl font-serif text-5xl font-bold leading-[0.98] tracking-[-0.04em] sm:text-6xl lg:text-7xl">{t.hero.title}</h1>
               <p className="mt-6 max-w-3xl text-lg leading-8 text-white/78">{t.hero.body}</p>
