@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { GccMarketEntryGuide } from "@/components/gcc-market-entry-guide"
+import { ApprovedHeroBanner } from "@/components/approved-hero-banner"
 import { JobsHighlight } from "@/components/jobs-highlight"
 import { StudyHighlight } from "@/components/study-highlight"
 import { ViewingExperienceNotice } from "@/components/viewing-experience-notice"
