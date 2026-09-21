@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { ApprovedHeroBanner } from "@/components/approved-hero-banner"
 import { GccMarketEntryGuide } from "@/components/gcc-market-entry-guide"
 import { JobsHighlight } from "@/components/jobs-highlight"
 import { StudyHighlight } from "@/components/study-highlight"
@@ -13,6 +14,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
+      <ApprovedHeroBanner />
       <GccMarketEntryGuide lang="bm" />
       <JobsHighlight lang="bm" />
       <StudyHighlight lang="bm" />
