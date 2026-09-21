@@ -3,11 +3,11 @@ import { SITE_BASE_PATH } from "@/lib/site"
 export function GccBrandLogo({ compact = false }: { compact?: boolean }) {
   return (
     <img
-      src={`${SITE_BASE_PATH}/gcc-market-entry-header.svg?v=20260921-live-nav-fix`}
+      src={`${SITE_BASE_PATH}/gcc-market-entry-approved.png`}
       alt="GCC Market Entry"
-      width={560}
-      height={120}
-      className={compact ? "h-auto w-[170px] sm:w-[195px]" : "h-auto w-[190px] sm:w-[225px]"}
+      width={1581}
+      height={995}
+      className={compact ? "h-auto w-[120px] shrink-0" : "h-auto w-[140px] shrink-0"}
       loading="eager"
       decoding="async"
     />

@@ -23,10 +23,10 @@ export function SiteNavbar() {
       <nav className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <a href={homeHref} className="flex shrink-0 items-center" aria-label="GCC Market Entry home">
           <img
-            src={`${SITE_BASE_PATH}/gcc-market-entry-header.svg?v=20260921-nav`}
+            src={`${SITE_BASE_PATH}/gcc-market-entry-approved.png`}
             alt="GCC Market Entry"
-            width={560}
-            height={120}
+            width={1581}
+            height={995}
             className="h-12 w-auto sm:h-14"
           />
         </a>
