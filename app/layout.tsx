@@ -6,7 +6,7 @@ import { SiteSearchNavigation } from "@/components/site-search-navigation"
 import { SITE_URL } from "@/lib/site"
 
 const siteUrl = `${SITE_URL}/`
-const socialImage = siteUrl + "images/social/gcc-market-entry-approved-banner.webp?v=20260922-fixed2"
+const socialImage = siteUrl + "images/social/gcc-market-entry-whatsapp.jpg?v=20260922-wa1"
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -61,8 +61,8 @@ export const metadata: Metadata = {
       {
         url: socialImage,
         width: 1200,
-        height: 675,
-        type: "image/webp",
+        height: 630,
+        type: "image/jpeg",
         alt: "GCC Market Entry — Malaysia to Saudi Arabia, UAE and the wider GCC",
       },
     ],
