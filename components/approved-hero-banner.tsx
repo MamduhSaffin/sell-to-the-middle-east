@@ -1,7 +1,7 @@
 import { SITE_BASE_PATH } from "@/lib/site"
 
 export function ApprovedHeroBanner() {
-  const src = `${SITE_BASE_PATH}/images/social/gcc-market-entry-approved-banner.webp`
+  const src = `${SITE_BASE_PATH}/images/social/gcc-market-entry-approved-banner.webp?v=20260922-fixed2`
   return (
     <section className="bg-white pt-4 sm:pt-6" aria-label="GCC Market Entry">
       <div className="mx-auto w-full max-w-[1600px] px-2 sm:px-4">
