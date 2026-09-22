@@ -6,7 +6,7 @@ import { SiteSearchNavigation } from "@/components/site-search-navigation"
 import { SITE_URL } from "@/lib/site"
 
 const siteUrl = `${SITE_URL}/`
-const socialImage = siteUrl + "images/social/gcc-market-entry-approved-banner.webp?v=20260922"
+const socialImage = siteUrl + "images/social/gcc-market-entry-approved-banner.webp?v=20260922-fixed2"
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
