@@ -62,7 +62,7 @@ export async function stamp(directory, commit, basePath) {
     if (route === "") {
       assert.ok(html.includes("gcc-market-entry-approved-banner.webp"), "Homepage is missing the approved social sharing preview")
       assert.ok(html.includes('content="1200"'), "Homepage social preview width metadata is missing")
-      assert.ok(html.includes('content="675"'), "Homepage social preview height metadata is missing")
+      assert.ok(html.includes('content="630"'), "Homepage social preview height metadata is missing")
     }
 
     if (route === "jobs-middle-east/") {
