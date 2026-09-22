@@ -42,14 +42,24 @@ jobs:
       - name: TypeScript check
         run: pnpm check
 
-      - name: Prepare favicon and social preview
+      - name: Prepare approved hero, favicon and social preview
         run: |
           sudo apt-get update
           sudo apt-get install -y librsvg2-bin imagemagick
           mkdir -p public/images/social
 
-          # The homepage hero is committed artwork built with the approved GCC logo.
+          # Rebuild the approved WebP from the repository's base64 parts.
+          # This avoids serving the previously corrupted committed WebP asset.
+          cat public/images/social/gcc-banner.b64.1 \
+              public/images/social/gcc-banner.b64.2 \
+              public/images/social/gcc-banner.b64.3 \
+            | tr -d '\r\n' \
+            | base64 --decode \
+            > public/images/social/gcc-market-entry-approved-banner.webp
+
           test -s public/images/social/gcc-market-entry-approved-banner.webp
+          file public/images/social/gcc-market-entry-approved-banner.webp
+
           rsvg-convert -w 512 -h 512 public/icon.svg -o public/apple-icon.png
           rsvg-convert -w 1200 -h 630 public/social-preview.svg -o public/images/social/gcc-market-entry-share-1200x630.png
           convert public/images/social/gcc-market-entry-approved-banner.webp -resize '1200x630^' -gravity center -extent 1200x630 -quality 92 public/images/social/gcc-market-entry-whatsapp.jpg
