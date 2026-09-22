@@ -1,8 +1,7 @@
 import type { Metadata } from "next"
 import { ApprovedHeroBanner } from "@/components/approved-hero-banner"
 import { GccMarketEntryGuide } from "@/components/gcc-market-entry-guide"
-import { JobsHighlight } from "@/components/jobs-highlight"
-import { StudyHighlight } from "@/components/study-highlight"
+import { SoftEntryEnhancement } from "@/components/soft-entry-enhancement"
 import { ViewingExperienceNotice } from "@/components/viewing-experience-notice"
 import { SITE_URL } from "@/lib/site"
 
@@ -77,8 +76,7 @@ export default function Page() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} />
       <ApprovedHeroBanner />
       <GccMarketEntryGuide lang="en" />
-      <JobsHighlight lang="en" />
-      <StudyHighlight lang="en" />
+      <SoftEntryEnhancement lang="en" />
       <ViewingExperienceNotice lang="en" />
     </>
   )
