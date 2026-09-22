@@ -42,25 +42,20 @@ jobs:
       - name: TypeScript check
         run: pnpm check
 
-      - name: Generate approved hero, favicon and social preview
+      - name: Prepare favicon and social preview
         run: |
           sudo apt-get update
           sudo apt-get install -y librsvg2-bin imagemagick
           mkdir -p public/images/social
 
-          # Keep the user's approved GCC logo as the only visible logo on the hero artwork.
-          convert public/images/gcc-hero.png -resize '1200x675^' -gravity center -extent 1200x675 /tmp/gcc-base.png
-          convert public/gcc-market-entry-approved.png -trim +repage -resize '184x92>' /tmp/gcc-approved-logo.png
-          convert /tmp/gcc-base.png -fill white -draw 'roundrectangle 26,14 450,115 18,18' /tmp/gcc-card.png
-          convert /tmp/gcc-card.png /tmp/gcc-approved-logo.png -gravity northwest -geometry +145+18 -composite -quality 90 public/images/social/gcc-market-entry-approved-banner.webp
-
+          # The homepage hero is committed artwork built with the approved GCC logo.
+          test -s public/images/social/gcc-market-entry-approved-banner.webp
           rsvg-convert -w 512 -h 512 public/icon.svg -o public/apple-icon.png
           rsvg-convert -w 1200 -h 630 public/social-preview.svg -o public/images/social/gcc-market-entry-share-1200x630.png
           convert public/images/social/gcc-market-entry-approved-banner.webp -resize '1200x630^' -gravity center -extent 1200x630 -quality 92 public/images/social/gcc-market-entry-whatsapp.jpg
 
           test -s public/apple-icon.png
           test -s public/images/social/gcc-market-entry-share-1200x630.png
-          test -s public/images/social/gcc-market-entry-approved-banner.webp
           test -s public/images/social/gcc-market-entry-whatsapp.jpg
 
       - name: Build static export
@@ -86,7 +81,6 @@ jobs:
 
       - name: Set up Node
         uses: actions/setup-node@v4
-
         with:
           node-version: 22
 
