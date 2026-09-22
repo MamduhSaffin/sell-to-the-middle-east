@@ -25,6 +25,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Rebuild approved GCC hero banner
+        run: cat public/images/social/gcc-banner.b64.1 public/images/social/gcc-banner.b64.2 public/images/social/gcc-banner.b64.3 | base64 --decode > public/images/social/gcc-market-entry-approved-banner.webp
+
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -51,6 +54,7 @@ jobs:
           rsvg-convert -w 1200 -h 630 public/social-preview.svg -o public/images/social/gcc-market-entry-share-1200x630.png
           test -s public/apple-icon.png
           test -s public/images/social/gcc-market-entry-share-1200x630.png
+          test -s public/images/social/gcc-market-entry-approved-banner.webp
 
       - name: Build static export
         run: pnpm build
