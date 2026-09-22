@@ -60,13 +60,22 @@ jobs:
           test -s public/images/social/gcc-market-entry-approved-banner.webp
           file public/images/social/gcc-market-entry-approved-banner.webp
 
+          # Normalize the social artwork to the official green + gold palette before rendering.
+          sed -i 's/#123b2c/#064a38/g; s/#c59b4f/#d6a431/g; s/#8a6b2d/#b98216/g; s/#e0bf73/#f5d56d/g; s/#fbfaf4/#fffdf8/g' public/social-preview.svg
+
           rsvg-convert -w 512 -h 512 public/icon.svg -o public/apple-icon.png
           rsvg-convert -w 1200 -h 630 public/social-preview.svg -o public/images/social/gcc-market-entry-share-1200x630.png
           convert public/images/social/gcc-market-entry-approved-banner.webp -resize '1200x630^' -gravity center -extent 1200x630 -quality 92 public/images/social/gcc-market-entry-whatsapp.jpg
 
+          # Next.js static export: use file-based static metadata images instead of runtime image routes.
+          cp public/images/social/gcc-market-entry-share-1200x630.png app/opengraph-image.png
+          cp public/images/social/gcc-market-entry-share-1200x630.png app/twitter-image.png
+
           test -s public/apple-icon.png
           test -s public/images/social/gcc-market-entry-share-1200x630.png
           test -s public/images/social/gcc-market-entry-whatsapp.jpg
+          test -s app/opengraph-image.png
+          test -s app/twitter-image.png
 
       - name: Build static export
         run: pnpm build
