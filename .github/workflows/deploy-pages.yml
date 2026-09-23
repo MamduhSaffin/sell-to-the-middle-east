@@ -48,7 +48,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y imagemagick
 
-          LOGO_SEED='https://sdmntprcentralindia.oaiusercontent.com/files/00000000-9050-8208-9136-7d42df1847c8/raw?se=2026-09-23T04%3A37%3A27Z&sp=r&sv=2026-02-06&sr=b&scid=9f55c0fc-eddd-5df3-9560-36072613778f&skoid=fb469448-2cc9-41bd-a5a6-6e020952b47a&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-23T04%3A06%3A37Z&ske=2026-09-24T04%3A06%3A37Z&sks=b&skv=2026-02-06&sig=6pBf3G1YgYiuubNl1NQPJijfvmjeYt9/OC/2bQ1DyEQ%3D'
+          LOGO_SEED='https://sdmntprindiasocentral.oaiusercontent.com/files/00000000-0908-8211-881d-72a33cc1f8b2/raw?se=2026-09-23T04%3A46%3A11Z&sp=r&sv=2026-02-06&sr=b&scid=aaccba26-6b46-5a99-a1bc-845697fa6e5e&skoid=fb469448-2cc9-41bd-a5a6-6e020952b47a&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-23T01%3A39%3A12Z&ske=2026-09-24T01%3A39%3A12Z&sks=b&skv=2026-02-06&sig=tQbdLTUl8hSREh4JBRFB0YdeD7oJRCVkSI04nnxMvYE%3D'
           LOGO_LIVE='https://gccmarketentry.me/gcc-market-entry-logo-approved-green-gold-20260923.png'
 
           if curl -fL --retry 3 --connect-timeout 15 "$LOGO_SEED" -o /tmp/gcc-logo-source; then
@@ -62,9 +62,6 @@ jobs:
           cp /tmp/gcc-logo-source public/gcc-market-entry-approved.png
           convert /tmp/gcc-logo-source -resize '256x256>' -gravity center -background white -extent 256x256 -strip public/gcc-market-entry-favicon-approved-green-gold-20260923.png
           cp public/gcc-market-entry-favicon-approved-green-gold-20260923.png public/apple-icon.png
-
-          sed -i 's#icon: siteUrl + "icon.svg?v=20260920b"#icon: siteUrl + "gcc-market-entry-favicon-approved-green-gold-20260923.png"#g' app/layout.tsx
-          sed -i 's#apple: siteUrl + "apple-icon.png?v=20260920b"#apple: siteUrl + "gcc-market-entry-favicon-approved-green-gold-20260923.png"#g' app/layout.tsx
 
           test -s public/gcc-market-entry-logo-approved-green-gold-20260923.png
           test -s public/gcc-market-entry-favicon-approved-green-gold-20260923.png
