@@ -37,7 +37,7 @@ const headlines = new Map([
   ["ar/", "ادخل أسواق الخليج بمعلومات أوضح."],
 ])
 const sections = ["start", "countries", "readiness", "routes", "tools"]
-const socialPreviewPath = "images/social/gcc-market-entry-approved-banner.webp"
+const socialPreviewPath = "gcc-market-entry-logo-approved-green-gold-20260923.png"
 const iconPath = "icon.svg"
 const appleIconPath = "apple-icon.png"
 
@@ -60,9 +60,12 @@ export async function stamp(directory, commit, basePath) {
     assert.ok(html.includes("/_next/static/"), "Compiled assets missing from " + (route || "/"))
 
     if (route === "") {
-      assert.ok(html.includes("gcc-market-entry-approved-banner.webp"), "Homepage is missing the approved social sharing preview")
-      assert.ok(html.includes('content="1200"'), "Homepage social preview width metadata is missing")
-      assert.ok(html.includes('content="630"'), "Homepage social preview height metadata is missing")
+      assert.ok(html.includes("gcc-market-entry-logo-approved-green-gold-20260923.png"), "Homepage is missing the approved GCC logo-only social sharing preview")
+      assert.ok(html.includes('content="1122"'), "Homepage social preview width metadata is missing")
+      assert.ok(html.includes('content="1402"'), "Homepage social preview height metadata is missing")
+      assert.ok(!html.includes("gcc-market-entry-approved-banner.webp"), "Rejected GCC promotional banner is still referenced")
+      assert.ok(!html.includes("gcc-market-entry-social.jpg"), "Rejected GCC social artwork is still referenced")
+      assert.ok(!html.includes("gcc-hero.png"), "Rejected GCC hero artwork is still referenced")
     }
 
     if (route === "jobs-middle-east/") {
@@ -124,7 +127,7 @@ export async function stamp(directory, commit, basePath) {
   const manifest = { commit, basePath, files: [...files.values()] }
   await writeFile(resolve(root, "deployment.json"), JSON.stringify(manifest, null, 2) + "\n")
   await writeFile(resolve(root, ".nojekyll"), "")
-  console.log("Validated GCC Market Entry routes, jobs, study directory, collaboration page, favicon and approved social preview across " + files.size + " exported pages/assets for " + commit)
+  console.log("Validated GCC Market Entry routes, jobs, study directory, collaboration page, favicon and approved logo-only social preview across " + files.size + " exported pages/assets for " + commit)
   return manifest
 }
 
