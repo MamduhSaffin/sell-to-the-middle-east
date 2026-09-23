@@ -21,6 +21,16 @@ const sellerBenefits = [
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden">
+      <div className="mx-auto max-w-[1536px] px-3 pt-3 sm:px-5 sm:pt-5">
+        <img
+          src="/gcc-market-entry-hero-social-20260923.png?v=20260923-banner"
+          width={1536}
+          height={768}
+          alt="GCC Market Entry — helping businesses explore Saudi Arabia and the wider Gulf market"
+          className="h-auto w-full rounded-2xl object-cover shadow-lg shadow-primary/10 sm:rounded-3xl"
+          fetchPriority="high"
+        />
+      </div>
       <div className="absolute inset-x-0 top-0 -z-10 h-96 bg-gradient-to-b from-primary/8 to-transparent" />
 
       <div className="mx-auto grid max-w-6xl items-center gap-12 px-4 pb-20 pt-12 sm:px-6 sm:pt-16 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14 lg:px-8 lg:pb-24 lg:pt-20">
