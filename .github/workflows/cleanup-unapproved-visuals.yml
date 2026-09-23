@@ -18,7 +18,6 @@ jobs:
       - name: Keep approved GCC logo only
         run: |
           set -euo pipefail
-          test -s public/gcc-market-entry-logo-approved-green-gold-20260923.png
           python3 <<'PY'
           from pathlib import Path
           import re
@@ -27,16 +26,12 @@ jobs:
           s = layout.read_text(encoding='utf-8')
           s = re.sub(
               r'const socialImage = siteUrl \+ "[^"]+"',
-              'const socialImage = siteUrl + "gcc-market-entry-logo-approved-green-gold-20260923.png?v=20260923-approved-logo-only"',
+              'const socialImage = siteUrl + "gcc-market-entry-logo-approved-green-gold-20260923.png?v=20260923-approved-drive-logo"',
               s,
               count=1,
           )
-          s = re.sub(
-              r'\n\s*width:\s*\d+,\n\s*height:\s*\d+,\n\s*type:\s*"image/[^"]+",',
-              '\n        type: "image/png",',
-              s,
-              count=1,
-          )
+          s = re.sub(r'\n\s*width:\s*\d+,\n\s*height:\s*\d+,', '', s, count=1)
+          s = re.sub(r'type:\s*"image/jpeg"', 'type: "image/png"', s, count=1)
           layout.write_text(s, encoding='utf-8')
 
           for name in ['app/page.tsx', 'app/en/page.tsx', 'app/bm/page.tsx', 'app/ar/page.tsx']:
@@ -52,9 +47,14 @@ jobs:
             public/images/gcc-market-entry-social.jpg \
             public/images/gcc-hero.png \
             public/images/social/gcc-market-entry-approved-banner.webp \
+            public/images/social/gcc-market-entry-hero-approved-green-gold-20260923.webp \
+            public/images/social/gcc-market-entry-share-1200x630.png \
+            public/images/social/gcc-market-entry-whatsapp.jpg \
             public/images/social/gcc-banner.b64.1 \
             public/images/social/gcc-banner.b64.2 \
             public/images/social/gcc-banner.b64.3 \
+            app/opengraph-image.png \
+            app/twitter-image.png \
             components/approved-hero-banner.tsx
       - name: Commit cleanup
         run: |
@@ -65,5 +65,5 @@ jobs:
             echo 'No changes needed.'
             exit 0
           fi
-          git commit -m 'Remove unapproved GCC artwork and use approved logo only'
+          git commit -m 'Remove rejected GCC pictures and keep approved logo only'
           git push origin HEAD:main
