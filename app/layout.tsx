@@ -60,6 +60,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: socialImage,
+        width: 1122,
+        height: 1402,
         type: "image/png",
         alt: "GCC Market Entry — Malaysia to Saudi Arabia, UAE and the wider GCC",
       },
