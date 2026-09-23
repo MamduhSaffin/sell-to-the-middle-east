@@ -42,35 +42,60 @@ jobs:
       - name: TypeScript check
         run: pnpm check
 
-      - name: Prepare approved hero, favicon and social preview
+      - name: Prepare approved green-gold logo, hero, favicon and social preview
         run: |
+          set -euo pipefail
           sudo apt-get update
-          sudo apt-get install -y librsvg2-bin imagemagick
+          sudo apt-get install -y imagemagick
           mkdir -p public/images/social
 
-          # Rebuild the approved WebP from the repository's base64 parts.
-          # This avoids serving the previously corrupted committed WebP asset.
-          cat public/images/social/gcc-banner.b64.1 \
-              public/images/social/gcc-banner.b64.2 \
-              public/images/social/gcc-banner.b64.3 \
-            | tr -d '\r\n' \
-            | base64 --decode \
-            > public/images/social/gcc-market-entry-approved-banner.webp
+          fetch_asset() {
+            live_url="$1"
+            fallback_url="$2"
+            output="$3"
+            if curl -fL --retry 2 --connect-timeout 10 "$live_url" -o "$output"; then
+              echo "Recovered approved asset from the live site: $live_url"
+            else
+              echo "Seeding approved asset from the approved Drive source"
+              curl -fL --retry 3 --connect-timeout 15 "$fallback_url" -o "$output"
+            fi
+            test -s "$output"
+          }
 
-          test -s public/images/social/gcc-market-entry-approved-banner.webp
-          file public/images/social/gcc-market-entry-approved-banner.webp
+          LOGO_LIVE="https://gccmarketentry.me/gcc-market-entry-logo-approved-green-gold-20260923.png"
+          BANNER_LIVE="https://gccmarketentry.me/images/social/gcc-market-entry-hero-approved-green-gold-20260923.webp"
+          FAVICON_LIVE="https://gccmarketentry.me/gcc-market-entry-favicon-approved-green-gold-20260923.png"
 
-          # Normalize the social artwork to the official green + gold palette before rendering.
-          sed -i 's/#123b2c/#064a38/g; s/#c59b4f/#d6a431/g; s/#8a6b2d/#b98216/g; s/#e0bf73/#f5d56d/g; s/#fbfaf4/#fffdf8/g' public/social-preview.svg
+          LOGO_SEED='https://sdmntprindiasocentral.oaiusercontent.com/files/00000000-1cb8-8211-aaeb-3ef6ecdd2e3e/raw?se=2026-09-23T01%3A09%3A23Z&sp=r&sv=2026-02-06&sr=b&scid=56b54010-2624-5381-b259-eb21c7ae9285&skoid=fb469448-2cc9-41bd-a5a6-6e020952b47a&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-22T22%3A02%3A54Z&ske=2026-09-23T22%3A02%3A54Z&sks=b&skv=2026-02-06&sig=ohMqL9zogXuA%2B8OjbJrH/igrK27HqUzn7DQ3n/kHx6I%3D'
+          BANNER_SEED='https://sdmntprindiasocentral.oaiusercontent.com/files/00000000-8eac-8211-b73e-9c4eeedaee8b/raw?se=2026-09-23T01%3A09%3A30Z&sp=r&sv=2026-02-06&sr=b&scid=2f4eb5ca-708f-5846-b424-95df87639aee&skoid=fb469448-2cc9-41bd-a5a6-6e020952b47a&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-22T23%3A55%3A56Z&ske=2026-09-23T23%3A55%3A56Z&sks=b&skv=2026-02-06&sig=NMyGXz13FM3d5v9iubokYym8tMIonQjR%2BQAFNC0Kk9g%3D'
+          FAVICON_SEED='https://sdmntprseasia.oaiusercontent.com/files/00000000-24e0-8207-bed6-c0c5c928108d/raw?se=2026-09-23T01%3A09%3A36Z&sp=r&sv=2026-02-06&sr=b&scid=5356a20f-62b5-5490-946b-30e902d90325&skoid=fb469448-2cc9-41bd-a5a6-6e020952b47a&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2026-09-22T23%3A36%3A07Z&ske=2026-09-23T23%3A36%3A07Z&sks=b&skv=2026-02-06&sig=lCKfzFUs7rvJILXretyXEAbYmA6B4YFi513WoR9b7KY%3D'
 
-          rsvg-convert -w 512 -h 512 public/icon.svg -o public/apple-icon.png
-          rsvg-convert -w 1200 -h 630 public/social-preview.svg -o public/images/social/gcc-market-entry-share-1200x630.png
-          convert public/images/social/gcc-market-entry-approved-banner.webp -resize '1200x630^' -gravity center -extent 1200x630 -quality 92 public/images/social/gcc-market-entry-whatsapp.jpg
+          fetch_asset "$LOGO_LIVE" "$LOGO_SEED" /tmp/gcc-logo-source
+          fetch_asset "$BANNER_LIVE" "$BANNER_SEED" /tmp/gcc-banner-source
+          fetch_asset "$FAVICON_LIVE" "$FAVICON_SEED" /tmp/gcc-favicon-source
 
-          # Next.js static export: use file-based static metadata images instead of runtime image routes.
+          convert /tmp/gcc-logo-source -resize '1200x600>' -strip public/gcc-market-entry-logo-approved-green-gold-20260923.png
+          cp public/gcc-market-entry-logo-approved-green-gold-20260923.png public/gcc-market-entry-approved.png
+
+          convert /tmp/gcc-banner-source -resize '1800x600^' -gravity center -extent 1800x600 -strip -quality 88 public/images/social/gcc-market-entry-hero-approved-green-gold-20260923.webp
+          cp public/images/social/gcc-market-entry-hero-approved-green-gold-20260923.webp public/images/social/gcc-market-entry-approved-banner.webp
+
+          convert /tmp/gcc-favicon-source -resize '256x256^' -gravity center -extent 256x256 -strip public/gcc-market-entry-favicon-approved-green-gold-20260923.png
+          convert public/gcc-market-entry-favicon-approved-green-gold-20260923.png -resize 512x512 public/apple-icon.png
+
+          convert public/images/social/gcc-market-entry-hero-approved-green-gold-20260923.webp -resize '1200x630^' -gravity center -extent 1200x630 -strip public/images/social/gcc-market-entry-share-1200x630.png
+          convert public/images/social/gcc-market-entry-hero-approved-green-gold-20260923.webp -resize '1200x630^' -gravity center -extent 1200x630 -strip -quality 92 public/images/social/gcc-market-entry-whatsapp.jpg
+
           cp public/images/social/gcc-market-entry-share-1200x630.png app/opengraph-image.png
           cp public/images/social/gcc-market-entry-share-1200x630.png app/twitter-image.png
 
+          # Make the new approved favicon the one browsers actually request.
+          sed -i 's#icon: siteUrl + "icon.svg?v=20260920b"#icon: siteUrl + "gcc-market-entry-favicon-approved-green-gold-20260923.png"#g' app/layout.tsx
+          sed -i 's#apple: siteUrl + "apple-icon.png?v=20260920b"#apple: siteUrl + "gcc-market-entry-favicon-approved-green-gold-20260923.png"#g' app/layout.tsx
+
+          test -s public/gcc-market-entry-approved.png
+          test -s public/images/social/gcc-market-entry-approved-banner.webp
+          test -s public/gcc-market-entry-favicon-approved-green-gold-20260923.png
           test -s public/apple-icon.png
           test -s public/images/social/gcc-market-entry-share-1200x630.png
           test -s public/images/social/gcc-market-entry-whatsapp.jpg
