@@ -49,88 +49,94 @@
 
 :root {
   color-scheme: light;
-  --background: #fffdf8;
-  --foreground: #14261e;
+  --background: #faf7ef;
+  --foreground: #262b25;
   --card: #ffffff;
-  --card-foreground: #14261e;
+  --card-foreground: #262b25;
   --popover: #ffffff;
-  --popover-foreground: #14261e;
-  --primary: #064a38;
+  --popover-foreground: #262b25;
+  --primary: #0c2f22;
   --primary-foreground: #ffffff;
-  --secondary: #eef5f1;
-  --secondary-foreground: #064a38;
-  --muted: #f6f1e7;
-  --muted-foreground: #657168;
-  --accent: #d6a431;
-  --accent-foreground: #2d2413;
+  --secondary: #f4efe3;
+  --secondary-foreground: #143d2d;
+  --muted: #f4efe3;
+  --muted-foreground: #555d53;
+  --accent: #b79150;
+  --accent-foreground: #0c2f22;
   --destructive: #b42318;
-  --border: #dbe6df;
-  --input: #d1ded6;
-  --ring: #0c6549;
-  --chart-1: #064a38;
-  --chart-2: #d6a431;
-  --chart-3: #0c6549;
+  --border: #ded1b9;
+  --input: #ded1b9;
+  --ring: #b79150;
+  --chart-1: #0c2f22;
+  --chart-2: #b79150;
+  --chart-3: #1f5a41;
   --chart-4: #7a8b80;
-  --chart-5: #b98216;
-  --radius: 0.9rem;
+  --chart-5: #c9a262;
+  --radius: 1rem;
   --sidebar: #ffffff;
-  --sidebar-foreground: #14261e;
-  --sidebar-primary: #064a38;
+  --sidebar-foreground: #262b25;
+  --sidebar-primary: #0c2f22;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #eef5f1;
-  --sidebar-accent-foreground: #064a38;
-  --sidebar-border: #dbe6df;
-  --sidebar-ring: #0c6549;
+  --sidebar-accent: #f4efe3;
+  --sidebar-accent-foreground: #143d2d;
+  --sidebar-border: #ded1b9;
+  --sidebar-ring: #b79150;
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
+  * { @apply border-border outline-ring/50; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
   body {
     @apply bg-background text-foreground;
     min-width: 320px;
     background:
-      radial-gradient(circle at 8% 0%, rgba(6, 74, 56, 0.055), transparent 28rem),
-      radial-gradient(circle at 100% 8%, rgba(214, 164, 49, 0.08), transparent 28rem),
+      radial-gradient(circle at 8% 0%, rgba(12, 47, 34, 0.06), transparent 28rem),
+      radial-gradient(circle at 100% 8%, rgba(183, 145, 80, 0.09), transparent 28rem),
       var(--background);
   }
-
-  ::selection {
-    background: rgba(214, 164, 49, 0.28);
-  }
-
-  [id] {
-    scroll-margin-top: 5.5rem;
-  }
-
+  ::selection { background: rgba(183, 145, 80, 0.28); }
+  [id] { scroll-margin-top: 5.5rem; }
   h1, h2, h3 {
+    font-family: Georgia, "Times New Roman", serif;
     text-wrap: balance;
     text-rendering: optimizeLegibility;
+    letter-spacing: -0.01em;
   }
-
-  a, button {
-    -webkit-tap-highlight-color: transparent;
+  a, button { -webkit-tap-highlight-color: transparent; }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 3px solid #b79150;
+    outline-offset: 3px;
   }
-
   html[lang="ar"], [dir="rtl"] {
     font-family: "Noto Sans Arabic", "Noto Kufi Arabic", Tahoma, Arial, sans-serif;
   }
+  html[lang="ar"] h1, html[lang="ar"] h2, html[lang="ar"] h3, [dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3 {
+    font-family: "Noto Sans Arabic", "Noto Kufi Arabic", Tahoma, Arial, sans-serif;
+    letter-spacing: 0;
+  }
+}
+
+/* Shared TGPU ecosystem treatment */
+.tgpu-ecosystem-shell {
+  background: #0c2f22;
+  color: #f4efe3;
+  border-bottom: 1px solid rgba(183,145,80,.28);
+}
+.tgpu-ecosystem-nav a,
+.tgpu-ecosystem-nav button {
+  border-radius: 999px;
+  transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+.tgpu-ecosystem-nav a:hover,
+.tgpu-ecosystem-nav button:hover {
+  background: rgba(183,145,80,.16);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
 }
 
 @media (max-width: 640px) {
-  main section {
-    scroll-margin-top: 5.5rem;
-  }
+  main section { scroll-margin-top: 5.5rem; }
 }
