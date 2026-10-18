@@ -63,7 +63,7 @@ export const metadata: Metadata = {
         width: 1536,
         height: 768,
         type: "image/png",
-        alt: "GCC Market Entry — Malaysia to Saudi Arabia, UAE and the wider GCC",
+        alt: "GCC Market Entry — independent Malaysia to Saudi Arabia, UAE and GCC practical market-entry guide",
       },
     ],
   },
